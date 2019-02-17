@@ -1,10 +1,15 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# Contents
+[Available Scripts](#available-scripts)   
+[Introduction](#introduction)   
+[Summary](#summary)   
+&nbsp;&nbsp;&nbsp;&nbsp;[Redux pattern needs adjusting](#redux-pattern-needs-adjusting)    
 
+# Available Scripts
 In the project directory, you can run:
 
-### `npm start`
+## `yarn start | npm start`
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -12,12 +17,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
-### `npm test`
+## `yarn test | npm test`
 
 Launches the test runner in the interactive watch mode.<br>
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## `yarn build | npm run build`
 
 Builds the app for production to the `build` folder.<br>
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -27,18 +32,34 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## `yarn eject | npm run eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+This should be an absolute last resort, preference using the config-overrides npm package if possible.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+[Back To Top](#contents)
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+---
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+# Introduction
+This project is built as a POC to identify design patterns leveraging React hooks. It is a product called **"Spendulum"**, and allows users to try snap up items while they are temporarily selling at randomly generated decrease / increase in value.
 
-## Learn More
+A bundle discount is applied based on the number of items in a user's cart at the time of purchase which encourages bulk purchases where some items they want to buy may not be discounted a low as others.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The moment an item is added to the cart it's purchase price will be locked in. Changing the quantity of an item is allowed, but if the quantity is set to 0, the item will be removed from the cart and have the purchase price reset to the currently listed value.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+[Back To Top](#contents)
+
+---
+
+# Summary
+Below are key learnings from working with the combination of **styled-components**, **functional components**, **React hooks** and **react-router** without any additional state management tools. Uses [JSON Bin](https://jsonbin.io/) as a restful JSON storage / retrieval system.
+
+## Redux pattern needs adjusting
+The standard redux pattern does share some similarities with things like useReducer and useContext.
+
+Attempting to impose a 1:1 design pattern from Redux over to React hooks runs the risk of overlooking the full potential and new alternative design patterns that could help to cut down on boilerplate code without sacrificing readability, predictability or performance.
+
+[Back To Top](#contents)
+
+---
