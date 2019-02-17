@@ -2,7 +2,7 @@ import {
   ProductCardReducerState,
   ProductCardReducerAction,
   ProductCardActionTypes,
-} from './ProductCardmodels';
+} from './ProductCard-models';
 
 export const productCardActionTypes: ProductCardActionTypes = {
   UPDATE_ALL_ITEMS: 'productCard/UPDATE_ALL_ITEMS',

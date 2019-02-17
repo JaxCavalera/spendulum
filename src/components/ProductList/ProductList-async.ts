@@ -13,6 +13,6 @@ export const fetchCreateNewProduct = async (data: object) => {
 
   const route = 'https://api.jsonbin.io/b';
 
-  const response = await fetch(route, initObj);
-  console.log(response.json());
+  // const response = await fetch(route, initObj);
+  // console.log(response.json());
 };

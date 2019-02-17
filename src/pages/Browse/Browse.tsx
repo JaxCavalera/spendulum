@@ -15,7 +15,7 @@ const Browse = () => {
   return (
     <ErrorBoundary>
       <BrowseWrapper>
-        Browse Clothing Items
+        <span>Browse Clothing Items</span>
         <ProductList />
       </BrowseWrapper>
     </ErrorBoundary>
