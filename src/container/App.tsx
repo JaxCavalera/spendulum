@@ -13,6 +13,7 @@ import PageNotFound from '../pages/PageNotFound/PageNotFound';
 
 // Components
 import LoginWidget from '../components/LoginWidget/LoginWidget';
+import CartWidget from '../components/CartWidget/CartWidget';
 
 // Styles
 export const AppWrapper = styled.div`
@@ -37,6 +38,7 @@ export const App: React.FC = () => (
       <AppWrapper>
         <HeaderBar>
           <AppName>Spendulum</AppName>
+          <CartWidget />
           <LoginWidget />
         </HeaderBar>
         <Switch>

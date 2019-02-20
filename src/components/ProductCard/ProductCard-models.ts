@@ -14,7 +14,7 @@ export interface ActiveItemDataType {
   label: string;
   value: string;
   sizeRange: string[];
-  availableSizes: SizeOption[]
+  availableSizes: SizeOption[];
   price: number;
   imgUrl?: string;
 }
@@ -31,6 +31,7 @@ export interface ProductCardReducerState {
 }
 
 export interface ProductCardProps {
-  productCardState: ProductCardReducerState;
-  dispatchProductCardState: Dispatch<ProductCardReducerAction>;
+  data: ActiveItemDataType;
+  // productCardState: ProductCardReducerState;
+  // dispatchProductCardState: Dispatch<ProductCardReducerAction>;
 }

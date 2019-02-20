@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import ErrorBoundary from '../../utils/ErrorBoundary';
 import {
   BasicButton,
-  TextInput,
+  BasicTextInput,
 } from '../../utils/shared-styles';
 
 // Models
@@ -18,7 +18,7 @@ export const LoginWidgetWrapper = styled.div`
   align-items: center;
 `;
 
-export const PasswordInput = styled(TextInput)`
+export const PasswordInput = styled(BasicTextInput)`
   margin-left: 0.5rem;
 `;
 
@@ -30,7 +30,7 @@ const LoginWidget = ({ }: LoginWidgetProps) => {
   return (
     <ErrorBoundary>
       <LoginWidgetWrapper>
-        <TextInput placeholder="Username" />
+        <BasicTextInput placeholder="Username" />
         <PasswordInput type="password" placeholder="Password" />
         <LoginBtn>Login</LoginBtn>
       </LoginWidgetWrapper>

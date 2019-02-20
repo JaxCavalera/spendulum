@@ -42,11 +42,11 @@ This should be an absolute last resort, preference using the config-overrides np
 ---
 
 # Introduction
-This project is built as a POC to identify design patterns leveraging React hooks. It is a product called **"Spendulum"**, and allows users to try snap up items while they are temporarily selling at randomly generated decrease / increase in value.
+This project is built as a POC to identify design patterns leveraging React hooks. It is a product called **"Spendulum"**, and allows users to try snap up items while they are temporarily selling at a price that will randomly decrease / increase in value.
 
 A bundle discount is applied based on the number of items in a user's cart at the time of purchase which encourages bulk purchases where some items they want to buy may not be discounted a low as others.
 
-The moment an item is added to the cart it's purchase price will be locked in. Changing the quantity of an item is allowed, but if the quantity is set to 0, the item will be removed from the cart and have the purchase price reset to the currently listed value.
+The moment an item is added to the cart it's purchase price will be locked in for the next 15 minutes. Removing an item from the cart resets the purchase price to the currently listed value.
 
 [Back To Top](#contents)
 
@@ -63,3 +63,18 @@ Attempting to impose a 1:1 design pattern from Redux over to React hooks runs th
 [Back To Top](#contents)
 
 ---
+
+
+## Developer Notes
+- Build product card
+  - name => DONE
+  - price => fixed price only atm not dynamic
+  - image => DONE
+  - qty => DONE (useState only atm)
+  - add to cart btn => missing event handlers needs cartSidebar
+  - min price (hidden)
+  - max price (hidden)
+  - price change timer (hidden)
+- Bypass API Calls using mock data for a list of products
+- Build cart sidebar
+- Implement handler to add product qty to cart it should appear in sidebar

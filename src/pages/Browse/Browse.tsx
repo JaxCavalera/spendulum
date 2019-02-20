@@ -8,7 +8,7 @@ import ProductList from '../../components/ProductList/ProductList';
 
 const BrowseWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
 `;
 
 const Browse = () => {
