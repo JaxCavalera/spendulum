@@ -1,3 +1,5 @@
+import { RootReducerState } from '../../rootReducer';
+
 export interface ProductListActionTypes { }
 
 export interface ProductListReducerAction {
@@ -6,4 +8,6 @@ export interface ProductListReducerAction {
 
 export interface ProductListReducerState { }
 
-export interface ProductListProps { }
+export interface ProductListProps {
+  store: RootReducerState;
+}

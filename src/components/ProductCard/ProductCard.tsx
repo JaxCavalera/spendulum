@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 
 // Shared Styles
@@ -11,15 +11,19 @@ import {
   BasicTextInput,
 } from '../../utils/shared-styles';
 
+// Store Constants
+import { RootReducerActionTypes, RootReducerAction } from '../../rootReducer';
+
 // Models
 import { ProductCardProps } from './ProductCard-models';
 
 // Logic
 import {
-  handleQtyInputOnFocus,
-  handleQtyInputOnBlur,
-  handleQtyInputOnChange,
+  handleAddToCartOnClick,
 } from './ProductCard-logic';
+
+// Store Provider
+import { StoreContext, IStoreContext } from '../../rootReducer';
 
 const ProductCardWrapper = styled.div`
   display: flex;
@@ -47,26 +51,26 @@ const CardActions = styled.div`
   box-sizing: border-box;
 `;
 
-const QtyInput = styled(BasicTextInput)`
+const CartInput = styled(BasicTextInput)`
   width: 50%;
   margin-left: 0.5rem;
 `;
 
 const ProductCard = ({ data }: ProductCardProps) => {
-  const [orderQty, updateOrderQty] = useState(undefined);
-  const [hasFocus, updateHasFocus] = useState(false);
+  const storeContext = useContext(StoreContext);
+  console.log(storeContext.state);
 
-  // Callers for event handlers to better support unit testing and debugging
-  const callHandleQtyInputOnFocus = () => {
-    handleQtyInputOnFocus(updateOrderQty, updateHasFocus, orderQty);
-  };
-
-  const callHandleQtyInputOnBlur = () => {
-    handleQtyInputOnBlur(updateOrderQty, updateHasFocus, orderQty);
-  };
-
-  const callHandleQtyInputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    handleQtyInputOnChange(updateOrderQty, e);
+  const handleAddToCartOnClick = () => {
+    storeContext.dispatch({
+      type: RootReducerActionTypes.UPDATE_CART_ITEMS,
+      cartItems: [
+        ...storeContext.state.cartItems,
+        {
+          label: data.label,
+          value: data.value,
+        },
+      ],
+    });
   };
 
   return (
@@ -76,15 +80,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
         <WrappedImage imgSrc={data.imgUrl || ''} imgHeight={'100%'} imgWidth={'100%'} />
         <SectionParagraph nomargin={true}>${data.price.toFixed(2)}</SectionParagraph>
         <CardActions>
-          <BasicButton>Add to cart</BasicButton>
-          <QtyInput
-            min={0}
-            onFocus={callHandleQtyInputOnFocus}
-            onBlur={callHandleQtyInputOnBlur}
-            type={orderQty ? 'number' : 'text'}
-            value={typeof orderQty !== 'undefined' ? orderQty : 'QTY'}
-            onChange={callHandleQtyInputOnChange}
-          />
+          <BasicButton onClick={handleAddToCartOnClick}>Add to Cart</BasicButton>
         </CardActions>
       </ProductCardWrapper>
     </ErrorBoundary>

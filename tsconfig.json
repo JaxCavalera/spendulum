@@ -22,7 +22,5 @@
   "include": [
     "src"
   ],
-  "exclude": [
-    "src/container/rootReducer.ts"
-  ]
+  "exclude": []
 }

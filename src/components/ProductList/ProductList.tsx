@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { mockProductList } from './test/ProductList-mocks';
@@ -22,7 +22,7 @@ const ProductListWrapper = styled.div`
   align-items: center;
 `;
 
-const ProductList = ({ }: ProductListProps) => {
+const ProductList: React.FC<ProductListProps> = ({ }) => {
   fetchCreateNewProduct({ test: 'some stuff' }).catch((e) => console.log(e));
 
   return (

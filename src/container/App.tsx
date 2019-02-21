@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { createContext, useReducer, Dispatch } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import styled from 'styled-components';
+
+// Root  Reducer
+import {
+  rootReducer,
+  rootReducerInitialState,
+  StoreContext,
+  IStoreContext,
+} from '../rootReducer';
 
 // Shared Styles
 import ErrorBoundary from '../utils/ErrorBoundary';
-import { SectionParagraph } from '../utils/shared-styles';
 
 // Pages
 import Browse from '../pages/Browse/Browse';
@@ -16,37 +22,37 @@ import LoginWidget from '../components/LoginWidget/LoginWidget';
 import CartWidget from '../components/CartWidget/CartWidget';
 
 // Styles
-export const AppWrapper = styled.div`
-  margin: 1rem;
-`;
+import {
+  AppWrapper,
+  HeaderBar,
+  AppName,
+} from './App-styles';
 
-export const HeaderBar = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
+export const App: React.FC = () => {
+  const [store, dispatchStore] = useReducer(rootReducer, rootReducerInitialState);
+  const initialProviderValue: IStoreContext = {
+    state: store,
+    dispatch: dispatchStore
+  };
 
-export const AppName = styled.h1`
-  font-size: 2rem;
-  line-height: 2.8rem;
-  margin: 0;
-`;
-
-export const App: React.FC = () => (
-  <ErrorBoundary>
-    <BrowserRouter>
-      <AppWrapper>
-        <HeaderBar>
-          <AppName>Spendulum</AppName>
-          <CartWidget />
-          <LoginWidget />
-        </HeaderBar>
-        <Switch>
-          <Route exact path="/" component={Browse} />
-          <Route exact path="/cart" component={Cart} />
-          <Route component={PageNotFound} />
-        </Switch>
-      </AppWrapper>
-    </BrowserRouter>
-  </ErrorBoundary>
-);
+  return (
+    <ErrorBoundary>
+      <StoreContext.Provider value={initialProviderValue}>
+        <BrowserRouter>
+          <AppWrapper>
+            <HeaderBar>
+              <AppName>Spendulum</AppName>
+              <CartWidget />
+              <LoginWidget />
+            </HeaderBar>
+            <Switch>
+              <Route exact path="/" component={Browse} />
+              <Route exact path="/cart" component={Cart} />
+              <Route component={PageNotFound} />
+            </Switch>
+          </AppWrapper>
+        </BrowserRouter>
+      </StoreContext.Provider>
+    </ErrorBoundary>
+  );
+};

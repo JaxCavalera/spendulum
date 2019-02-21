@@ -10,7 +10,7 @@ export interface ProductCardActionTypes {
   UPDATE_ACTIVE_ITEM_DATA: 'productCard/UPDATE_ACTIVE_ITEM_DATA',
 }
 
-export interface ActiveItemDataType {
+export interface ProductInfo {
   label: string;
   value: string;
   sizeRange: string[];
@@ -21,17 +21,17 @@ export interface ActiveItemDataType {
 
 export interface ProductCardReducerAction {
   type: string;
-  activeItemData?: ActiveItemDataType;
-  allProductCards?: ActiveItemDataType[];
+  activeItemData?: ProductInfo;
+  allProductCards?: ProductInfo[];
 }
 
 export interface ProductCardReducerState {
-  allProductCards: ActiveItemDataType[];
-  activeItemData?: ActiveItemDataType;
+  allProductCards: ProductInfo[];
+  activeItemData?: ProductInfo;
 }
 
 export interface ProductCardProps {
-  data: ActiveItemDataType;
+  data: ProductInfo;
+  // dispatchProductToCart: Dispatch<ProductCardReducerAction>;
   // productCardState: ProductCardReducerState;
-  // dispatchProductCardState: Dispatch<ProductCardReducerAction>;
 }

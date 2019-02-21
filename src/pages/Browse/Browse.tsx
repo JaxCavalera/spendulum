@@ -16,7 +16,7 @@ const Browse = () => {
     <ErrorBoundary>
       <BrowseWrapper>
         <span>Browse Clothing Items</span>
-        <ProductList />
+        <ProductList store={{ cartItems: [] }} />
       </BrowseWrapper>
     </ErrorBoundary>
   );
