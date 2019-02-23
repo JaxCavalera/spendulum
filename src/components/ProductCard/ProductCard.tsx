@@ -22,9 +22,6 @@ import {
   handleAddToCartOnClick,
 } from './ProductCard-logic';
 
-// Store Provider
-import { StoreContext, IStoreContext } from '../../rootReducer';
-
 const ProductCardWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -56,10 +53,7 @@ const CartInput = styled(BasicTextInput)`
   margin-left: 0.5rem;
 `;
 
-const ProductCard = ({ data }: ProductCardProps) => {
-  const storeContext = useContext(StoreContext);
-  console.log(storeContext.state);
-
+const ProductCard: React.FC<ProductCardProps> = ({ data, storeContext }) => {
   const handleAddToCartOnClick = () => {
     storeContext.dispatch({
       type: RootReducerActionTypes.UPDATE_CART_ITEMS,

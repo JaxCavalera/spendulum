@@ -8,6 +8,4 @@ export interface ProductListReducerAction {
 
 export interface ProductListReducerState { }
 
-export interface ProductListProps {
-  store: RootReducerState;
-}
+export interface ProductListProps { }

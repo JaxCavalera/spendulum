@@ -1,4 +1,5 @@
-import { Dispatch } from 'react';
+// Store Provider
+import { IStoreContext } from '../../rootReducer';
 
 export interface SizeOption {
   label: string;
@@ -32,6 +33,7 @@ export interface ProductCardReducerState {
 
 export interface ProductCardProps {
   data: ProductInfo;
+  storeContext: IStoreContext;
   // dispatchProductToCart: Dispatch<ProductCardReducerAction>;
   // productCardState: ProductCardReducerState;
 }

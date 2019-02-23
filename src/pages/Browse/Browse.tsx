@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 
 import ErrorBoundary from '../../utils/ErrorBoundary';
@@ -11,15 +11,16 @@ const BrowseWrapper = styled.div`
   flex-direction: column;
 `;
 
-const Browse = () => {
+const Browse = memo(() => {
+  console.log('browse page should only call once');
   return (
     <ErrorBoundary>
       <BrowseWrapper>
-        <span>Browse Clothing Items</span>
-        <ProductList store={{ cartItems: [] }} />
+        <span>Browse Items</span>
+        <ProductList />
       </BrowseWrapper>
     </ErrorBoundary>
   );
-};
+});
 
 export default Browse;

@@ -3,6 +3,9 @@ import styled from 'styled-components';
 
 import { mockProductList } from './test/ProductList-mocks';
 
+// Store Provider
+import { StoreContext } from '../../rootReducer';
+
 // Child Components
 import ProductCard from '../ProductCard/ProductCard';
 
@@ -25,12 +28,20 @@ const ProductListWrapper = styled.div`
 const ProductList: React.FC<ProductListProps> = ({ }) => {
   fetchCreateNewProduct({ test: 'some stuff' }).catch((e) => console.log(e));
 
+  const storeContext = useContext(StoreContext);
+  console.log('prodlist render');
   return (
     <ErrorBoundary>
       <ProductListWrapper>
         <SectionParagraph>ProductList</SectionParagraph>
         {
-          mockProductList.map(item => <ProductCard key={item.value} data={item} />)
+          mockProductList.map(item => (
+            <ProductCard
+              key={item.value}
+              data={item}
+              storeContext={storeContext}
+            />)
+          )
         }
       </ProductListWrapper>
     </ErrorBoundary>
