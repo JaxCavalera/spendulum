@@ -55,10 +55,15 @@ The moment an item is added to the cart it's purchase price will be locked in fo
 # Summary
 Below are key learnings from working with the combination of **styled-components**, **functional components**, **React hooks** and **react-router** without any additional state management tools. Uses [JSON Bin](https://jsonbin.io/) as a restful JSON storage / retrieval system.
 
-## Redux pattern needs adjusting
-The standard redux pattern does share some similarities with things like useReducer and useContext.
+## Redux pattern adjustments
+The standard redux pattern does share some similarities with things like `useReducer` and `useContext` but to ensure that state updates only trigger re-renders in affected components where `useContext` gets called, it requires some additional work.
 
-Attempting to impose a 1:1 design pattern from Redux over to React hooks runs the risk of overlooking the full potential and new alternative design patterns that could help to cut down on boilerplate code without sacrificing readability, predictability or performance.
+The main differences are that there is not requirement for actionCreator boilerplate and if `useContext` isn't called by a component, it can benefit from being wrapped by `React.memo`. There is also a stronger emphasis on taking advantage of `useState`, `useEffect` and `useMemo` (for potential optimisation) when dealing with internal state changes.
+
+## Simplification
+Being able to use functional components (FC's) instead of classes improves readability no longer having to manage binding this.
+
+If testing logic at the functional unit level vs component level, both classes and FC's benefit from extracting the body of the logic outside the component and using an eventHandlerWrapper to call them. (classes so you don't need to initialise to access the methods and FC's coz there would be no way to acces them otherwise).
 
 [Back To Top](#contents)
 
@@ -67,14 +72,14 @@ Attempting to impose a 1:1 design pattern from Redux over to React hooks runs th
 
 ## Developer Notes
 - Build product card
-  - name => DONE
-  - price => fixed price only atm not dynamic
-  - image => DONE
-  - qty => DONE (useState only atm)
-  - add to cart btn => missing event handlers needs cartSidebar
-  - min price (hidden)
-  - max price (hidden)
-  - price change timer (hidden)
+    - name => DONE
+    - price => fixed price only atm not dynamic
+    - image => DONE
+    - add to cart btn => DONE
+    - min price (hidden)
+    - max price (hidden)
+    - price change timer (hidden in v1)
 - Bypass API Calls using mock data for a list of products
 - Build cart sidebar
-- Implement handler to add product qty to cart it should appear in sidebar
+    - qty => handle in cart sidebar
+    - Implement handler to add product qty to cart it should appear in sidebar

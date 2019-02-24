@@ -1,45 +1,22 @@
 import { createContext } from 'react';
 
-// // Page Reducers
-// import { shirtsReducer } from './pages/Shirts/Shirts-reducer';
-// import { pantsReducer } from './pages/Pants/Pants-reducer';
-// // import { shoesReducer } from './pages/Shoes/Shoes-reducer';
+// Reducer Helpers
+import combineReducers, { ReducerCollection } from './utils/combineReducers';
 
-// export const rootReducer = (state, action) => {
-//   const combinedReducers = {
-//     shirtsReducer,
-//     pantsReducer,
-//     // shoesReducer,
-//   };
+// Reducers
+import { productListReducer, productListInitialState } from './components/ProductList/ProductList-reducer';
 
-//   const [store, dispatch] = useReducer()
-// };
-
-export interface BasicItemOption {
-  label: string;
-  value: string;
-}
-
-export interface RootReducerState {
-  cartItems: BasicItemOption[];
-}
-
-export enum RootReducerActionTypes {
-  UPDATE_CART_ITEMS = 'rootReducer/UPDATE_CART_ITEMS',
-  UPDATE_CART_QTY = 'rootReducer/UPDATE_CART_QTY',
-};
-
+// Models
 export interface RootReducerAction {
-  type: RootReducerActionTypes;
-  cartItems: BasicItemOption[];
+  [type: string]: any;
 }
 
-export const rootReducerInitialState: RootReducerState = {
-  cartItems: [],
+export const rootReducerInitialState = {
+  productListReducer: productListInitialState,
 };
 
 export interface IStoreContext {
-  state: RootReducerState;
+  state: typeof rootReducerInitialState;
   dispatch: React.Dispatch<RootReducerAction>;
 }
 
@@ -48,15 +25,6 @@ export const StoreContext = createContext<IStoreContext>({
   dispatch: () => undefined,
 });
 
-export const rootReducer = (state: RootReducerState, action: RootReducerAction) => {
-  switch (action.type) {
-    case RootReducerActionTypes.UPDATE_CART_ITEMS:
-      return {
-        ...state,
-        cartItems: action.cartItems,
-      };
-
-    default:
-      return state;
-  }
-};
+export const rootReducer = combineReducers({
+  productListReducer,
+});

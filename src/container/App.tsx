@@ -1,5 +1,11 @@
-import React, { useReducer } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import React, { useReducer, Props } from 'react';
+import {
+  BrowserRouter,
+  Route,
+  Switch,
+  RouteComponentProps,
+  match,
+} from 'react-router-dom';
 
 // Root  Reducer
 import {
@@ -28,6 +34,29 @@ import {
   AppName,
 } from './App-styles';
 
+/**
+ * Wrap page components with this if they have children being wrapped by React.memo otherwise props.match will cause unwanted re-renders
+ * currently for some reason the 2nd arg on React.memo ignores the evaluation when prevProps === nextProps
+ */
+export const patchWithStableMatchProp = (TargetComponent: React.ComponentType<{ match: RouteComponentProps['match'] }>) => {
+  let prevMatch = {} as RouteComponentProps['match'];
+
+  const patchedComponent: React.FC<RouteComponentProps> = (props) => {
+    if (JSON.stringify(prevMatch) !== JSON.stringify(props.match)) {
+      prevMatch = props.match;
+      return <TargetComponent match={props.match} />;
+    }
+
+    return <TargetComponent match={prevMatch} />;
+  };
+
+  return patchedComponent;
+};
+
+// Memo ready patched render functions
+const patchedBrowse = patchWithStableMatchProp(Browse);
+const patchedCart = patchWithStableMatchProp(Cart);
+
 export const App: React.FC = () => {
   const [store, dispatchStore] = useReducer(rootReducer, rootReducerInitialState);
   const initialProviderValue: IStoreContext = {
@@ -42,12 +71,12 @@ export const App: React.FC = () => {
           <AppWrapper>
             <HeaderBar>
               <AppName>Spendulum</AppName>
-              <CartWidget />
               <LoginWidget />
+              <CartWidget />
             </HeaderBar>
             <Switch>
-              <Route exact path="/" component={Browse} />
-              <Route exact path="/cart" component={Cart} />
+              <Route exact path="/" render={patchedBrowse} />
+              <Route exact path="/cart" render={patchedCart} />
               <Route component={PageNotFound} />
             </Switch>
           </AppWrapper>

@@ -4,12 +4,20 @@ import {
   ProductListActionTypes,
 } from './ProductList-models';
 
-export const productListActionTypes: ProductListActionTypes = {};
+export const productListInitialState: ProductListReducerState = {
+  productList: [],
+};
 
-export const productListInitialState: ProductListReducerState = {};
-
-export const productListReducer = (state: ProductListReducerState, action: ProductListReducerAction) => {
+export const productListReducer = (
+  state: ProductListReducerState,
+  action: ProductListReducerAction,
+): ProductListReducerState => {
   switch (action.type) {
+    case ProductListActionTypes.UPDATE_PRODUCT_LIST:
+      return {
+        ...state,
+        ...action.productList && { productList: action.productList },
+      };
 
     default:
       return state;

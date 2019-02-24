@@ -11,8 +11,8 @@ import {
   BasicTextInput,
 } from '../../utils/shared-styles';
 
-// Store Constants
-import { RootReducerActionTypes, RootReducerAction } from '../../rootReducer';
+// ActionTypes
+import { CartSidebarActionTypes } from '../CartSidebar/CartSidebar-models';
 
 // Models
 import { ProductCardProps } from './ProductCard-models';
@@ -54,15 +54,14 @@ const CartInput = styled(BasicTextInput)`
 `;
 
 const ProductCard: React.FC<ProductCardProps> = ({ data, storeContext }) => {
+  console.log(storeContext);
+
   const handleAddToCartOnClick = () => {
     storeContext.dispatch({
-      type: RootReducerActionTypes.UPDATE_CART_ITEMS,
+      type: CartSidebarActionTypes.UPDATE_CART_ITEMS,
       cartItems: [
-        ...storeContext.state.cartItems,
-        {
-          label: data.label,
-          value: data.value,
-        },
+        ...storeContext.state.productListReducer.productList,
+        data,
       ],
     });
   };
