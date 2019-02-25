@@ -39,6 +39,7 @@ const ProductCardWrapper = styled.div`
 const CardActions = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
   min-height: 3.5rem;
   background-color: ${colours.grey5};

@@ -12,7 +12,6 @@ const BrowseWrapper = styled.div`
 `;
 
 const Browse = memo(() => {
-  console.log('browse page should only call once');
   return (
     <ErrorBoundary>
       <BrowseWrapper>

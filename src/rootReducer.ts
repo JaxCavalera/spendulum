@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 // Reducer Helpers
-import combineReducers, { ReducerCollection } from './utils/combineReducers';
+import combineReducers, { validateReducers } from './utils/combineReducers';
 
 // Reducers
 import { productListReducer, productListInitialState } from './components/ProductList/ProductList-reducer';
@@ -25,6 +25,10 @@ export const StoreContext = createContext<IStoreContext>({
   dispatch: () => undefined,
 });
 
-export const rootReducer = combineReducers({
+// Defines the collection of reducers to be validated
+const validReducerCollection = validateReducers({
   productListReducer,
 });
+
+// Combines validated reducers
+export const rootReducer = combineReducers(validReducerCollection);

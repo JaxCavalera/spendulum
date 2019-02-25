@@ -12,15 +12,11 @@ interface ErrorBoundaryState {
 }
 
 export default class ErrorBoundary extends PureComponent<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
-    super(props);
-
-    this.state = {
-      hasError: false,
-      errorMsg: new Error,
-      errorInfo: {},
-    };
-  }
+  state = {
+    hasError: false,
+    errorMsg: new Error,
+    errorInfo: {},
+  };
 
   componentDidCatch(error: Error | null, info: object) {
     this.setState({

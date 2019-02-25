@@ -65,6 +65,19 @@ Being able to use functional components (FC's) instead of classes improves reada
 
 If testing logic at the functional unit level vs component level, both classes and FC's benefit from extracting the body of the logic outside the component and using an eventHandlerWrapper to call them. (classes so you don't need to initialise to access the methods and FC's coz there would be no way to acces them otherwise).
 
+## Validating reducer shapes
+Typescript is not able to validate the shape of callback functions from where they are being called so this needs to happen before they get passed in as nested callbacks.
+
+Unfortunately, typescript is only able to determine the type assigned to a function or method when it is called. Finding the right way to validate the shape of a reducer function proved to be quite a challenge.
+
+After doing some research I was directed to the following design pattern which can be used to: 
+- Extract out a generic type used to represent the parameter with an identical type to the one a method returns
+- Assign the generic type to the target parameter
+- Define any other params in the method's structure
+- Assign the generic type as the return type for the method
+
+If dealing with an object as the (param === return) target type, see https://stackoverflow.com/a/54850697/4181923
+
 [Back To Top](#contents)
 
 ---

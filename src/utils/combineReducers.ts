@@ -1,13 +1,19 @@
 import { Reducer, ReducerState, ReducerAction } from "react";
 
-export interface ReducerCollection<S, A> {
-  [key: string]: (state: S, action: A) => S;
+// Enforces that each method abides by the specified shape. Only extracts return type Param on left side for use on right
+type ReducerCollection<ReducerMethod> = {
+  [StateParam in keyof ReducerMethod]: (state: ReducerMethod[StateParam], action: any) => ReducerMethod[StateParam];
 }
 
-/**
- * Typescript enables assurance at compile time that any reducers passed in as props on the reducers arg must be valid
- */
-const combineReducers = <S, A>(reducers: ReducerCollection<S, A>) => {
+// Binds each reducer to a generic for use when extracting params out in the ReducerCollection type
+export const validateReducers = <ReducerMethod>(reducers: ReducerCollection<ReducerMethod>) => reducers;
+
+// Expects combineReducers to only be called with a collection of previously validated reducer methods
+interface ValidReducers {
+  [key: string]: Reducer<any, any>;
+}
+
+const combineReducers = (reducers: ValidReducers) => {
   const reducerKeys = Object.keys(reducers);
 
   const appReducer = <R extends Reducer<any, any>>(appState: ReducerState<R>, action: ReducerAction<R>) => {
@@ -17,7 +23,7 @@ const combineReducers = <S, A>(reducers: ReducerCollection<S, A>) => {
     for (let i = 0; i < reducerKeys.length; i += 1) {
       const key = reducerKeys[i];
       const reducer = reducers[key];
-      const prevReducerState: S = appState[key];
+      const prevReducerState = appState[key];
       const nextReducerState = reducer(prevReducerState, action);
 
       appStateHasChanged = appStateHasChanged || prevReducerState !== nextReducerState;
