@@ -1,42 +1,44 @@
-import React, { useReducer, Props } from 'react';
+import React, { useReducer } from 'react';
 import {
   BrowserRouter,
   Route,
   Switch,
   RouteComponentProps,
-  match,
 } from 'react-router-dom';
 
 // Root  Reducer
 import {
   rootReducer,
   rootReducerInitialState,
+  StoreContextLive,
   StoreContext,
-  IStoreContext,
 } from '../rootReducer';
 
 // Shared Styles
 import ErrorBoundary from '../utils/ErrorBoundary';
 
 // Pages
-import Browse from '../pages/Browse/Browse';
-import Cart from '../pages/Cart/Cart';
-import PageNotFound from '../pages/PageNotFound/PageNotFound';
+import { Browse } from '../pages/Browse/Browse';
+import { Checkout } from '../pages/Checkout/Checkout';
+import { PageNotFound } from '../pages/PageNotFound/PageNotFound';
 
 // Components
-import LoginWidget from '../components/LoginWidget/LoginWidget';
-import CartWidget from '../components/CartWidget/CartWidget';
+import { LoginWidget } from '../components/LoginWidget/LoginWidget';
+import { NavWidgets } from '../components/NavWidgets/NavWidgets';
+import { CartSidebar } from '../components/CartSidebar/CartSidebar';
 
 // Styles
 import {
+  AppName,
   AppWrapper,
   HeaderBar,
-  AppName,
+  PageContent,
 } from './App-styles';
 
 /**
- * Wrap page components with this if they have children being wrapped by React.memo otherwise props.match will cause unwanted re-renders
- * currently for some reason the 2nd arg on React.memo ignores the evaluation when prevProps === nextProps
+ * Wrap page components with this if they have children being wrapped by React.memo otherwise props.match will cause
+ * unwanted re-renders due to a potential bug in React.memo where the 2nd arg on React.memo ignores the evaluation
+ * even if prevProps === nextProps
  */
 export const patchWithStableMatchProp = (TargetComponent: React.ComponentType<{ match: RouteComponentProps['match'] }>) => {
   let prevMatch = {} as RouteComponentProps['match'];
@@ -55,33 +57,36 @@ export const patchWithStableMatchProp = (TargetComponent: React.ComponentType<{ 
 
 // Memo ready patched render functions
 const patchedBrowse = patchWithStableMatchProp(Browse);
-const patchedCart = patchWithStableMatchProp(Cart);
+const patchedCheckout = patchWithStableMatchProp(Checkout);
 
 export const App: React.FC = () => {
   const [store, dispatchStore] = useReducer(rootReducer, rootReducerInitialState);
-  const initialProviderValue: IStoreContext = {
+  const initialProviderValue: StoreContext = {
     state: store,
     dispatch: dispatchStore
   };
 
   return (
     <ErrorBoundary>
-      <StoreContext.Provider value={initialProviderValue}>
+      <StoreContextLive.Provider value={initialProviderValue}>
         <BrowserRouter>
           <AppWrapper>
             <HeaderBar>
               <AppName>Spendulum</AppName>
               <LoginWidget />
-              <CartWidget />
+              <NavWidgets />
             </HeaderBar>
-            <Switch>
-              <Route exact path="/" render={patchedBrowse} />
-              <Route exact path="/cart" render={patchedCart} />
-              <Route component={PageNotFound} />
-            </Switch>
+            <PageContent>
+              <Switch>
+                <Route exact path="/" render={patchedBrowse} />
+                <Route exact path="/checkout" render={patchedCheckout} />
+                <Route component={PageNotFound} />
+              </Switch>
+              <CartSidebar />
+            </PageContent>
           </AppWrapper>
         </BrowserRouter>
-      </StoreContext.Provider>
+      </StoreContextLive.Provider>
     </ErrorBoundary>
   );
 };

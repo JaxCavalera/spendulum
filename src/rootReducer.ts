@@ -5,6 +5,7 @@ import combineReducers, { validateReducers } from './utils/combineReducers';
 
 // Reducers
 import { productListReducer, productListInitialState } from './components/ProductList/ProductList-reducer';
+import { cartSidebarReducer, cartSidebarInitialState } from './components/CartSidebar/CartSidebar-reducer';
 
 // Models
 export interface RootReducerAction {
@@ -13,14 +14,15 @@ export interface RootReducerAction {
 
 export const rootReducerInitialState = {
   productListReducer: productListInitialState,
+  cartSidebarReducer: cartSidebarInitialState,
 };
 
-export interface IStoreContext {
+export interface StoreContext {
   state: typeof rootReducerInitialState;
   dispatch: React.Dispatch<RootReducerAction>;
 }
 
-export const StoreContext = createContext<IStoreContext>({
+export const StoreContextLive = createContext<StoreContext>({
   state: rootReducerInitialState,
   dispatch: () => undefined,
 });
@@ -28,6 +30,7 @@ export const StoreContext = createContext<IStoreContext>({
 // Defines the collection of reducers to be validated
 const validReducerCollection = validateReducers({
   productListReducer,
+  cartSidebarReducer,
 });
 
 // Combines validated reducers

@@ -5,5 +5,3 @@ export interface ProductFilterReducerAction {
 }
 
 export interface ProductFilterReducerState { }
-
-export interface ProductFilterProps { }

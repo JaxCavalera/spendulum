@@ -5,5 +5,3 @@ export interface LoginWidgetReducerAction {
 }
 
 export interface LoginWidgetReducerState { }
-
-export interface LoginWidgetProps { }

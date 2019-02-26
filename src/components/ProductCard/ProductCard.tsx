@@ -1,70 +1,30 @@
-import React, { useState, useEffect, useContext } from 'react';
-import styled from 'styled-components';
+import React from 'react';
+
+// Error Handlers
+import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Shared Styles
-import ErrorBoundary from '../../utils/ErrorBoundary';
-import {
-  colours,
-  SectionParagraph,
-  WrappedImage,
-  BasicButton,
-  BasicTextInput,
-} from '../../utils/shared-styles';
+import { SectionParagraph, WrappedImage } from '../../utils/shared-styles';
 
-// ActionTypes
-import { CartSidebarActionTypes } from '../CartSidebar/CartSidebar-models';
+// Styles
+import { ProductCardWrapper, CardActions, AddToCartBtn } from './ProductCard-styles';
 
 // Models
-import { ProductCardProps } from './ProductCard-models';
+import { ProductInfo } from './ProductCard-models';
+import { StoreContext } from '../../rootReducer';
 
 // Logic
-import {
-  handleAddToCartOnClick,
-} from './ProductCard-logic';
+import { handleAddToCartOnClick } from './ProductCard-logic';
 
-const ProductCardWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  width: 20rem;
-  height: 25rem;
-  border: solid 0.1rem ${colours.grey5};
-  border-radius: 0.4rem;
-  margin-left: 1rem;
-  padding: 1rem;
-  box-sizing: border-box;
-`;
+// ProductCard Props
+export interface ProductCardProps {
+  data: ProductInfo;
+  storeContext: StoreContext;
+}
 
-const CardActions = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: 3.5rem;
-  background-color: ${colours.grey5};
-  margin-top: 1rem;
-  padding: 0 0.5rem;
-  border-radius: 0.4rem;
-  box-sizing: border-box;
-`;
-
-const CartInput = styled(BasicTextInput)`
-  width: 50%;
-  margin-left: 0.5rem;
-`;
-
-const ProductCard: React.FC<ProductCardProps> = ({ data, storeContext }) => {
-  console.log(storeContext);
-
-  const handleAddToCartOnClick = () => {
-    storeContext.dispatch({
-      type: CartSidebarActionTypes.UPDATE_CART_ITEMS,
-      cartItems: [
-        ...storeContext.state.productListReducer.productList,
-        data,
-      ],
-    });
+export const ProductCard: React.FC<ProductCardProps> = ({ data, storeContext }) => {
+  const callHandleAddToCartOnClick = () => {
+    handleAddToCartOnClick(storeContext, data);
   };
 
   return (
@@ -74,11 +34,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ data, storeContext }) => {
         <WrappedImage imgSrc={data.imgUrl || ''} imgHeight={'100%'} imgWidth={'100%'} />
         <SectionParagraph nomargin={true}>${data.price.toFixed(2)}</SectionParagraph>
         <CardActions>
-          <BasicButton onClick={handleAddToCartOnClick}>Add to Cart</BasicButton>
+          <AddToCartBtn onClick={callHandleAddToCartOnClick}>Add to Cart</AddToCartBtn>
         </CardActions>
       </ProductCardWrapper>
     </ErrorBoundary>
   );
 };
-
-export default ProductCard;

@@ -8,16 +8,16 @@ import ErrorBoundary from '../../utils/ErrorBoundary';
 import { IconButton } from '../../utils/shared-styles';
 
 // Images
-import { ShoppingCart } from '../../images/icons';
+import { CheckoutIcon } from '../../images/icons';
 
-export interface CartWidgetProps { }
+export interface CheckoutWidgetProps { }
 
-export const CartWidget = ({ }: CartWidgetProps) => {
+export const CheckoutWidget = ({ }: CheckoutWidgetProps) => {
   return (
     <ErrorBoundary>
-      <Link to="/">
+      <Link to="/checkout">
         <IconButton>
-          <ShoppingCart />
+          <CheckoutIcon />
         </IconButton>
       </Link>
     </ErrorBoundary>

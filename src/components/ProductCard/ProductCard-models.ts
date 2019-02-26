@@ -1,6 +1,3 @@
-// Store Provider
-import { IStoreContext } from '../../rootReducer';
-
 export interface SizeOption {
   label: string;
   value: number;
@@ -22,8 +19,3 @@ export interface ProductCardReducerAction {
 }
 
 export interface ProductCardReducerState { }
-
-export interface ProductCardProps {
-  data: ProductInfo;
-  storeContext: IStoreContext;
-}

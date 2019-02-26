@@ -1,26 +1,34 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useContext } from 'react';
 
-// Shared Styles
+// Error Handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
-// Models
-import { CartSidebarProps } from './CartSidebar-models';
+// Store Provider
+import { StoreContextLive } from '../../rootReducer';
 
-const CartSidebarWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+// Logic
+import { placeholderFn } from './CartSidebar-logic';
 
-const CartSidebar = ({ }: CartSidebarProps) => {
+// Styles
+import { CartSidebarWrapper } from './CartSidebar-styles';
+import { SectionParagraph } from '../../utils/shared-styles';
+
+export interface CartSidebarProps { }
+
+export const CartSidebar = ({ }: CartSidebarProps) => {
+  const storeContext = useContext(StoreContextLive);
+
+  const { cartItems } = storeContext.state.cartSidebarReducer;
+  console.log(storeContext.state);
+
   return (
     <ErrorBoundary>
       <CartSidebarWrapper>
-        Cart Items Go Here
+        <p>Cart Items Go Here</p>
+        {
+          cartItems.map((cartItem) => <SectionParagraph key={cartItem.value}>{cartItem.label}</SectionParagraph>)
+        }
       </CartSidebarWrapper>
     </ErrorBoundary>
   );
 };
-
-export default CartSidebar;

@@ -12,5 +12,3 @@ export interface ProductListReducerAction {
 export interface ProductListReducerState {
   productList: ProductInfo[];
 }
-
-export interface ProductListProps { }
