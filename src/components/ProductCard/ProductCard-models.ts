@@ -9,6 +9,9 @@ export interface ProductInfo {
   claimedSizes: SizeCollection;
   label: string;
   price: number;
+  minPrice: number;
+  maxPrice: number;
+  priceTimer: number;
   value: string;
   imgUrl?: string;
 }

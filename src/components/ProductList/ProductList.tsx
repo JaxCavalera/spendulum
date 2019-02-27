@@ -31,7 +31,6 @@ export const ProductList: React.FC<ProductListProps> = ({ }) => {
   return (
     <ErrorBoundary>
       <ProductListWrapper>
-        <SectionParagraph>ProductList</SectionParagraph>
         {
           mockProductList.map(item => (
             <ProductCard

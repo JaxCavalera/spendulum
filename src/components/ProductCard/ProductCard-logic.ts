@@ -9,31 +9,38 @@ import { CartSidebarActionTypes } from '../CartSidebar/CartSidebar-models';
  */
 export const consolidateCartItems = (newItem: ProductInfo, cartItems: ProductInfo[]): ProductInfo[] => {
   let matchFound: boolean = false;
+  const newSizeLabel = Object.keys(newItem.claimedSizes)[0];
+  const newItemClaimQty = newItem.claimedSizes[newSizeLabel];
+  const outOfStock = (
+    !newItem.availableSizes[newSizeLabel] ||
+    newItemClaimQty > newItem.availableSizes[newSizeLabel]
+  );
+
   const newCartItems = cartItems.map(item => {
     if (item.value !== newItem.value) {
+      // Not our item so move ont othe next one in the cart
       return item;
     }
 
     // Item is a match so update the existing cartItem's quantity
     matchFound = true;
     const updatedItem: ProductInfo = item;
-    const newSizeLabel = Object.keys(newItem.claimedSizes)[0];
 
     // Error handling - console.warn and ignore attempt to add item to cart
-    if (!updatedItem.availableSizes[newSizeLabel]) {
-      console.warn(`Failed to add the item ${newItem.label} to cart as no qty in the chosen size were found.`);
+    if (!updatedItem.availableSizes[newSizeLabel] || outOfStock) {
+      console.warn(`Failed to add the item ${newItem.label} to cart requested size is out of stock.`);
       return item;
     }
 
     if (newSizeLabel && updatedItem.claimedSizes[newSizeLabel]) {
-      updatedItem.claimedSizes[newSizeLabel] += 1;
-      updatedItem.availableSizes[newSizeLabel] -= 1;
+      updatedItem.claimedSizes[newSizeLabel] += newItemClaimQty;
+      updatedItem.availableSizes[newSizeLabel] -= newItemClaimQty;
       return updatedItem;
     }
 
     // Item size has not been claimed before
-    updatedItem.claimedSizes[newSizeLabel] = 1;
-    updatedItem.availableSizes[newSizeLabel] -= 1;
+    updatedItem.claimedSizes[newSizeLabel] = newItemClaimQty;
+    updatedItem.availableSizes[newSizeLabel] -= newItemClaimQty;
     return updatedItem;
   });
 
@@ -42,8 +49,12 @@ export const consolidateCartItems = (newItem: ProductInfo, cartItems: ProductInf
     return newCartItems;
   }
 
-  // No match was found so add the newItem to the cart
-  newCartItems.push(newItem);
+  // No match was found so attempt to add the newItem to the cart
+  if (!outOfStock) {
+    newItem.availableSizes[newSizeLabel] -= newItemClaimQty;
+    newCartItems.push(newItem);
+  }
+
   return newCartItems;
 };
 
