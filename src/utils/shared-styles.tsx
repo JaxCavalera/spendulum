@@ -3,13 +3,18 @@ import styled from 'styled-components';
 export const colours = {
   black: 'rgb(0, 0, 0)',
   blackOpacity: (opacity: number = 1) => `rgba(0, 0, 0, ${opacity})`,
-  white: 'rgb(255, 255, 255)',
-  whiteOpacity: (opacity: number = 1) => `rgba(255, 255, 255, ${opacity})`,
+  blue1: 'rgb(247, 251, 255)',
+  blue5: 'rgb(0, 100, 180)',
+  blueOpacity: (opacity: number = 1) => `rgb(0, 100, 180, ${opacity})`,
   grey1: 'rgb(230, 230, 230)',
   grey5: 'rgb(150, 150, 150)',
   grey8: 'rgb(50, 50, 50)',
-  blue3: 'rgb(0, 100, 180)',
-  orange6: 'rgb(245, 85, 30)',
+  orange1: 'rgb(254, 240, 236)',
+  orange4: 'rgb(247, 125, 85)',
+  orange5: 'rgb(245, 85, 30)',
+  orangeOpacity: (opacity: number = 1) => `rgb(245, 85, 30, ${opacity})`,
+  white: 'rgb(255, 255, 255)',
+  whiteOpacity: (opacity: number = 1) => `rgba(255, 255, 255, ${opacity})`,
 };
 
 interface SectionParagraphProps {
@@ -26,9 +31,10 @@ export const BasicTextInput = styled.input`
   display: flex;
   align-items: center;
   height: 2.5rem;
+  width: 100%;
   padding: 0.5rem;
   border: solid 0.1rem ${colours.grey5};
-  background-color: ${colours.whiteOpacity(0.8)};
+  background-color: ${colours.orange1};
   border-radius: 0.4rem;
   box-sizing: border-box;
 
@@ -42,9 +48,9 @@ export const BasicButton = styled.button`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  height: 2.5rem;
-  padding: 0.5rem;
-  background-color: ${colours.whiteOpacity(0.9)};
+  height: 3rem;
+  background-color: ${colours.blue1};
+  color: ${colours.black};
   border: solid 0.1rem ${colours.grey5};
   border-radius: 0.4rem;
   box-sizing: border-box;
@@ -52,6 +58,15 @@ export const BasicButton = styled.button`
 
   &:hover {
     background-color: ${colours.white};
+  }
+`;
+
+export const PrimaryButton = styled(BasicButton)`
+  background-color: ${colours.orange5};
+  color: ${colours.white};
+
+  &:hover {
+    background-color: ${colours.orange4};
   }
 `;
 

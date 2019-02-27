@@ -24,7 +24,6 @@ export const CardActions = styled.div`
   justify-content: center;
   width: 100%;
   min-height: 3.5rem;
-  background-color: ${colours.blackOpacity(0.1)};
   margin-top: 1rem;
   padding: 0 0.5rem;
   border-radius: 0.4rem;

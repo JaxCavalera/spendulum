@@ -61,7 +61,9 @@ Styled components have helped to keep the JSX a lot cleaner without preventing t
 ## Hooks vs MobX
 The main benefits to working with MobX over Redux have been the reduction in boilerplate, easier integration with async functionality and the ability to wrap a stateless functional component with `inject` and `observer` turning them into stateful functional components.
 
-Hooks provide a lot of these same benefits using vanilla React, however the verdict is still not in regarding performance between MobX's ability to quickly detect deeply nested changes in a store vs the various techniques and store structures that can be obtained with Hooks.
+Hooks provide a lot of these same benefits using vanilla React, however the verdict is still not in regarding performance between MobX's ability to quickly detect deeply nested changes in a store.
+
+For large projects, whilst hooks can scale similar to that of Redux, in terms of boilerplate, hooks would sit somewhere in between Redux and MobX.
 
 ## Storage, retrieval and basic security
 In a production version of this application it would be better to use a more secure database solution that has a dedicated backend using an express server in conjunction with popular user authentication such as passport. It would also be ideal to verify transactions on sales to guard against client-side exploitation.

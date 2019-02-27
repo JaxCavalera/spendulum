@@ -23,7 +23,6 @@ import { Checkout } from '../pages/Checkout/Checkout';
 import { PageNotFound } from '../pages/PageNotFound/PageNotFound';
 
 // Components
-import { LoginWidget } from '../components/LoginWidget/LoginWidget';
 import { NavWidgets } from '../components/NavWidgets/NavWidgets';
 import { CartSidebar } from '../components/CartSidebar/CartSidebar';
 
@@ -73,7 +72,6 @@ export const App: React.FC = () => {
           <AppWrapper>
             <HeaderBar>
               <AppName>Spendulum</AppName>
-              <LoginWidget />
               <NavWidgets />
             </HeaderBar>
             <PageContent>

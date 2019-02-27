@@ -5,20 +5,35 @@ import { colours } from '../utils/shared-styles';
 
 // Styled Components
 export const AppWrapper = styled.div`
-  position: absolute;
-  height: 100%;
-  width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 `;
 
 export const HeaderBar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
+  height: 5rem;
+  min-height: 5rem;
+  width: 100%;
+  max-width: 113rem;
   padding: 1rem;
-  background-color: ${colours.blue3};
+  background-color: ${colours.blue5};
+  box-sizing: border-box;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 5rem;
+    background-color: ${colours.blue5};
+    left: 0;
+    right: 0;
+    z-index: -1;
+  }
 `;
 
 export const PageContent = styled.div`
@@ -26,7 +41,9 @@ export const PageContent = styled.div`
   flex-direction: row;
   justify-content: space-between;
   height: 100%;
-  margin-left: 1rem;
+  width: 100%;
+  max-width: 113rem;
+  background-color: ${colours.white};
 `;
 
 export const AppName = styled.h1`

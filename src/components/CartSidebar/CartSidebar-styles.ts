@@ -5,8 +5,11 @@ export const CartSidebarWrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 25%;
+  align-items: center;
+  width: 50%;
+  max-width: 25rem;
   height: 100%;
-  background-color: ${colours.blackOpacity(0.4)};
-  border-radius: 0.4rem;
+  padding: 1rem;
+  background-color: ${colours.grey5};
+  box-sizing: border-box;
 `;
