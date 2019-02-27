@@ -1,25 +1,20 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { memo } from 'react';
 
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Components
-import ProductList from '../../components/ProductList/ProductList';
+import { ProductList } from '../../components/ProductList/ProductList';
 
-const BrowseWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
+// Styles
+import { BrowseWrapper } from './Browse-styles';
 
-const Browse = () => {
+export const Browse = memo(() => {
   return (
     <ErrorBoundary>
       <BrowseWrapper>
-        Browse Clothing Items
+        <span>Browse Items</span>
         <ProductList />
       </BrowseWrapper>
     </ErrorBoundary>
   );
-};
-
-export default Browse;
+});

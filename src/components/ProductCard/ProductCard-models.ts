@@ -1,36 +1,20 @@
-import { Dispatch } from 'react';
-
-export interface SizeOption {
-  label: string;
-  value: number;
+export interface SizeCollection {
+  [label: string]: number;
 }
 
-export interface ProductCardActionTypes {
-  UPDATE_ALL_ITEMS: 'productCard/UPDATE_ALL_ITEMS',
-  UPDATE_ACTIVE_ITEM_DATA: 'productCard/UPDATE_ACTIVE_ITEM_DATA',
-}
+export enum ProductCardActionTypes { };
 
-export interface ActiveItemDataType {
+export interface ProductInfo {
+  availableSizes: SizeCollection;
+  claimedSizes: SizeCollection;
   label: string;
-  value: string;
-  sizeRange: string[];
-  availableSizes: SizeOption[]
   price: number;
+  value: string;
   imgUrl?: string;
 }
 
 export interface ProductCardReducerAction {
-  type: string;
-  activeItemData?: ActiveItemDataType;
-  allProductCards?: ActiveItemDataType[];
+  type: ProductCardActionTypes;
 }
 
-export interface ProductCardReducerState {
-  allProductCards: ActiveItemDataType[];
-  activeItemData?: ActiveItemDataType;
-}
-
-export interface ProductCardProps {
-  productCardState: ProductCardReducerState;
-  dispatchProductCardState: Dispatch<ProductCardReducerAction>;
-}
+export interface ProductCardReducerState { }

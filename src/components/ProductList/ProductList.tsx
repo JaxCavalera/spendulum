@@ -1,32 +1,47 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useContext } from 'react';
+
+import { mockProductList } from './test/ProductList-mocks';
+
+// Error Handlers
+import ErrorBoundary from '../../utils/ErrorBoundary';
+
+// Store Provider
+import { StoreContextLive } from '../../rootReducer';
+
+// Child Components
+import { ProductCard } from '../ProductCard/ProductCard';
 
 // Shared Styles
-import ErrorBoundary from '../../utils/ErrorBoundary';
 import { SectionParagraph } from '../../utils/shared-styles';
 
-// Models
-import { ProductListProps } from './ProductList-models';
+// Styles
+import { ProductListWrapper } from './ProductList-styles';
 
 // Logic
 import { fetchCreateNewProduct } from './ProductList-async';
 
-const ProductListWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+export interface ProductListProps { }
 
-const ProductList = ({ }: ProductListProps) => {
+export const ProductList: React.FC<ProductListProps> = ({ }) => {
   fetchCreateNewProduct({ test: 'some stuff' }).catch((e) => console.log(e));
+
+  // Pass down a reference to the storeContext to avoid unnecessary useContext calls on each product card being mapped
+  const storeContext = useContext(StoreContextLive);
 
   return (
     <ErrorBoundary>
       <ProductListWrapper>
         <SectionParagraph>ProductList</SectionParagraph>
+        {
+          mockProductList.map(item => (
+            <ProductCard
+              key={item.value}
+              data={item}
+              storeContext={storeContext}
+            />)
+          )
+        }
       </ProductListWrapper>
     </ErrorBoundary>
   );
 };
-
-export default ProductList;

@@ -5,5 +5,3 @@ export interface CartWidgetReducerAction {
 }
 
 export interface CartWidgetReducerState { }
-
-export interface CartWidgetProps { }

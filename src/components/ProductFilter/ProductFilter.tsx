@@ -1,20 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
+
+// Error Handlers
+import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Shared Styles
-import ErrorBoundary from '../../utils/ErrorBoundary';
 import { SectionParagraph } from '../../utils/shared-styles';
 
-// Models
-import { ProductFilterProps } from './ProductFilter-models';
+// Styles
+import { ProductFilterWrapper } from './ProductFilter-styles';
 
-const ProductFilterWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+export interface ProductFilterProps { }
 
-const ProductFilter = ({ }: ProductFilterProps) => {
+export const ProductFilter = ({ }: ProductFilterProps) => {
   return (
     <ErrorBoundary>
       <ProductFilterWrapper>
@@ -23,5 +20,3 @@ const ProductFilter = ({ }: ProductFilterProps) => {
     </ErrorBoundary>
   );
 };
-
-export default ProductFilter;

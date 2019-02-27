@@ -1,9 +1,14 @@
-export interface ProductListActionTypes { }
+import { ProductInfo } from '../ProductCard/ProductCard-models';
+
+export enum ProductListActionTypes {
+  UPDATE_PRODUCT_LIST = 'productList/UPDATE_PRODUCT_LIST',
+};
 
 export interface ProductListReducerAction {
   type: string;
+  productList?: ProductInfo[];
 }
 
-export interface ProductListReducerState { }
-
-export interface ProductListProps { }
+export interface ProductListReducerState {
+  productList: ProductInfo[];
+}

@@ -3,19 +3,17 @@ import styled from 'styled-components';
 
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
-const CartWrapper = styled.div`
+const CheckoutWrapper = styled.div`
   display: flex;
   justify-content: space-between;
 `;
 
-const Cart = () => {
+export const Checkout = () => {
   return (
     <ErrorBoundary>
-      <CartWrapper>
-        Shopping Cart
-      </CartWrapper>
+      <CheckoutWrapper>
+        Confirm your order at the checkout
+      </CheckoutWrapper>
     </ErrorBoundary>
   );
 };
-
-export default Cart;

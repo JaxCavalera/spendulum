@@ -1,27 +1,42 @@
 import React from 'react';
-import styled from 'styled-components';
+
+// Error Handlers
+import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Shared Styles
-import ErrorBoundary from '../../utils/ErrorBoundary';
-import { colours, SectionParagraph } from '../../utils/shared-styles';
+import { SectionParagraph, WrappedImage } from '../../utils/shared-styles';
+
+// Styles
+import { ProductCardWrapper, CardActions, AddToCartBtn } from './ProductCard-styles';
 
 // Models
-import { ProductCardProps } from './ProductCard-models';
+import { ProductInfo } from './ProductCard-models';
+import { StoreContext } from '../../rootReducer';
 
-const ProductCardWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+// Logic
+import { handleAddToCartOnClick } from './ProductCard-logic';
 
-const ProductCard = ({ dispatchProductCardState, productCardState }: ProductCardProps) => {
+// ProductCard Props
+export interface ProductCardProps {
+  data: ProductInfo;
+  storeContext: StoreContext;
+}
+
+export const ProductCard: React.FC<ProductCardProps> = ({ data, storeContext }) => {
+  const callHandleAddToCartOnClick = () => {
+    handleAddToCartOnClick(storeContext, data);
+  };
+
   return (
     <ErrorBoundary>
       <ProductCardWrapper>
-        <SectionParagraph>Clothing Item</SectionParagraph>
+        <SectionParagraph nomargin={true}>{data.label}</SectionParagraph>
+        <WrappedImage imgSrc={data.imgUrl || ''} imgHeight={'100%'} imgWidth={'100%'} />
+        <SectionParagraph nomargin={true}>${data.price.toFixed(2)}</SectionParagraph>
+        <CardActions>
+          <AddToCartBtn onClick={callHandleAddToCartOnClick}>Add to Cart</AddToCartBtn>
+        </CardActions>
       </ProductCardWrapper>
     </ErrorBoundary>
   );
 };
-
-export default ProductCard;

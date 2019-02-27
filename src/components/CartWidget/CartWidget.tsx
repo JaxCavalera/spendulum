@@ -1,27 +1,42 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useContext } from 'react';
 
-// Shared Styles
+// Error Handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
-import { SectionParagraph } from '../../utils/shared-styles';
+
+// Store Provider
+import { StoreContextLive } from '../../rootReducer';
 
 // Models
-import { CartWidgetProps } from './CartWidget-models';
+import { CartSidebarActionTypes } from '../CartSidebar/CartSidebar-models';
 
-const CartWidgetWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+// Images
+import { ShoppingCart } from '../../images/icons';
 
-const CartWidget = ({ }: CartWidgetProps) => {
+// Styles
+import { CartButton } from './CartWidget-styles';
+
+export interface CartWidgetProps { }
+
+export const CartWidget = ({ }: CartWidgetProps) => {
+  const storeContext = useContext(StoreContextLive);
+  const { isSidebarOpen } = storeContext.state.cartSidebarReducer;
+
+  const handleCartOnClick = () => {
+    storeContext.dispatch({
+      type: CartSidebarActionTypes.UPDATE_IS_SIDEBAR_OPEN,
+      isSidebarOpen: !isSidebarOpen,
+    });
+  };
+
   return (
     <ErrorBoundary>
-      <CartWidgetWrapper>
-        <SectionParagraph>CartWidget</SectionParagraph>
-      </CartWidgetWrapper>
+      <CartButton
+        isSidebarOpen={isSidebarOpen}
+        onClick={handleCartOnClick}
+        title={`${isSidebarOpen ? 'Hide' : 'Show'} Cart`}
+      >
+        <ShoppingCart />
+      </CartButton>
     </ErrorBoundary>
   );
 };
-
-export default CartWidget;
