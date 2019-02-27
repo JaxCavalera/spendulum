@@ -10,10 +10,11 @@ export const ProductCardWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 20rem;
+  min-width: 20rem;
   height: 25rem;
   border: solid 0.1rem ${colours.grey5};
   border-radius: 0.4rem;
-  margin-left: 1rem;
+  margin: 1rem;
   padding: 1rem;
   box-sizing: border-box;
 `;

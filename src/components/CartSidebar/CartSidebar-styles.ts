@@ -14,8 +14,8 @@ export const CartSidebarWrapper = styled.div`
   background-color: ${colours.grey5};
   overflow-x: hidden;
   box-sizing: border-box;
-  transition: width linear 0.2s;
-  padding: ${(props: CartSidebarWrapperProps) => props.isSidebarOpen ? '1rem' : '0'};
+  transition: linear 0.2s;
+  padding: ${(props: CartSidebarWrapperProps) => props.isSidebarOpen ? '1rem' : '1rem 0'};
   width: ${(props: CartSidebarWrapperProps) => props.isSidebarOpen ? '50%' : '0'};
 `;
 
