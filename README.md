@@ -56,7 +56,7 @@ The moment an item is added to the cart it's purchase price will be locked in fo
 Below are key learnings from working with the combination of **styled-components**, **functional components**, **React hooks** and **react-router** without any additional state management tools. Uses [JSON Bin](https://jsonbin.io/) as a restful JSON storage / retrieval system.
 
 ## Styled components
-Styled components have helped to keep the JSX a lot cleaner without preventing the addition of classNames if necessary for 3rd party integrations or higher level integration testing (i.e. selenium). Due to these components being defined via a template literal syntax it allowed for a reduction in css styles for handling things like toggled states which can now be driving via variables directly.
+Styled components have helped to keep the JSX a lot cleaner without preventing the addition of classNames if necessary for 3rd party integrations or higher level integration testing (i.e. selenium). Due to these components being defined via a template literal syntax it allowed for a reduction in css styles. This has been noticably useful when handling things like toggled states which can now be driven via variables directly.
 
 ## Hooks vs MobX
 The main benefits to working with MobX over Redux have been the reduction in boilerplate, easier integration with async functionality and the ability to wrap a stateless functional component with `inject` and `observer` turning them into stateful functional components.
