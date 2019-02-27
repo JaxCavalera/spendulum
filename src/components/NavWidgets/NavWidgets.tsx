@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 
 // Error Handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
@@ -20,16 +20,32 @@ export const NavWidgets = ({ }: NavWidgetsProps) => {
     <ErrorBoundary>
       <NavWidgetsWrapper>
         <AccountWidget />
-        <Link to="/">
-          <IconButton>
-            <HomeIcon />
-          </IconButton>
-        </Link>
-        <Link to="/checkout">
-          <IconButton>
-            <CheckoutIcon />
-          </IconButton>
-        </Link>
+        <Switch>
+          <Route exact path='/'>
+            <>
+              <IconButton disabled={true}>
+                <HomeIcon />
+              </IconButton>
+              <Link to="/checkout">
+                <IconButton title="Checkout">
+                  <CheckoutIcon />
+                </IconButton>
+              </Link>
+            </>
+          </Route>
+          <Route exact path='/checkout'>
+            <>
+              <Link to="/">
+                <IconButton title="Shop">
+                  <HomeIcon />
+                </IconButton>
+              </Link>
+              <IconButton disabled={true}>
+                <CheckoutIcon />
+              </IconButton>
+            </>
+          </Route>
+        </Switch>
         <CartWidget />
       </NavWidgetsWrapper>
     </ErrorBoundary>

@@ -6,6 +6,7 @@ import {
 
 export const cartSidebarInitialState: CartSidebarReducerState = {
   cartItems: [],
+  isSidebarOpen: false,
 };
 
 export const cartSidebarReducer = (
@@ -13,6 +14,12 @@ export const cartSidebarReducer = (
   action: CartSidebarReducerAction,
 ): CartSidebarReducerState => {
   switch (action.type) {
+    case CartSidebarActionTypes.UPDATE_IS_SIDEBAR_OPEN:
+      return {
+        ...state,
+        isSidebarOpen: action.isSidebarOpen,
+      };
+
     case CartSidebarActionTypes.UPDATE_CART_ITEMS:
       return {
         ...state,

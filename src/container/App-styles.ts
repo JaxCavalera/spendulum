@@ -19,7 +19,7 @@ export const HeaderBar = styled.div`
   height: 5rem;
   min-height: 5rem;
   width: 100%;
-  max-width: 113rem;
+  max-width: 150rem;
   padding: 1rem;
   background-color: ${colours.blue5};
   box-sizing: border-box;
@@ -42,7 +42,7 @@ export const PageContent = styled.div`
   justify-content: space-between;
   height: 100%;
   width: 100%;
-  max-width: 113rem;
+  max-width: 150rem;
   background-color: ${colours.white};
 `;
 

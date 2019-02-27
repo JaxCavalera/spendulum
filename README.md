@@ -100,6 +100,15 @@ Even with strictly typed code, this did not prevent bugs from cropping up. It is
 
 On average it probably results in writing about the same quantity of code, exchanging logic to confirm something is safe to reference, call or perform some other operation on at runtime vs handling this task at compile time. I suspect the more fluent a developer becomes at using typescript, the more the scales begin to tip in its favour.
 
+## React Router
+Without access to an official useRoute/useRouter hook I had the choice of either passing down the current path via props or using a nested switch and for the navigation bar it was more convenient to use the nested switch. This also helped reduce the conditional business logic sitting inside the JSX which arguably can make it easier to read.
+
+## Iconography
+All icons were created 100% by me for use with this fun little project. Long term I can see them getting a rework though each does communicate its purpose clear enough for the time being.
+
+## Tests
+Currently the majority of functionality is not covered by any unit / integration tests aside from the most critical sections in the application i.e. combineReducers helper function.
+
 [Back To Top](#contents)
 
 ---
@@ -116,5 +125,6 @@ On average it probably results in writing about the same quantity of code, excha
     - price change timer (hidden in v1)
 - Bypass API Calls using mock data for a list of products
 - Build cart sidebar
-    - qty => handle in cart sidebar
     - Implement handler to add product qty to cart it should appear in sidebar
+    - Handle removal directly from cart
+    - When adding a product from the product list, ensure qty in both stores is updated (only cart is updated at the moment)

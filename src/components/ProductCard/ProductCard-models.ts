@@ -1,16 +1,15 @@
-export interface SizeOption {
-  label: string;
-  value: number;
+export interface SizeCollection {
+  [label: string]: number;
 }
 
 export enum ProductCardActionTypes { };
 
 export interface ProductInfo {
+  availableSizes: SizeCollection;
+  claimedSizes: SizeCollection;
   label: string;
-  value: string;
-  sizeRange: string[];
-  availableSizes: SizeOption[];
   price: number;
+  value: string;
   imgUrl?: string;
 }
 

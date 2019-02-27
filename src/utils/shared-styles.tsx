@@ -70,13 +70,23 @@ export const PrimaryButton = styled(BasicButton)`
   }
 `;
 
+interface IconButtonProps {
+  disabled?: boolean;
+}
 export const IconButton = styled(BasicButton)`
   width: 4rem;
   margin-left: 1rem;
   padding: 0.3rem;
+  cursor: ${(props: IconButtonProps) => props.disabled ? 'default' : 'pointer'};
+  background-color: ${(props: IconButtonProps) => props.disabled && colours.grey5};
+
+  &:hover {
+    background-color: ${(props: IconButtonProps) => props.disabled && colours.grey5};
+  }
 
   > svg {
     height: 100%;
+    fill: ${(props: IconButtonProps) => props.disabled && colours.grey1};
   }
 `;
 

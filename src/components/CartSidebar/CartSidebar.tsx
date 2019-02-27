@@ -10,23 +10,24 @@ import { StoreContextLive } from '../../rootReducer';
 import { placeholderFn } from './CartSidebar-logic';
 
 // Styles
-import { CartSidebarWrapper } from './CartSidebar-styles';
-import { SectionParagraph } from '../../utils/shared-styles';
+import {
+  CartSidebarWrapper,
+  CartHeading,
+  CartItemWrapper,
+} from './CartSidebar-styles';
 
 export interface CartSidebarProps { }
 
 export const CartSidebar = ({ }: CartSidebarProps) => {
   const storeContext = useContext(StoreContextLive);
-
-  const { cartItems } = storeContext.state.cartSidebarReducer;
-  console.log(storeContext.state);
+  const { cartItems, isSidebarOpen } = storeContext.state.cartSidebarReducer;
 
   return (
     <ErrorBoundary>
-      <CartSidebarWrapper>
-        <p>Cart Items Go Here</p>
+      <CartSidebarWrapper isSidebarOpen={isSidebarOpen}>
+        <CartHeading>Shopping Cart</CartHeading>
         {
-          cartItems.map((cartItem) => <SectionParagraph key={cartItem.value}>{cartItem.label}</SectionParagraph>)
+          cartItems.map((cartItem) => <CartItemWrapper key={cartItem.value}>{cartItem.label}</CartItemWrapper>)
         }
       </CartSidebarWrapper>
     </ErrorBoundary>
