@@ -32,5 +32,11 @@ export const CardActions = styled.div`
 `;
 
 export const AddToCartBtn = styled(BasicButton)`
-  width: 100%;
+  width: 55%;
+`;
+
+export const SizePicker = styled.select`
+  height: 3rem;
+  width: 45%;
+  margin-left: 1rem;
 `;
