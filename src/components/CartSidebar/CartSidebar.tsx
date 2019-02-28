@@ -14,6 +14,8 @@ import {
   CartSidebarWrapper,
   CartHeading,
   CartItemWrapper,
+  CartItemLabel,
+  ClaimedSize,
 } from './CartSidebar-styles';
 
 export interface CartSidebarProps { }
@@ -27,7 +29,16 @@ export const CartSidebar = ({ }: CartSidebarProps) => {
       <CartSidebarWrapper isSidebarOpen={isSidebarOpen}>
         <CartHeading>Shopping Cart</CartHeading>
         {
-          cartItems.map((cartItem) => <CartItemWrapper key={cartItem.value}>{cartItem.label}</CartItemWrapper>)
+          cartItems.map((cartItem) => (
+            <CartItemWrapper key={cartItem.value}>
+              <CartItemLabel>{cartItem.label}</CartItemLabel>
+              {
+                Object.keys(cartItem.claimedSizes).map(sizeOption => (
+                  <ClaimedSize key={sizeOption}>{sizeOption} : {cartItem.claimedSizes[sizeOption]}</ClaimedSize>
+                ))
+              }
+            </CartItemWrapper>
+          ))
         }
       </CartSidebarWrapper>
     </ErrorBoundary>

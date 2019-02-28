@@ -4,7 +4,11 @@ import { consolidateCartItems } from '../ProductCard-logic';
 import { ProductInfo } from '../ProductCard-models';
 
 // Mocks
-import { mockProductCardData } from './ProductCard-mocks';
+import {
+  productCardData,
+  cartItemsList,
+  productCardMatchingCartItem,
+} from './ProductCard-mocks';
 
 // consolidateCartItems
 describe('Given consolidateCartItems is called with valid newItem and cartItems', () => {
@@ -28,7 +32,7 @@ describe('Given consolidateCartItems is called with valid newItem and cartItems'
           imgUrl: 'https://i.imgur.com/lrCkut9.png',
         }];
 
-        const newCartItems = consolidateCartItems(mockProductCardData, mockCartItems);
+        const newCartItems = consolidateCartItems(productCardData, mockCartItems, 'na', 1);
 
         expect(newCartItems).toEqual(finalCartItems);
       });
@@ -36,15 +40,14 @@ describe('Given consolidateCartItems is called with valid newItem and cartItems'
 
     describe('AND the newItem is already listed in the cartItems', () => {
       test('Then the claimedSize qty will be added onto the existing size qty', () => {
-        const mockCartItems: ProductInfo[] = [mockProductCardData];
         const finalCartItems = [{
           label: 'Kate Spade New York',
           value: 'ksny-1',
           claimedSizes: {
-            na: 2,
+            na: 5,
           },
           availableSizes: {
-            na: 8,
+            na: 5,
           },
           price: 77.4,
           minPrice: 63,
@@ -53,7 +56,7 @@ describe('Given consolidateCartItems is called with valid newItem and cartItems'
           imgUrl: 'https://i.imgur.com/lrCkut9.png',
         }];
 
-        const newCartItems = consolidateCartItems(mockProductCardData, mockCartItems);
+        const newCartItems = consolidateCartItems(productCardMatchingCartItem, cartItemsList, 'na', 3);
 
         expect(newCartItems).toEqual(finalCartItems);
       });

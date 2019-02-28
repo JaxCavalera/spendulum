@@ -129,4 +129,4 @@ Currently the majority of functionality is not covered by any unit / integration
 - Build cart sidebar
     - Implement handler to add product qty to cart it should appear in sidebar
     - Handle removal directly from cart
-    - When adding a product from the product list, ensure qty in both stores is updated (only cart is updated at the moment)
+    - cleanup functionality in cartSidebar where there is a double nested map directly in the JSX (this was done as a temp fix to confirm visually in the UI that the architecture is working as expected)
