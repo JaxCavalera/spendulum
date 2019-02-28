@@ -2,68 +2,81 @@ import { ProductInfo } from "./ProductCard-models";
 import { StoreContext } from '../../rootReducer';
 import { CartSidebarActionTypes } from '../CartSidebar/CartSidebar-models';
 
+// export const mergeDuplicateItems = (
+//   newItem: ProductInfo,
+//   matchingCartItem: ProductInfo,
+//   selectedSize: string,
+//   requestedQty: number,
+// ): ProductInfo => {
+//   const 
+// };
+
+export const verifyItemHasEnoughQty = (
+  targetItem: ProductInfo,
+  selectedSize: string,
+  requestedQty: number,
+): boolean => {
+  const availableQty = targetItem.availableSizes[selectedSize];
+  return !!availableQty && (availableQty >= requestedQty);
+};
+
 /**
- * Prevents the same item being listed multiple times in the shopping cart, stacks qty instead
- * @param newItem object The new item that was added to the cart
- * @param cartItems array List of existing items already in the cart
+ * Used to avoid duplicate listings of the same product in the cart
  */
-export const consolidateCartItems = (newItem: ProductInfo, cartItems: ProductInfo[]): ProductInfo[] => {
-  let matchFound: boolean = false;
-  const newSizeLabel = Object.keys(newItem.claimedSizes)[0];
-  const newItemClaimQty = newItem.claimedSizes[newSizeLabel];
-  const outOfStock = (
-    !newItem.availableSizes[newSizeLabel] ||
-    newItemClaimQty > newItem.availableSizes[newSizeLabel]
-  );
-
-  const newCartItems = cartItems.map(item => {
-    if (item.value !== newItem.value) {
-      // Not our item so move ont othe next one in the cart
-      return item;
-    }
-
-    // Item is a match so update the existing cartItem's quantity
-    matchFound = true;
-    const updatedItem: ProductInfo = item;
-
-    // Error handling - console.warn and ignore attempt to add item to cart
-    if (!updatedItem.availableSizes[newSizeLabel] || outOfStock) {
-      console.warn(`Failed to add the item ${newItem.label} to cart requested size is out of stock.`);
-      return item;
-    }
-
-    if (newSizeLabel && updatedItem.claimedSizes[newSizeLabel]) {
-      updatedItem.claimedSizes[newSizeLabel] += newItemClaimQty;
-      updatedItem.availableSizes[newSizeLabel] -= newItemClaimQty;
-      return updatedItem;
-    }
-
-    // Item size has not been claimed before
-    updatedItem.claimedSizes[newSizeLabel] = newItemClaimQty;
-    updatedItem.availableSizes[newSizeLabel] -= newItemClaimQty;
-    return updatedItem;
-  });
-
-  // Match was found so return the consolidate list of cart items
-  if (matchFound) {
-    return newCartItems;
+export const consolidateCartItems = (
+  newItem: ProductInfo,
+  cartItems: ProductInfo[],
+  selectedSize: string,
+  requestedQty: number,
+): ProductInfo[] => {
+  if (!verifyItemHasEnoughQty(newItem, selectedSize, requestedQty)) {
+    // Ignore attempt to add sold out or unknown item size
+    return cartItems;
   }
 
-  // No match was found so attempt to add the newItem to the cart
-  if (!outOfStock) {
-    newItem.availableSizes[newSizeLabel] -= newItemClaimQty;
-    newCartItems.push(newItem);
+  const [matchingCartItem] = cartItems.filter(item => item.value === newItem.value);
+
+  if (!matchingCartItem) {
+    // Workaround for Typescript being unable to remember we checked that the selectedSize is available
+    const availableQty = newItem.availableSizes[selectedSize] || requestedQty;
+
+    const adjustedItem = {
+      ...newItem,
+      claimedSizes: {
+        [selectedSize]: requestedQty,
+      },
+      availableSizes: {
+        ...newItem.availableSizes,
+        [selectedSize]: availableQty - requestedQty,
+      }
+    };
+
+    // Add new item to the cart
+    return [
+      ...cartItems,
+      adjustedItem,
+    ];
   }
 
-  return newCartItems;
+
+  // Dealing with an existing item in the cart so combine size quantities
+  // const combinedClaimedSizes = mergeDuplicateItems(newItem, matchingCartItem, selectedSize, requestedQty);
+
+  // currently ignores duplicate items
+  return cartItems;
 };
 
 // Event Handlers
-export const handleAddToCartOnClick = (storeContext: StoreContext, data: ProductInfo) => {
+export const handleAddToCartOnClick = (
+  storeContext: StoreContext,
+  data: ProductInfo,
+  selectedSize: string,
+) => {
   const { cartItems } = storeContext.state.cartSidebarReducer;
-
+  console.log(data);
   // Consolidate cart items
-  const newCartItems = consolidateCartItems(data, cartItems);
+  const newCartItems = consolidateCartItems(data, cartItems, selectedSize, 1);
+  console.log(newCartItems);
 
   storeContext.dispatch({
     type: CartSidebarActionTypes.UPDATE_CART_ITEMS,

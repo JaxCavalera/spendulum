@@ -16,10 +16,10 @@ describe('Given consolidateCartItems is called with valid newItem and cartItems'
           label: 'Kate Spade New York',
           value: 'ksny-1',
           claimedSizes: {
-            any: 1,
+            na: 1,
           },
           availableSizes: {
-            any: 9,
+            na: 9,
           },
           price: 77.4,
           minPrice: 63,
@@ -41,10 +41,10 @@ describe('Given consolidateCartItems is called with valid newItem and cartItems'
           label: 'Kate Spade New York',
           value: 'ksny-1',
           claimedSizes: {
-            any: 2,
+            na: 2,
           },
           availableSizes: {
-            any: 8,
+            na: 8,
           },
           price: 77.4,
           minPrice: 63,

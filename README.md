@@ -42,9 +42,11 @@ This should be an absolute last resort, preference using the config-overrides np
 ---
 
 # Introduction
-This project is built as a POC to identify design patterns leveraging React hooks. It is a product called **"Spendulum"**, and allows users to try snap up items while they are temporarily selling at a price that will randomly decrease / increase in value.
+This project is built as a POC to identify a suitable designe pattern that can leverage React hooks. The design pattern is used to power a product called **"Spendulum"**.
 
-A bundle discount is applied based on the number of items in a user's cart at the time of purchase which encourages bulk purchases where some items they want to buy may not be discounted as low as others.
+Spendulum is a fictional product I made up that when finished would allow users to try snap up items while they are listed at a lower price point. Listed items will randomly decrease / increase in value between fixed caps at each end in an effort to further gamify the shopping experience.
+
+A bundle discount is applied based on the number of items in a user's cart at the time of purchase which encourages bulk purchases where some items a user may want to buy won't be discounted as low as others.
 
 The moment an item is added to the cart it's purchase price will be locked in for the next 15 minutes. Removing an item from the cart resets the purchase price to the currently listed value.
 

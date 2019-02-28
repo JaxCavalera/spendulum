@@ -6,7 +6,7 @@ export const mockProductList: ProductInfo[] = [
     value: 'ksny-1',
     claimedSizes: {},
     availableSizes: {
-      any: 10,
+      na: 10,
     },
     price: 77.4,
     minPrice: 63,
@@ -19,7 +19,7 @@ export const mockProductList: ProductInfo[] = [
     value: 'jcsvm-1',
     claimedSizes: {},
     availableSizes: {
-      any: 37,
+      na: 37,
     },
     price: 107,
     minPrice: 95,
@@ -60,7 +60,7 @@ export const mockProductList: ProductInfo[] = [
     value: 'nsocr-1',
     claimedSizes: {},
     availableSizes: {
-      any: 204,
+      na: 204,
     },
     price: 16,
     minPrice: 15,

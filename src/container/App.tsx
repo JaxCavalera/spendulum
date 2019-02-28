@@ -3,6 +3,7 @@ import {
   BrowserRouter,
   Route,
   Switch,
+  Link,
   RouteComponentProps,
 } from 'react-router-dom';
 
@@ -71,7 +72,9 @@ export const App: React.FC = () => {
         <BrowserRouter>
           <AppWrapper>
             <HeaderBar>
-              <AppName>Spendulum</AppName>
+              <Link to="/">
+                <AppName>Spendulum</AppName>
+              </Link>
               <NavWidgets />
             </HeaderBar>
             <PageContent>

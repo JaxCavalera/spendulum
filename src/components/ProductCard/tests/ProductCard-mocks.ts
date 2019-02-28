@@ -4,10 +4,10 @@ export const mockProductCardData: ProductInfo = {
   label: 'Kate Spade New York',
   value: 'ksny-1',
   claimedSizes: {
-    any: 1,
+    na: 1,
   },
   availableSizes: {
-    any: 10,
+    na: 10,
   },
   price: 77.4,
   minPrice: 63,
