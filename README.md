@@ -134,7 +134,7 @@ Currently the majority of functionality is not covered by any unit / integration
     - price => fixed price only atm not dynamic
     - min price (hidden)
     - max price (hidden)
-    - price change timer (hidden in v1)
+    - price change timer -> requires tab switch to restart expired timers currently
     - qty remaining / sold out, etc. Using a status overlay panel
 - Build cart sidebar
     - Implement handler to add product qty to cart it should appear in sidebar
