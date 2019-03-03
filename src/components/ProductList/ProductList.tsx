@@ -32,18 +32,20 @@ export const ProductList: React.FC<ProductListProps> = ({ }) => {
   const storeContext = useContext(StoreContextLive);
   const { productList } = storeContext.state.productListReducer;
 
-  // Only runs once due to empy filter array as 2nd param
   useEffect(() => {
-    // Fetch available products from the server and update the store when retrieved
-    fetchAvailableProductsList()
-      .then((newProductList: ProductInfo[]) => {
-        // Update the Product List store
-        storeContext.dispatch({
-          type: ProductListActionTypes.UPDATE_PRODUCT_LIST,
-          productList: newProductList,
-        });
-      })
-      .catch((e: Error) => console.log(e));
+    // This can be replaced with periodic productList updates once using live data that is updated
+    if (!productList.length) {
+      // Fetch available products from the server and update the store when retrieved
+      fetchAvailableProductsList()
+        .then((newProductList: ProductInfo[]) => {
+          // Update the Product List store
+          storeContext.dispatch({
+            type: ProductListActionTypes.UPDATE_PRODUCT_LIST,
+            productList: newProductList,
+          });
+        })
+        .catch((e: Error) => console.log(e));
+    }
   }, []);
 
   return (
@@ -55,9 +57,10 @@ export const ProductList: React.FC<ProductListProps> = ({ }) => {
               <LoadingSpinner msg={'Loading products...'} />
             </SpinnerWrapper>
           ) : (
-              productList.map(item => (
+              productList.map((item, cardIndex) => (
                 <ProductCard
                   key={item.value}
+                  cardIndex={cardIndex}
                   data={item}
                   storeContext={storeContext}
                 />

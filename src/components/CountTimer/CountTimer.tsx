@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { format } from 'date-fns';
 
 // Error Handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
@@ -9,10 +10,10 @@ import {
 } from './CountTimer-models';
 
 // Styles
-import { CountTimerWrapper } from './CountTimer-styles';
+import { CountTimerWrapper, TimerInfo } from './CountTimer-styles';
 
 // Logic
-import { timer } from './CountTimer-logic';
+import { createTimerManager } from './CountTimer-logic';
 
 export interface CountTimerProps {
   duration: number;
@@ -20,14 +21,30 @@ export interface CountTimerProps {
   onEnd?: () => void;
 }
 
-export const CountTimer: React.FC<CountTimerProps> = () => {
+export const CountTimer: React.FC<CountTimerProps> = ({ duration, countDirection, onEnd }) => {
+  const [timer, updateTimer] = useState(duration);
+
   useEffect(() => {
-    // start up a timer
-  }, []);
+    if (timer === 0 && onEnd) {
+      onEnd();
+    }
+  }, [timer])
+
+  // Mount / Unmount
+  useEffect(() => {
+    const clearTimer = createTimerManager(duration, updateTimer, countDirection);
+
+    return () => {
+      clearTimer();
+    }
+  }, [duration]);
 
   return (
     <ErrorBoundary>
-      <CountTimerWrapper>Count Timer Placeholder</CountTimerWrapper>
+      <CountTimerWrapper>
+        <TimerInfo>Price Change In:</TimerInfo>
+        <TimerInfo alertMode={true}>{format(timer, 'mm:ss')}</TimerInfo>
+      </CountTimerWrapper>
     </ErrorBoundary>
   );
 };

@@ -11,7 +11,7 @@ export const mockProductList: ProductInfo[] = [
     price: 77.4,
     minPrice: 63,
     maxPrice: 85,
-    priceTimer: 0,
+    priceTimer: '2019-03-03T12:27:08.030Z',
     imgUrl: 'https://i.imgur.com/lrCkut9.png',
   },
   {
@@ -24,7 +24,7 @@ export const mockProductList: ProductInfo[] = [
     price: 107,
     minPrice: 95,
     maxPrice: 112,
-    priceTimer: 0,
+    priceTimer: '2019-03-03T12:27:08.030Z',
     imgUrl: 'https://i.imgur.com/Igq4dBW.jpg',
   },
   {
@@ -38,7 +38,7 @@ export const mockProductList: ProductInfo[] = [
     price: 12,
     minPrice: 12,
     maxPrice: 18,
-    priceTimer: 0,
+    priceTimer: '2019-03-03T12:27:08.030Z',
     imgUrl: 'https://i.imgur.com/9frBHl9.jpg',
   },
   {
@@ -52,7 +52,7 @@ export const mockProductList: ProductInfo[] = [
     price: 40,
     minPrice: 32,
     maxPrice: 40,
-    priceTimer: 0,
+    priceTimer: '2019-03-03T12:27:08.030Z',
     imgUrl: 'https://i.imgur.com/Hs1JnpR.jpg',
   },
   {
@@ -65,7 +65,7 @@ export const mockProductList: ProductInfo[] = [
     price: 16,
     minPrice: 15,
     maxPrice: 26,
-    priceTimer: 0,
+    priceTimer: '2019-03-03T12:27:08.030Z',
     imgUrl: 'https://i.imgur.com/EHQoYlJ.jpg',
   },
 ];
