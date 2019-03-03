@@ -3,6 +3,9 @@ import React, { useState, ChangeEvent } from 'react';
 // Error Handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
+// Components
+import { CountTimer } from '../CountTimer/CountTimer';
+
 // Shared Styles
 import { SectionParagraph, WrappedImage } from '../../utils/shared-styles';
 
@@ -38,6 +41,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ data, storeContext }) 
       <ProductCardWrapper>
         <SectionParagraph nomargin={true}>{data.label}</SectionParagraph>
         <WrappedImage imgSrc={data.imgUrl || ''} imgHeight={'100%'} imgWidth={'100%'} />
+        <CountTimer duration={5000} />
         <SectionParagraph nomargin={true}>${data.price.toFixed(2)}</SectionParagraph>
         <CardActions>
           <AddToCartBtn onClick={callHandleAddToCartOnClick}>Add to Cart</AddToCartBtn>
