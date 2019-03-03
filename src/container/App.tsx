@@ -72,9 +72,9 @@ export const App: React.FC = () => {
         <BrowserRouter>
           <AppWrapper>
             <HeaderBar>
-              <Link to="/">
-                <AppName>Spendulum</AppName>
-              </Link>
+              <AppName>
+                <Link to="/">Spendulum</Link>
+              </AppName>
               <NavWidgets />
             </HeaderBar>
             <PageContent>

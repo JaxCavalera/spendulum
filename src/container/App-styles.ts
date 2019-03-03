@@ -50,5 +50,9 @@ export const AppName = styled.h1`
   font-size: 2rem;
   line-height: 2.8rem;
   margin: 0;
-  color: ${colours.white};
+  
+  > a {
+    color: ${colours.white};
+    text-decoration: none;
+  }
 `;

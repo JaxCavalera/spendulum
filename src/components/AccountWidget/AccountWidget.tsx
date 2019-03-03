@@ -21,7 +21,7 @@ import {
 
 export interface AccountWidgetProps { }
 
-export const AccountWidget = ({ }: AccountWidgetProps) => {
+export const AccountWidget: React.FC<AccountWidgetProps> = ({ }) => {
   const accountPopupClassName = 'account-widget__popup-toggle';
   const [showAccountPanel, updateShowAccountPanel] = useState(false);
   const [loginHasFocus, updateLoginHasFocus] = useState(true);

@@ -6,6 +6,9 @@ import ErrorBoundary from '../../utils/ErrorBoundary';
 // Store Provider
 import { StoreContextLive } from '../../rootReducer';
 
+// Components
+import { CartItem } from '../CartItem/CartItem';
+
 // Logic
 import { placeholderFn } from './CartSidebar-logic';
 
@@ -13,14 +16,11 @@ import { placeholderFn } from './CartSidebar-logic';
 import {
   CartSidebarWrapper,
   CartHeading,
-  CartItemWrapper,
-  CartItemLabel,
-  ClaimedSize,
 } from './CartSidebar-styles';
 
 export interface CartSidebarProps { }
 
-export const CartSidebar = ({ }: CartSidebarProps) => {
+export const CartSidebar: React.FC<CartSidebarProps> = ({ }) => {
   const storeContext = useContext(StoreContextLive);
   const { cartItems, isSidebarOpen } = storeContext.state.cartSidebarReducer;
 
@@ -30,14 +30,11 @@ export const CartSidebar = ({ }: CartSidebarProps) => {
         <CartHeading>Shopping Cart</CartHeading>
         {
           cartItems.map((cartItem) => (
-            <CartItemWrapper key={cartItem.value}>
-              <CartItemLabel>{cartItem.label}</CartItemLabel>
-              {
-                Object.keys(cartItem.claimedSizes).map(sizeOption => (
-                  <ClaimedSize key={sizeOption}>{sizeOption} : {cartItem.claimedSizes[sizeOption]}</ClaimedSize>
-                ))
-              }
-            </CartItemWrapper>
+            <CartItem
+              key={cartItem.value}
+              label={cartItem.label}
+              claimedSizes={cartItem.claimedSizes}
+            />
           ))
         }
       </CartSidebarWrapper>
