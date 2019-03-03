@@ -20,7 +20,7 @@ export interface ProductInfo {
   price: number;
   minPrice: number;
   maxPrice: number;
-  priceTimer: number;
+  priceTimer: string;
   value: string;
   imgUrl?: string;
 }

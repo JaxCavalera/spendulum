@@ -15,7 +15,7 @@ import { CheckoutIcon, HomeIcon } from '../../images/icons';
 
 export interface NavWidgetsProps { }
 
-export const NavWidgets = ({ }: NavWidgetsProps) => {
+export const NavWidgets: React.FC<NavWidgetsProps> = ({ }) => {
   return (
     <ErrorBoundary>
       <NavWidgetsWrapper>

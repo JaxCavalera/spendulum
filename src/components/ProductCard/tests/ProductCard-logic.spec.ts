@@ -1,65 +1,41 @@
-import { consolidateCartItems } from '../ProductCard-logic';
+import { updateProductData } from '../ProductCard-logic';
 
 // Models
 import { ProductInfo } from '../ProductCard-models';
 
 // Mocks
-import {
-  productCardData,
-  cartItemsList,
-  productCardMatchingCartItem,
-} from './ProductCard-mocks';
+import { productCardData } from './ProductCard-mocks';
 
-// consolidateCartItems
-describe('Given consolidateCartItems is called with valid newItem and cartItems', () => {
-  describe('When the newItem has availableSizes for the specified claimedSize', () => {
-    describe('AND the newItem is not currently listed in the cartItems', () => {
-      test('Then the newItem will be added to the cartItems list', () => {
-        const mockCartItems: ProductInfo[] = [];
-        const finalCartItems = [{
-          label: 'Kate Spade New York',
-          value: 'ksny-1',
-          claimedSizes: {
-            na: 1,
-          },
-          availableSizes: {
-            na: 9,
-          },
-          price: 77.4,
-          minPrice: 63,
-          maxPrice: 85,
-          priceTimer: 0,
-          imgUrl: 'https://i.imgur.com/lrCkut9.png',
-        }];
+// updateProductData
+describe('Given updateProductData is called with valid newItem and cartItems', () => {
+  describe('When the newItem has availableSizes for the selectedSize', () => {
+    test('Then it will return a new cardData set with updated claimed and available sizes', () => {
+      const finalProductData = {
+        label: 'Kate Spade New York',
+        value: 'ksny-1',
+        claimedSizes: { na: 1 },
+        availableSizes: {
+          na: 9,
+        },
+        price: 77.4,
+        minPrice: 63,
+        maxPrice: 85,
+        priceTimer: '2019-03-03T12:27:08.030Z',
+        imgUrl: 'https://i.imgur.com/lrCkut9.png',
+      };
 
-        const newCartItems = consolidateCartItems(productCardData, mockCartItems, 'na', 1);
+      const newCardData = updateProductData(productCardData, 'na', 1);
 
-        expect(newCartItems).toEqual(finalCartItems);
-      });
+      expect(newCardData).toEqual(finalProductData);
     });
+  });
 
-    describe('AND the newItem is already listed in the cartItems', () => {
-      test('Then the claimedSize qty will be added onto the existing size qty', () => {
-        const finalCartItems = [{
-          label: 'Kate Spade New York',
-          value: 'ksny-1',
-          claimedSizes: {
-            na: 5,
-          },
-          availableSizes: {
-            na: 5,
-          },
-          price: 77.4,
-          minPrice: 63,
-          maxPrice: 85,
-          priceTimer: 0,
-          imgUrl: 'https://i.imgur.com/lrCkut9.png',
-        }];
+  describe('When the newItem does NOT have any availableSizes for the selectedSize', () => {
+    test('Then it will return undefined', () => {
+      const requestedQty = (productCardData.availableSizes.na && productCardData.availableSizes.na + 1) || 9001;
+      const newCardData = updateProductData(productCardData, 'na', requestedQty);
 
-        const newCartItems = consolidateCartItems(productCardMatchingCartItem, cartItemsList, 'na', 3);
-
-        expect(newCartItems).toEqual(finalCartItems);
-      });
+      expect(newCardData).not.toBeDefined;
     });
   });
 });

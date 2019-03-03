@@ -17,7 +17,7 @@ import { CartButton } from './CartWidget-styles';
 
 export interface CartWidgetProps { }
 
-export const CartWidget = ({ }: CartWidgetProps) => {
+export const CartWidget: React.FC<CartWidgetProps> = ({ }) => {
   const storeContext = useContext(StoreContextLive);
   const { isSidebarOpen } = storeContext.state.cartSidebarReducer;
 

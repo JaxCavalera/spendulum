@@ -10,7 +10,7 @@ export const productCardData: ProductInfo = {
   price: 77.4,
   minPrice: 63,
   maxPrice: 85,
-  priceTimer: 0,
+  priceTimer: '2019-03-03T12:27:08.030Z',
   imgUrl: 'https://i.imgur.com/lrCkut9.png',
 };
 
@@ -24,7 +24,7 @@ export const productCardMatchingCartItem: ProductInfo = {
   price: 77.4,
   minPrice: 63,
   maxPrice: 85,
-  priceTimer: 0,
+  priceTimer: '2019-03-03T12:27:08.030Z',
   imgUrl: 'https://i.imgur.com/lrCkut9.png',
 };
 
@@ -40,6 +40,6 @@ export const cartItemsList: ProductInfo[] = [{
   price: 77.4,
   minPrice: 63,
   maxPrice: 85,
-  priceTimer: 0,
+  priceTimer: '2019-03-03T12:27:08.030Z',
   imgUrl: 'https://i.imgur.com/lrCkut9.png',
 }];

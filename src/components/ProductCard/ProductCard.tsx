@@ -1,7 +1,10 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 
 // Error Handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
+
+// Components
+import { CountTimer } from '../CountTimer/CountTimer';
 
 // Shared Styles
 import { SectionParagraph, WrappedImage } from '../../utils/shared-styles';
@@ -14,15 +17,21 @@ import { ProductInfo } from './ProductCard-models';
 import { StoreContext } from '../../rootReducer';
 
 // Logic
-import { handleAddToCartOnClick } from './ProductCard-logic';
+import {
+  handleAddToCartOnClick,
+  calculateRemainingPriceDuration,
+  refreshPriceTimerInProductList,
+} from './ProductCard-logic';
 
 // ProductCard Props
 export interface ProductCardProps {
+  cardIndex: number;
   data: ProductInfo;
   storeContext: StoreContext;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ data, storeContext }) => {
+export const ProductCard: React.FC<ProductCardProps> = ({ cardIndex, data, storeContext }) => {
+  const [priceDuration, updatePriceDuration] = useState(calculateRemainingPriceDuration(data.priceTimer));
   const [selectedSize, updateSelectedSize] = useState(Object.keys(data.availableSizes)[0] || 'Sold Out');
 
   const handleSizePickerOnChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -30,14 +39,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ data, storeContext }) 
   };
 
   const callHandleAddToCartOnClick = () => {
-    handleAddToCartOnClick(storeContext, data, selectedSize);
+    handleAddToCartOnClick(storeContext, data, selectedSize, cardIndex);
   };
+
+  useEffect(() => {
+    if (!priceDuration) {
+      const newDuration = refreshPriceTimerInProductList(storeContext, data, cardIndex);
+      updatePriceDuration(newDuration);
+    }
+  }, []);
 
   return (
     <ErrorBoundary>
       <ProductCardWrapper>
         <SectionParagraph nomargin={true}>{data.label}</SectionParagraph>
         <WrappedImage imgSrc={data.imgUrl || ''} imgHeight={'100%'} imgWidth={'100%'} />
+        <CountTimer duration={priceDuration} />
         <SectionParagraph nomargin={true}>${data.price.toFixed(2)}</SectionParagraph>
         <CardActions>
           <AddToCartBtn onClick={callHandleAddToCartOnClick}>Add to Cart</AddToCartBtn>

@@ -131,17 +131,12 @@ Currently the majority of functionality is not covered by any unit / integration
 
 ## Developer Notes - goals for v1
 - Build product card
-    - name => DONE
     - price => fixed price only atm not dynamic
-    - image => DONE
-    - add to cart btn => DONE
     - min price (hidden)
     - max price (hidden)
-    - price change timer (hidden in v1)
+    - price change timer -> requires tab switch to restart expired timers currently
     - qty remaining / sold out, etc. Using a status overlay panel
-- Bypass API Calls using mock data for a list of products => DONE
 - Build cart sidebar
     - Implement handler to add product qty to cart it should appear in sidebar
     - Handle removal directly from cart
-    - Cleanup functionality in cartSidebar where there is a double nested map directly in the JSX (this was done as a temp fix to confirm visually in the UI that the architecture is working as expected)
 - Implement basic account login using generic credentials like `username`, `password1` as a way for testing ability to add new products in via a UI.

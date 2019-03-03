@@ -13,6 +13,7 @@ export const colours = {
   orange4: 'rgb(247, 125, 85)',
   orange5: 'rgb(245, 85, 30)',
   orangeOpacity: (opacity: number = 1) => `rgb(245, 85, 30, ${opacity})`,
+  red5: 'rgb(255, 0, 0)',
   white: 'rgb(255, 255, 255)',
   whiteOpacity: (opacity: number = 1) => `rgba(255, 255, 255, ${opacity})`,
 };
