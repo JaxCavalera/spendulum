@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import addMilliseconds from 'date-fns/add_milliseconds';
 
 // Models
@@ -32,6 +33,11 @@ export const createPriceDuration = (maxDurationMins: number, minDurationMins?: n
 export const calculateRemainingPriceDuration = (dateIsoString: string) => {
   const currentTime = new Date();
   const priceDurationTime = new Date(dateIsoString);
+
+  const currentTimeMs = currentTime.getTime();
+  const priceTimerMs = priceDurationTime.getTime();
+
+  console.log(priceTimerMs - currentTimeMs);
 
   // Remaining duration should be a positive value if the iso timestamp is still in the future
   const remainingDuration = priceDurationTime.getTime() - currentTime.getTime();

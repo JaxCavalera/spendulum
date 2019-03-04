@@ -20,7 +20,7 @@ import {
 
 export interface CartSidebarProps { }
 
-export const CartSidebar: React.FC<CartSidebarProps> = ({ }) => {
+export const CartSidebar = ({ }: CartSidebarProps) => {
   const storeContext = useContext(StoreContextLive);
   const { cartItems, isSidebarOpen } = storeContext.state.cartSidebarReducer;
 

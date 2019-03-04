@@ -1,7 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 
-import { mockProductList } from './test/ProductList-mocks';
-
 // Error Handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
@@ -27,7 +25,7 @@ import { fetchAvailableProductsList } from './ProductList-async';
 
 export interface ProductListProps { }
 
-export const ProductList: React.FC<ProductListProps> = ({ }) => {
+export const ProductList = ({ }: ProductListProps) => {
   // Pass down a reference to the storeContext to avoid unnecessary useContext calls on each product card being mapped
   const storeContext = useContext(StoreContextLive);
   const { productList } = storeContext.state.productListReducer;
@@ -47,6 +45,8 @@ export const ProductList: React.FC<ProductListProps> = ({ }) => {
         .catch((e: Error) => console.log(e));
     }
   }, []);
+
+  console.log(productList.length);
 
   return (
     <ErrorBoundary>

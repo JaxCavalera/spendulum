@@ -43,7 +43,7 @@ import {
 export const patchWithStableMatchProp = (TargetComponent: React.ComponentType<{ match: RouteComponentProps['match'] }>) => {
   let prevMatch = {} as RouteComponentProps['match'];
 
-  const patchedComponent: React.FC<RouteComponentProps> = (props) => {
+  const patchedComponent = (props: RouteComponentProps) => {
     if (JSON.stringify(prevMatch) !== JSON.stringify(props.match)) {
       prevMatch = props.match;
       return <TargetComponent match={props.match} />;
@@ -59,7 +59,7 @@ export const patchWithStableMatchProp = (TargetComponent: React.ComponentType<{ 
 const patchedBrowse = patchWithStableMatchProp(Browse);
 const patchedCheckout = patchWithStableMatchProp(Checkout);
 
-export const App: React.FC = () => {
+export const App = () => {
   const [store, dispatchStore] = useReducer(rootReducer, rootReducerInitialState);
   const initialProviderValue: StoreContext = {
     state: store,

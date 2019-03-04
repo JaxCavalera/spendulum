@@ -30,8 +30,9 @@ export interface ProductCardProps {
   storeContext: StoreContext;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ cardIndex, data, storeContext }) => {
-  const [priceDuration, updatePriceDuration] = useState(calculateRemainingPriceDuration(data.priceTimer));
+export const ProductCard = ({ cardIndex, data, storeContext }: ProductCardProps) => {
+  const calculatedDuration = calculateRemainingPriceDuration(data.priceTimer);
+  // const [priceDuration, updatePriceDuration] = useState(calculatedDuration);
   const [selectedSize, updateSelectedSize] = useState(Object.keys(data.availableSizes)[0] || 'Sold Out');
 
   const handleSizePickerOnChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -43,9 +44,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ cardIndex, data, store
   };
 
   useEffect(() => {
-    if (!priceDuration) {
+    console.log(data.priceTimer);
+  }, [data.priceTimer]);
+
+  useEffect(() => {
+    if (!calculatedDuration) {
       const newDuration = refreshPriceTimerInProductList(storeContext, data, cardIndex);
-      updatePriceDuration(newDuration);
+      // updatePriceDuration(newDuration);
     }
   }, []);
 
@@ -54,7 +59,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ cardIndex, data, store
       <ProductCardWrapper>
         <SectionParagraph nomargin={true}>{data.label}</SectionParagraph>
         <WrappedImage imgSrc={data.imgUrl || ''} imgHeight={'100%'} imgWidth={'100%'} />
-        <CountTimer duration={priceDuration} />
+        <CountTimer duration={calculatedDuration} />
         <SectionParagraph nomargin={true}>${data.price.toFixed(2)}</SectionParagraph>
         <CardActions>
           <AddToCartBtn onClick={callHandleAddToCartOnClick}>Add to Cart</AddToCartBtn>

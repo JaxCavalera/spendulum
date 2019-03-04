@@ -11,7 +11,7 @@ import { ProductFilterWrapper } from './ProductFilter-styles';
 
 export interface ProductFilterProps { }
 
-export const ProductFilter: React.FC<ProductFilterProps> = ({ }) => {
+export const ProductFilter = ({ }: ProductFilterProps) => {
   return (
     <ErrorBoundary>
       <ProductFilterWrapper>

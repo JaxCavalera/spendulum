@@ -21,7 +21,7 @@ export interface CountTimerProps {
   onEnd?: () => void;
 }
 
-export const CountTimer: React.FC<CountTimerProps> = ({ duration, countDirection, onEnd }) => {
+export const CountTimer = ({ duration, countDirection, onEnd }: CountTimerProps) => {
   const [timer, updateTimer] = useState(duration);
 
   useEffect(() => {
