@@ -24,7 +24,6 @@ import {
   calculateRemainingPriceDuration,
   refreshPriceTimerInProductList,
 } from './ProductCard-logic';
-import { format } from 'date-fns';
 
 // ProductCard Props
 export interface ProductCardProps {
@@ -50,8 +49,6 @@ export const ProductCard = ({ data }: ProductCardProps) => {
   const [priceDuration, updatePriceDuration] = useState(initialDuration);
   const [selectedSize, updateSelectedSize] = useState(Object.keys(data.availableSizes)[0] || 'Sold Out');
 
-  console.log('rendered');
-
   const handleSizePickerOnChange = (e: ChangeEvent<HTMLSelectElement>) => {
     updateSelectedSize(e.currentTarget.value);
   };
@@ -61,13 +58,11 @@ export const ProductCard = ({ data }: ProductCardProps) => {
       data,
       selectedSize,
       cartItems,
-      productList,
       dispatch,
     );
   };
 
   const handleOnTimerEnd = () => {
-    console.log('timer ended');
     refreshPriceTimerInProductList(data, dispatch, updatePriceDuration);
   };
 

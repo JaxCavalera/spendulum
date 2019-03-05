@@ -187,7 +187,6 @@ export const handleAddToCartOnClick = (
   data: ProductInfo,
   selectedSize: string,
   cartItems: ProductInfo[],
-  productList: ProductInfo[],
   dispatch: React.Dispatch<any>,
 ) => {
   // Ensure any deep level changes to properties on the chosen item do not reference / affect the original
