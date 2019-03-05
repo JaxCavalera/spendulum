@@ -3,8 +3,8 @@ import React, { useContext } from 'react';
 // Error Handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
-// Store Provider
-import { StoreContextLive } from '../../rootReducer';
+// Contexts
+import { StoreContext } from '../../container/rootReducer';
 
 // Components
 import { CartItem } from '../CartItem/CartItem';
@@ -20,9 +20,9 @@ import {
 
 export interface CartSidebarProps { }
 
-export const CartSidebar: React.FC<CartSidebarProps> = ({ }) => {
-  const storeContext = useContext(StoreContextLive);
-  const { cartItems, isSidebarOpen } = storeContext.state.cartSidebarReducer;
+export const CartSidebar = ({ }: CartSidebarProps) => {
+  const store = useContext(StoreContext);
+  const { cartItems, isSidebarOpen } = store.cartSidebarReducer;
 
   return (
     <ErrorBoundary>

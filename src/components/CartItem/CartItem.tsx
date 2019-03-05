@@ -20,7 +20,7 @@ export interface CartItemProps {
   claimedSizes: SizeOptions
 }
 
-export const CartItem: React.FC<CartItemProps> = ({ label, claimedSizes }) => {
+export const CartItem = ({ label, claimedSizes }: CartItemProps) => {
   return (
     <ErrorBoundary>
       <CartItemWrapper>

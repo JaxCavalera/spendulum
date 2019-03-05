@@ -29,7 +29,7 @@ export default class ErrorBoundary extends PureComponent<ErrorBoundaryProps, Err
   render() {
     const { hasError, errorMsg, errorInfo } = this.state;
 
-    const ErrorPanel: React.FC = () => (
+    const ErrorPanel = () => (
       <div>
         <SectionParagraph>
           <span>Unhandled exception encountered:</span>

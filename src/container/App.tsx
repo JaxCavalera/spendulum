@@ -11,9 +11,9 @@ import {
 import {
   rootReducer,
   rootReducerInitialState,
-  StoreContextLive,
+  StoreDispatch,
   StoreContext,
-} from '../rootReducer';
+} from './rootReducer';
 
 // Shared Styles
 import ErrorBoundary from '../utils/ErrorBoundary';
@@ -43,7 +43,7 @@ import {
 export const patchWithStableMatchProp = (TargetComponent: React.ComponentType<{ match: RouteComponentProps['match'] }>) => {
   let prevMatch = {} as RouteComponentProps['match'];
 
-  const patchedComponent: React.FC<RouteComponentProps> = (props) => {
+  const patchedComponent = (props: RouteComponentProps) => {
     if (JSON.stringify(prevMatch) !== JSON.stringify(props.match)) {
       prevMatch = props.match;
       return <TargetComponent match={props.match} />;
@@ -59,35 +59,33 @@ export const patchWithStableMatchProp = (TargetComponent: React.ComponentType<{ 
 const patchedBrowse = patchWithStableMatchProp(Browse);
 const patchedCheckout = patchWithStableMatchProp(Checkout);
 
-export const App: React.FC = () => {
-  const [store, dispatchStore] = useReducer(rootReducer, rootReducerInitialState);
-  const initialProviderValue: StoreContext = {
-    state: store,
-    dispatch: dispatchStore
-  };
+export const App = () => {
+  const [store, dispatch] = useReducer(rootReducer, rootReducerInitialState);
 
   return (
     <ErrorBoundary>
-      <StoreContextLive.Provider value={initialProviderValue}>
-        <BrowserRouter>
-          <AppWrapper>
-            <HeaderBar>
-              <AppName>
-                <Link to="/">Spendulum</Link>
-              </AppName>
-              <NavWidgets />
-            </HeaderBar>
-            <PageContent>
-              <Switch>
-                <Route exact path="/" render={patchedBrowse} />
-                <Route exact path="/checkout" render={patchedCheckout} />
-                <Route component={PageNotFound} />
-              </Switch>
-              <CartSidebar />
-            </PageContent>
-          </AppWrapper>
-        </BrowserRouter>
-      </StoreContextLive.Provider>
+      <StoreDispatch.Provider value={dispatch}>
+        <StoreContext.Provider value={store}>
+          <BrowserRouter>
+            <AppWrapper>
+              <HeaderBar>
+                <AppName>
+                  <Link to="/">Spendulum</Link>
+                </AppName>
+                <NavWidgets />
+              </HeaderBar>
+              <PageContent>
+                <Switch>
+                  <Route exact path="/" render={patchedBrowse} />
+                  <Route exact path="/checkout" render={patchedCheckout} />
+                  <Route component={PageNotFound} />
+                </Switch>
+                <CartSidebar />
+              </PageContent>
+            </AppWrapper>
+          </BrowserRouter>
+        </StoreContext.Provider>
+      </StoreDispatch.Provider>
     </ErrorBoundary>
   );
 };

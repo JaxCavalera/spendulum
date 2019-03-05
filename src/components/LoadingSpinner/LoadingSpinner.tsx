@@ -7,7 +7,7 @@ export interface LoadingSpinnerProps {
   msg?: string;
 }
 
-export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ msg }) => {
+export const LoadingSpinner = ({ msg }: LoadingSpinnerProps) => {
   return (
     <>
       <Spinner />

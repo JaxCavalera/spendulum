@@ -3,8 +3,8 @@ import React, { useContext } from 'react';
 // Error Handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
-// Store Provider
-import { StoreContextLive } from '../../rootReducer';
+// Contexts
+import { StoreContext, StoreDispatch } from '../../container/rootReducer';
 
 // Models
 import { CartSidebarActionTypes } from '../CartSidebar/CartSidebar-models';
@@ -17,12 +17,13 @@ import { CartButton } from './CartWidget-styles';
 
 export interface CartWidgetProps { }
 
-export const CartWidget: React.FC<CartWidgetProps> = ({ }) => {
-  const storeContext = useContext(StoreContextLive);
-  const { isSidebarOpen } = storeContext.state.cartSidebarReducer;
+export const CartWidget = ({ }: CartWidgetProps) => {
+  const store = useContext(StoreContext);
+  const dispatch = useContext(StoreDispatch);
+  const { isSidebarOpen } = store.cartSidebarReducer;
 
   const handleCartOnClick = () => {
-    storeContext.dispatch({
+    dispatch({
       type: CartSidebarActionTypes.UPDATE_IS_SIDEBAR_OPEN,
       isSidebarOpen: !isSidebarOpen,
     });

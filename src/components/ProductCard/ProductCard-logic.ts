@@ -1,7 +1,7 @@
+import { format } from 'date-fns';
 import addMilliseconds from 'date-fns/add_milliseconds';
 
 // Models
-import { StoreContext } from '../../rootReducer';
 import { ProductInfo, SizeOptions } from "./ProductCard-models";
 import { CartSidebarActionTypes } from '../CartSidebar/CartSidebar-models';
 import { ProductListActionTypes } from '../ProductList/ProductList-models';
@@ -33,15 +33,18 @@ export const calculateRemainingPriceDuration = (dateIsoString: string) => {
   const currentTime = new Date();
   const priceDurationTime = new Date(dateIsoString);
 
+  const currentTimeMs = currentTime.getTime();
+  const priceTimerMs = priceDurationTime.getTime();
+
   // Remaining duration should be a positive value if the iso timestamp is still in the future
-  const remainingDuration = priceDurationTime.getTime() - currentTime.getTime();
+  const remainingDuration = priceTimerMs - currentTimeMs;
   return (remainingDuration > 0) ? remainingDuration : 0;
 };
 
 export const refreshPriceTimerInProductList = (
-  storeContext: StoreContext,
   data: ProductInfo,
-  cardIndex: number,
+  dispatch: React.Dispatch<any>,
+  updatePriceDuration: React.SetStateAction<any>,
 ) => {
   const newPriceDuration = createPriceDuration(20, 5);
   const newPriceDate = addMilliseconds(new Date(), newPriceDuration);
@@ -51,17 +54,14 @@ export const refreshPriceTimerInProductList = (
     priceTimer: newPriceDate.toISOString(),
   };
 
-  const newProductList = [...storeContext.state.productListReducer.productList];
-
   // Update the item relating to this productCard in the list
-  newProductList[cardIndex] = updatedProductData;
+  updatePriceDuration(newPriceDuration);
 
-  storeContext.dispatch({
-    type: ProductListActionTypes.UPDATE_PRODUCT_LIST,
-    productList: newProductList,
+  dispatch({
+    type: ProductListActionTypes.ASSIGN_MICROSTORE,
+    productMicroStoreId: updatedProductData.value,
+    productData: updatedProductData,
   });
-
-  return newPriceDuration;
 };
 
 export const calculateClaimedSizes = (
@@ -184,13 +184,11 @@ export const updateProductData = (product: ProductInfo, selectedSize: string, qt
  * @param cardIndex - Index of this productCard in the productList array
  */
 export const handleAddToCartOnClick = (
-  storeContext: StoreContext,
   data: ProductInfo,
   selectedSize: string,
-  cardIndex: number,
+  cartItems: ProductInfo[],
+  dispatch: React.Dispatch<any>,
 ) => {
-  const { cartItems } = storeContext.state.cartSidebarReducer;
-
   // Ensure any deep level changes to properties on the chosen item do not reference / affect the original
   const clonedData = deepClone(data);
 
@@ -205,28 +203,15 @@ export const handleAddToCartOnClick = (
   const newCartItems = consolidateCartItems(updatedProduct, cartItems);
 
   // Update Cart Items
-  storeContext.dispatch({
+  dispatch({
     type: CartSidebarActionTypes.UPDATE_CART_ITEMS,
     cartItems: newCartItems,
   });
 
   // Update ProductList so available qty on items in the store remains accurate
-  const { productList } = storeContext.state.productListReducer;
-  const updatedProductList = calculateUpdatedProductList(cardIndex, productList, updatedProduct);
-
-  storeContext.dispatch({
-    type: ProductListActionTypes.UPDATE_PRODUCT_LIST,
-    productList: updatedProductList,
+  dispatch({
+    type: ProductListActionTypes.ASSIGN_MICROSTORE,
+    productMicroStoreId: updatedProduct.value,
+    productData: updatedProduct,
   });
 };
-
-
-// This is used to generate brand new timers when the original ones run out, currently
-// unused so timers only regenerate when switching tabs which is good enough for now
-// export const handlePriceTimerOnChange = (
-//   storeContext: StoreContext,
-//   data: ProductInfo,
-//   newDuration?: number,
-// ) => {
-//   const newPriceTimer = newDuration ?
-// };
