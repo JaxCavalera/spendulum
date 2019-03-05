@@ -3,8 +3,8 @@ import React, { useContext, useEffect } from 'react';
 // Error Handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
-// Store Provider
-import { StoreContextLive } from '../../rootReducer';
+// Contexts
+import { StoreContext, StoreDispatch } from '../../container/rootReducer';
 
 // Models
 import { ProductListActionTypes } from './ProductList-models';
@@ -21,48 +21,33 @@ import { SectionParagraph } from '../../utils/shared-styles';
 import { ProductListWrapper, SpinnerWrapper } from './ProductList-styles';
 
 // Logic
-import { fetchAvailableProductsList } from './ProductList-async';
+import { refreshProductList } from './ProductList-logic';
 
 export interface ProductListProps { }
 
 export const ProductList = ({ }: ProductListProps) => {
-  // Pass down a reference to the storeContext to avoid unnecessary useContext calls on each product card being mapped
-  const storeContext = useContext(StoreContextLive);
-  const { productList } = storeContext.state.productListReducer;
+  const store = useContext(StoreContext);
+  const dispatch = useContext(StoreDispatch);
+  const { productList, productMicroStoreIds } = store.productListReducer;
 
   useEffect(() => {
-    // This can be replaced with periodic productList updates once using live data that is updated
-    if (!productList.length) {
-      // Fetch available products from the server and update the store when retrieved
-      fetchAvailableProductsList()
-        .then((newProductList: ProductInfo[]) => {
-          // Update the Product List store
-          storeContext.dispatch({
-            type: ProductListActionTypes.UPDATE_PRODUCT_LIST,
-            productList: newProductList,
-          });
-        })
-        .catch((e: Error) => console.log(e));
-    }
+    // Only  refreshes when the Product List component is mounted
+    refreshProductList(productList, dispatch);
   }, []);
-
-  console.log(productList.length);
 
   return (
     <ErrorBoundary>
-      <ProductListWrapper isLoading={!productList.length}>
+      <ProductListWrapper isLoading={!productMicroStoreIds.length}>
         {
-          !productList.length ? (
+          !productMicroStoreIds.length ? (
             <SpinnerWrapper>
               <LoadingSpinner msg={'Loading products...'} />
             </SpinnerWrapper>
           ) : (
-              productList.map((item, cardIndex) => (
+              productMicroStoreIds.map((productId) => (
                 <ProductCard
-                  key={item.value}
-                  cardIndex={cardIndex}
-                  data={item}
-                  storeContext={storeContext}
+                  key={productId}
+                  data={store.productListReducer[productId]}
                 />
               ))
             )

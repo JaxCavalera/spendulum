@@ -11,9 +11,9 @@ import {
 import {
   rootReducer,
   rootReducerInitialState,
-  StoreContextLive,
+  StoreDispatch,
   StoreContext,
-} from '../rootReducer';
+} from './rootReducer';
 
 // Shared Styles
 import ErrorBoundary from '../utils/ErrorBoundary';
@@ -60,34 +60,32 @@ const patchedBrowse = patchWithStableMatchProp(Browse);
 const patchedCheckout = patchWithStableMatchProp(Checkout);
 
 export const App = () => {
-  const [store, dispatchStore] = useReducer(rootReducer, rootReducerInitialState);
-  const initialProviderValue: StoreContext = {
-    state: store,
-    dispatch: dispatchStore
-  };
+  const [store, dispatch] = useReducer(rootReducer, rootReducerInitialState);
 
   return (
     <ErrorBoundary>
-      <StoreContextLive.Provider value={initialProviderValue}>
-        <BrowserRouter>
-          <AppWrapper>
-            <HeaderBar>
-              <AppName>
-                <Link to="/">Spendulum</Link>
-              </AppName>
-              <NavWidgets />
-            </HeaderBar>
-            <PageContent>
-              <Switch>
-                <Route exact path="/" render={patchedBrowse} />
-                <Route exact path="/checkout" render={patchedCheckout} />
-                <Route component={PageNotFound} />
-              </Switch>
-              <CartSidebar />
-            </PageContent>
-          </AppWrapper>
-        </BrowserRouter>
-      </StoreContextLive.Provider>
+      <StoreDispatch.Provider value={dispatch}>
+        <StoreContext.Provider value={store}>
+          <BrowserRouter>
+            <AppWrapper>
+              <HeaderBar>
+                <AppName>
+                  <Link to="/">Spendulum</Link>
+                </AppName>
+                <NavWidgets />
+              </HeaderBar>
+              <PageContent>
+                <Switch>
+                  <Route exact path="/" render={patchedBrowse} />
+                  <Route exact path="/checkout" render={patchedCheckout} />
+                  <Route component={PageNotFound} />
+                </Switch>
+                <CartSidebar />
+              </PageContent>
+            </AppWrapper>
+          </BrowserRouter>
+        </StoreContext.Provider>
+      </StoreDispatch.Provider>
     </ErrorBoundary>
   );
 };

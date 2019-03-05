@@ -8,8 +8,7 @@ import { ProductList } from '../../components/ProductList/ProductList';
 // Styles
 import { BrowseWrapper } from './Browse-styles';
 
-export const Browse = memo((props) => {
-  console.log(props);
+export const Browse = memo(() => {
   return (
     <ErrorBoundary>
       <BrowseWrapper>
