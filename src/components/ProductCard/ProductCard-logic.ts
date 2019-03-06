@@ -174,6 +174,24 @@ export const updateProductData = (product: ProductInfo, selectedSize: string, qt
   };
 };
 
+export const createNewProductPrice = (minPrice: number, maxPrice: number) => {
+  const finalMax = maxPrice - minPrice;
+  const newPrice = Math.ceil(Math.random() * finalMax) + minPrice;
+
+  return newPrice;
+};
+
+export const refreshListedProductPrice = (data: ProductInfo, dispatch: React.Dispatch<any>) => {
+  const newPrice = createNewProductPrice(data.minPrice, data.maxPrice);
+
+  dispatch({
+    type: ProductListActionTypes.UPDATE_MICROSTORE_VALUE,
+    productMicroStoreId: data.value,
+    microStoreProperty: 'price',
+    microStorePropertyValue: newPrice,
+  });
+};
+
 // Event Handlers
 
 /**

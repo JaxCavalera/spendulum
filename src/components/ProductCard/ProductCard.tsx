@@ -23,6 +23,7 @@ import {
   handleAddToCartOnClick,
   calculateRemainingPriceDuration,
   refreshPriceTimerInProductList,
+  refreshListedProductPrice,
 } from './ProductCard-logic';
 
 // ProductCard Props
@@ -35,14 +36,7 @@ export const ProductCard = ({ data }: ProductCardProps) => {
   const dispatch = useContext(StoreDispatch);
 
   // Extract consumed store data
-  const {
-    cartSidebarReducer: {
-      cartItems,
-    },
-    productListReducer: {
-      productList,
-    },
-  } = store;
+  const { cartItems } = store.cartSidebarReducer;
 
   // InitialDuration ensures we only calcualte remainingDuration once when the card is mounted
   const initialDuration = -9001;
@@ -64,6 +58,7 @@ export const ProductCard = ({ data }: ProductCardProps) => {
 
   const handleOnTimerEnd = () => {
     refreshPriceTimerInProductList(data, dispatch, updatePriceDuration);
+    refreshListedProductPrice(data, dispatch);
   };
 
   useEffect(() => {
