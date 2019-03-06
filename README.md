@@ -99,12 +99,10 @@ This should be an absolute last resort, preference using the config-overrides np
 ## Developer Notes - (Goals for v1)
 #### Todo List
 - Build product card
-    - price => fixed price only atm not dynamic => NEXT UP
-    - min price (hidden)
-    - max price (hidden)
-    - qty remaining / sold out, etc. Using a status overlay panel
+    - qty remaining / sold out, etc. Using a status overlay panel => NEXT UP
 - Build cart sidebar
-    - Implement handler to add product qty to cart it should appear in sidebar
+    - Adjust qty of products in cart
+    - Display Price timer for cart items
     - Handle removal directly from cart
 - Implement basic account login using generic credentials like `username`, `password1` as a way for testing ability to add new products in via a UI.
 
@@ -125,6 +123,8 @@ This should be an absolute last resort, preference using the config-overrides np
         - There may be a way to prevent all components re-rendering if a reducer could be dynamically created for individual microStores at runtime.
 
 #### Security
+Consider using socket.io with an express server to manage price, availableSizes & priceTimer calculations. Pushing down to clients on update alternatively some more convoluted client-side techniques could be employed to make forged requests more difficult (see below).
+
 Memoize the last 5 prices for each product inside the API fn responsible for submitting an order (Planned for v2)
 - Keeps the list much harder to mess with clientside
 - Can reject orders where the price does not match a tracked value
