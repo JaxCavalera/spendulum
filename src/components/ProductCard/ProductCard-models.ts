@@ -1,14 +1,14 @@
 export interface SizeOptions {
   [key: string]: number | undefined;
-  na?: number;
-  xxsmall?: number;
-  xsmall?: number;
-  small?: number;
-  medium?: number;
-  large?: number;
-  xlarge?: number;
-  xxlarge?: number;
-  xxxlarge?: number;
+  NA?: number;
+  XXS?: number;
+  XS?: number;
+  S?: number;
+  M?: number;
+  L?: number;
+  XL?: number;
+  XXL?: number;
+  XXXL?: number;
 }
 
 export enum ProductCardActionTypes { };

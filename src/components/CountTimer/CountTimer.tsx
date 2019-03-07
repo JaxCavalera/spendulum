@@ -17,16 +17,35 @@ import { createTimerManager } from './CountTimer-logic';
 
 export interface CountTimerProps {
   duration: number;
+  alertDuration?: number;
+  beforeMsg?: string;
+  afterMsg?: string;
   countDirection?: CountTimerDirection;
   onEnd?: () => void;
 }
 
-export const CountTimer = ({ duration, countDirection, onEnd }: CountTimerProps) => {
+export const CountTimer = ({
+  duration,
+  alertDuration,
+  beforeMsg,
+  afterMsg,
+  countDirection,
+  onEnd,
+}: CountTimerProps) => {
+  const [isAlert, updateIsAlert] = useState(false);
   const [timer, updateTimer] = useState(duration);
 
   useEffect(() => {
     if (timer === 0 && onEnd) {
       onEnd();
+    }
+
+    if (alertDuration && timer <= alertDuration && !isAlert) {
+      updateIsAlert(true);
+    }
+
+    if (alertDuration && timer > alertDuration && isAlert) {
+      updateIsAlert(false);
     }
   }, [timer])
 
@@ -42,8 +61,15 @@ export const CountTimer = ({ duration, countDirection, onEnd }: CountTimerProps)
   return (
     <ErrorBoundary>
       <CountTimerWrapper>
-        <TimerInfo>Price Change In:</TimerInfo>
-        <TimerInfo alertMode={true}>{format(timer, 'mm:ss')}</TimerInfo>
+        {
+          beforeMsg &&
+          <TimerInfo>{beforeMsg}</TimerInfo>
+        }
+        <TimerInfo alertMode={isAlert}>{format(timer, 'mm:ss')}</TimerInfo>
+        {
+          afterMsg &&
+          <TimerInfo>{afterMsg}</TimerInfo>
+        }
       </CountTimerWrapper>
     </ErrorBoundary>
   );
