@@ -98,10 +98,8 @@ This should be an absolute last resort, preference using the config-overrides np
 
 ## Developer Notes - (Goals for v1)
 #### Todo List
-- Build product card
-    - qty remaining / sold out, etc. Using a status overlay panel => NEXT UP
 - Build cart sidebar
-    - Adjust qty of products in cart
+    - Adjust qty of products in cart => NEXT UP
     - Display Price timer for cart items
     - Handle removal directly from cart
 - Implement basic account login using generic credentials like `username`, `password1` as a way for testing ability to add new products in via a UI.
