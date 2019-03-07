@@ -6,7 +6,7 @@ export const mockProductList: ProductInfo[] = [
     value: 'ksny-1',
     claimedSizes: {},
     availableSizes: {
-      na: 10,
+      NA: 10,
     },
     price: 77.4,
     minPrice: 63,
@@ -19,7 +19,7 @@ export const mockProductList: ProductInfo[] = [
     value: 'jcsvm-1',
     claimedSizes: {},
     availableSizes: {
-      na: 37,
+      NA: 37,
     },
     price: 107,
     minPrice: 95,
@@ -32,8 +32,8 @@ export const mockProductList: ProductInfo[] = [
     value: 'snwflk-1',
     claimedSizes: {},
     availableSizes: {
-      small: 7,
-      large: 16,
+      S: 7,
+      L: 16,
     },
     price: 12,
     minPrice: 12,
@@ -46,8 +46,8 @@ export const mockProductList: ProductInfo[] = [
     value: 'nvyjns-1',
     claimedSizes: {},
     availableSizes: {
-      xsmall: 5,
-      medium: 21,
+      XS: 5,
+      M: 21,
     },
     price: 40,
     minPrice: 32,
@@ -60,7 +60,7 @@ export const mockProductList: ProductInfo[] = [
     value: 'nsocr-1',
     claimedSizes: {},
     availableSizes: {
-      na: 204,
+      NA: 204,
     },
     price: 16,
     minPrice: 15,

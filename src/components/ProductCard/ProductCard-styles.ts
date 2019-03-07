@@ -62,11 +62,21 @@ export const PricePanel = styled.div`
   box-sizing: border-box;
 `;
 
-export const AddToCartBtn = styled(BasicButton)`
-  width: 100%;
-`;
-
 export const SizePicker = styled.select`
   height: 3rem;
   width: 100%;
+`;
+
+export const AddToCartBtn = styled(BasicButton)`
+  justify-content: space-around;
+  width: 100%;
+
+  > svg {
+    height: 75%;
+    fill: ${colours.blue5};
+  }
+
+  &:hover > svg {
+    fill: ${colours.blueOpacity(0.8)};
+  }
 `;

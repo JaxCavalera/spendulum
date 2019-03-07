@@ -1,8 +1,5 @@
 import { updateProductData } from '../ProductCard-logic';
 
-// Models
-import { ProductInfo } from '../ProductCard-models';
-
 // Mocks
 import { productCardData } from './ProductCard-mocks';
 
@@ -13,9 +10,9 @@ describe('Given updateProductData is called with valid newItem and cartItems', (
       const finalProductData = {
         label: 'Kate Spade New York',
         value: 'ksny-1',
-        claimedSizes: { na: 1 },
+        claimedSizes: { NA: 1 },
         availableSizes: {
-          na: 9,
+          NA: 9,
         },
         price: 77.4,
         minPrice: 63,
@@ -24,7 +21,7 @@ describe('Given updateProductData is called with valid newItem and cartItems', (
         imgUrl: 'https://i.imgur.com/lrCkut9.png',
       };
 
-      const newCardData = updateProductData(productCardData, 'na', 1);
+      const newCardData = updateProductData(productCardData, 'NA', 1);
 
       expect(newCardData).toEqual(finalProductData);
     });
@@ -32,8 +29,8 @@ describe('Given updateProductData is called with valid newItem and cartItems', (
 
   describe('When the newItem does NOT have any availableSizes for the selectedSize', () => {
     test('Then it will return undefined', () => {
-      const requestedQty = (productCardData.availableSizes.na && productCardData.availableSizes.na + 1) || 9001;
-      const newCardData = updateProductData(productCardData, 'na', requestedQty);
+      const requestedQty = (productCardData.availableSizes.NA && productCardData.availableSizes.NA + 1) || 9001;
+      const newCardData = updateProductData(productCardData, 'NA', requestedQty);
 
       expect(newCardData).not.toBeDefined;
     });

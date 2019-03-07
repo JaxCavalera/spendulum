@@ -5,7 +5,7 @@ export const productCardData: ProductInfo = {
   value: 'ksny-1',
   claimedSizes: {},
   availableSizes: {
-    na: 10,
+    NA: 10,
   },
   price: 77.4,
   minPrice: 63,
@@ -19,7 +19,7 @@ export const productCardMatchingCartItem: ProductInfo = {
   value: 'ksny-1',
   claimedSizes: {},
   availableSizes: {
-    na: 8,
+    NA: 8,
   },
   price: 77.4,
   minPrice: 63,
@@ -32,10 +32,10 @@ export const cartItemsList: ProductInfo[] = [{
   label: 'Kate Spade New York',
   value: 'ksny-1',
   claimedSizes: {
-    na: 2,
+    NA: 2,
   },
   availableSizes: {
-    na: 8,
+    NA: 8,
   },
   price: 77.4,
   minPrice: 63,

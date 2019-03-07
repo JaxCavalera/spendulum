@@ -33,6 +33,8 @@ import {
   refreshPriceTimerInProductList,
   refreshListedProductPrice,
 } from './ProductCard-logic';
+
+// Images
 import { ShoppingCart } from '../../images/icons';
 
 // ProductCard Props
@@ -93,12 +95,20 @@ export const ProductCard = ({ data }: ProductCardProps) => {
               {
                 Object.keys(data.availableSizes).map(size => (
                   <option key={size} value={size}>
-                    {size} [{data.availableSizes[size]} Available]
+                    Size {size} [{data.availableSizes[size]} Available]
                   </option>
                 ))
               }
             </SizePicker>
-            <AddToCartBtn onClick={callHandleAddToCartOnClick}>Add to Cart</AddToCartBtn>
+            <AddToCartBtn onClick={callHandleAddToCartOnClick}>
+              <span>Add to Cart</span>
+              {
+                !!data.claimedSizes[selectedSize] &&
+                <ShoppingCart>
+                  <title>In Cart</title>
+                </ShoppingCart>
+              }
+            </AddToCartBtn>
           </CardActions>
         </ProductCardWrapper>
       }
