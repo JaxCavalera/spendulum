@@ -5,7 +5,6 @@ interface TimerInfoProps {
   alertMode?: boolean;
 }
 export const TimerInfo = styled.span`
-  font-size: 1.2rem;
   color: ${(props: TimerInfoProps) => props.alertMode && colours.red5};
 
   &:last-child {
@@ -15,5 +14,4 @@ export const TimerInfo = styled.span`
 
 export const CountTimerWrapper = styled.div`
   display: flex;
-  margin-bottom: 1rem;
 `;

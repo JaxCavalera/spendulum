@@ -13,7 +13,15 @@ import { CountTimer } from '../CountTimer/CountTimer';
 import { SectionParagraph, WrappedImage } from '../../utils/shared-styles';
 
 // Styles
-import { ProductCardWrapper, CardActions, AddToCartBtn, SizePicker } from './ProductCard-styles';
+import {
+  ProductCardWrapper,
+  CardActions,
+  AddToCartBtn,
+  SizePicker,
+  ImagePanel,
+  FloatingLabel,
+  PricePanel,
+} from './ProductCard-styles';
 
 // Models
 import { ProductInfo } from './ProductCard-models';
@@ -25,6 +33,7 @@ import {
   refreshPriceTimerInProductList,
   refreshListedProductPrice,
 } from './ProductCard-logic';
+import { ShoppingCart } from '../../images/icons';
 
 // ProductCard Props
 export interface ProductCardProps {
@@ -71,19 +80,25 @@ export const ProductCard = ({ data }: ProductCardProps) => {
       {
         priceDuration !== initialDuration &&
         <ProductCardWrapper>
-          <SectionParagraph nomargin={true}>{data.label}</SectionParagraph>
-          <WrappedImage imgSrc={data.imgUrl || ''} imgHeight={'100%'} imgWidth={'100%'} />
-          <CountTimer duration={priceDuration} onEnd={handleOnTimerEnd} />
-          <SectionParagraph nomargin={true}>${data.price.toFixed(2)}</SectionParagraph>
+          <ImagePanel>
+            <WrappedImage imgSrc={data.imgUrl || ''} imgHeight={'100%'} imgWidth={'100%'} />
+            <FloatingLabel>{data.label}</FloatingLabel>
+          </ImagePanel>
           <CardActions>
-            <AddToCartBtn onClick={callHandleAddToCartOnClick}>Add to Cart</AddToCartBtn>
+            <PricePanel>
+              <SectionParagraph nomargin={true}>${data.price.toFixed(2)}</SectionParagraph>
+              <CountTimer duration={priceDuration} alertDuration={120000} onEnd={handleOnTimerEnd} />
+            </PricePanel>
             <SizePicker onChange={handleSizePickerOnChange} value={selectedSize}>
               {
                 Object.keys(data.availableSizes).map(size => (
-                  <option key={size}>{size}</option>
+                  <option key={size} value={size}>
+                    {size} [{data.availableSizes[size]} Available]
+                  </option>
                 ))
               }
             </SizePicker>
+            <AddToCartBtn onClick={callHandleAddToCartOnClick}>Add to Cart</AddToCartBtn>
           </CardActions>
         </ProductCardWrapper>
       }

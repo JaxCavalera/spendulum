@@ -8,35 +8,65 @@ export const ProductCardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
   width: 20rem;
   min-width: 20rem;
   height: 25rem;
   border: solid 0.1rem ${colours.grey5};
   border-radius: 0.4rem;
   margin: 1rem;
-  padding: 1rem;
   box-sizing: border-box;
 `;
 
-export const CardActions = styled.div`
+export const ImagePanel = styled.div`
+  position: relative;
+  width: 100%;
+  height: 50%;
+  padding-top: 1rem;
+  box-sizing: border-box;
+  background-color: ${colours.white};
+`;
+
+export const FloatingLabel = styled.p`
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 3.5rem;
-  margin-top: 1rem;
-  padding: 0 0.5rem;
-  border-radius: 0.4rem;
+  height: 2.5rem;
+  margin: 0;
+  background-color: ${colours.blackOpacity(0.5)};
+  color: ${colours.white};
+  font-weight: 600;
+  left: 0;
+  bottom: 0;
+`;
+
+export const CardActions = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 50%;
+  padding: 1rem;
+  box-sizing: border-box;
+`;
+
+export const PricePanel = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 2rem;
   box-sizing: border-box;
 `;
 
 export const AddToCartBtn = styled(BasicButton)`
-  width: 55%;
+  width: 100%;
 `;
 
 export const SizePicker = styled.select`
   height: 3rem;
-  width: 45%;
-  margin-left: 1rem;
+  width: 100%;
 `;

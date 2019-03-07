@@ -174,15 +174,19 @@ export const updateProductData = (product: ProductInfo, selectedSize: string, qt
   };
 };
 
-export const createNewProductPrice = (minPrice: number, maxPrice: number) => {
+export const createNewProductPrice = (currentPrice: number, minPrice: number, maxPrice: number): number => {
   const finalMax = maxPrice - minPrice;
   const newPrice = Math.ceil(Math.random() * finalMax) + minPrice;
 
-  return newPrice;
+  if (currentPrice !== newPrice) {
+    return newPrice;
+  }
+
+  return createNewProductPrice(currentPrice, minPrice, maxPrice);
 };
 
 export const refreshListedProductPrice = (data: ProductInfo, dispatch: React.Dispatch<any>) => {
-  const newPrice = createNewProductPrice(data.minPrice, data.maxPrice);
+  const newPrice = createNewProductPrice(data.price, data.minPrice, data.maxPrice);
 
   dispatch({
     type: ProductListActionTypes.UPDATE_MICROSTORE_VALUE,
