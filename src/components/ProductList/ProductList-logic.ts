@@ -27,11 +27,11 @@ export const createProductMicroStores = (
 };
 
 export const refreshProductList = async (
-  productList: ProductInfo[],
+  productMicroStoreIds: string[],
   dispatch: React.Dispatch<any>,
 ) => {
   // This can be replaced with periodic productList updates once using live data that is updated
-  if (!productList.length) {
+  if (!productMicroStoreIds.length) {
 
     try {
       // Fetch available products from the server and update the store when retrieved
@@ -39,12 +39,6 @@ export const refreshProductList = async (
 
       // Create microStores
       createProductMicroStores(newProductList, dispatch);
-
-      // Update the Product List store
-      dispatch({
-        type: ProductListActionTypes.UPDATE_PRODUCT_LIST,
-        productList: newProductList,
-      });
     } catch (error) {
       console.error(error);
     }

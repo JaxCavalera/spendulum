@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import addMilliseconds from 'date-fns/add_milliseconds';
 
 // Models

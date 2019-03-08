@@ -23,16 +23,14 @@ import { ProductListWrapper, SpinnerWrapper } from './ProductList-styles';
 // Logic
 import { refreshProductList } from './ProductList-logic';
 
-export interface ProductListProps { }
-
-export const ProductList = ({ }: ProductListProps) => {
+export const ProductList = () => {
   const store = useContext(StoreContext);
   const dispatch = useContext(StoreDispatch);
-  const { productList, productMicroStoreIds } = store.productListReducer;
+  const { productMicroStoreIds } = store.productListReducer;
 
   useEffect(() => {
     // Only  refreshes when the Product List component is mounted
-    refreshProductList(productList, dispatch);
+    refreshProductList(productMicroStoreIds, dispatch);
   }, []);
 
   return (

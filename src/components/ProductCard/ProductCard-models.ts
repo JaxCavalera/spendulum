@@ -11,8 +11,6 @@ export interface SizeOptions {
   XXXL?: number;
 }
 
-export enum ProductCardActionTypes { };
-
 export interface ProductInfo {
   availableSizes: SizeOptions;
   claimedSizes: SizeOptions;
@@ -24,9 +22,3 @@ export interface ProductInfo {
   value: string;
   imgUrl?: string;
 }
-
-export interface ProductCardReducerAction {
-  type: ProductCardActionTypes;
-}
-
-export interface ProductCardReducerState { }
