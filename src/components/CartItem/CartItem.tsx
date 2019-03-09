@@ -10,7 +10,12 @@ import { ProductInfo } from '../ProductCard/ProductCard-models';
 import {
   CartItemWrapper,
   CartItemInfo,
+  CartItemContent,
+  TrashIconButton,
 } from './CartItem-styles';
+
+// Images
+import { TrashIcon } from '../../images/icons';
 
 export interface CartItemProps {
   cartItem: ProductInfo;
@@ -25,14 +30,19 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
   return (
     <ErrorBoundary>
       <CartItemWrapper>
-        <CartItemInfo>{label}</CartItemInfo>
-        {
-          Object.keys(claimedSizes).map(sizeOption => (
-            <CartItemInfo key={sizeOption}>
-              {sizeOption} : {claimedSizes[sizeOption]}
-            </CartItemInfo>
-          ))
-        }
+        <CartItemContent>
+          <CartItemInfo>{label}</CartItemInfo>
+          {
+            Object.keys(claimedSizes).map(sizeOption => (
+              <CartItemInfo key={sizeOption}>
+                {sizeOption} : {claimedSizes[sizeOption]}
+              </CartItemInfo>
+            ))
+          }
+        </CartItemContent>
+        <TrashIconButton>
+          <TrashIcon />
+        </TrashIconButton>
       </CartItemWrapper>
     </ErrorBoundary>
   );

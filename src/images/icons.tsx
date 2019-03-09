@@ -23,3 +23,10 @@ export const ShoppingCart = ({ children }: { children?: React.ReactElement }) =>
     </g>
   </svg>
 );
+
+export const TrashIcon = ({ children }: { children?: React.ReactElement }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 195 235">
+    {children}
+    <path d="M176 45h-37l-13 164h22zm-58 0H88l6 164h19zm-51 0H31l27 164h23zm131-16l-35 197H44L9 29H2c1-10 8-18 17-18h64c3-6 9-10 15-10h10c7 0 12 4 16 10h63c9 0 17 8 18 18z" />
+  </svg>
+);
