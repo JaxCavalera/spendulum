@@ -3,11 +3,8 @@ import React from 'react';
 // Error Handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
-// Shared Styles
-import { SectionParagraph } from '../../utils/shared-styles';
-
 // Models
-import { SizeOptions } from '../ProductCard/ProductCard-models';
+import { ProductInfo } from '../ProductCard/ProductCard-models';
 
 // Styles
 import {
@@ -16,11 +13,15 @@ import {
 } from './CartItem-styles';
 
 export interface CartItemProps {
-  label: string;
-  claimedSizes: SizeOptions
+  cartItem: ProductInfo;
 }
 
-export const CartItem = ({ label, claimedSizes }: CartItemProps) => {
+export const CartItem = ({ cartItem }: CartItemProps) => {
+  const {
+    label,
+    claimedSizes,
+  } = cartItem;
+
   return (
     <ErrorBoundary>
       <CartItemWrapper>

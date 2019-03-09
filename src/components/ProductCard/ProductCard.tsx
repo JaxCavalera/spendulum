@@ -47,7 +47,12 @@ export const ProductCard = ({ data }: ProductCardProps) => {
   const dispatch = useContext(StoreDispatch);
 
   // Extract consumed store data
-  const { cartItems } = store.cartSidebarReducer;
+  const {
+    cartSidebarReducer: cartSidebarStore,
+    cartSidebarReducer: {
+      cartItemMicroStoreIds,
+    }
+  } = store;
 
   // InitialDuration ensures we only calcualte remainingDuration once when the card is mounted
   const initialDuration = -9001;
@@ -62,7 +67,8 @@ export const ProductCard = ({ data }: ProductCardProps) => {
     handleAddToCartOnClick(
       data,
       selectedSize,
-      cartItems,
+      cartItemMicroStoreIds,
+      cartSidebarStore,
       dispatch,
     );
   };

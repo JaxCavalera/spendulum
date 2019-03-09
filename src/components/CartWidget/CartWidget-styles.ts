@@ -3,7 +3,23 @@ import { IconButton, colours } from '../../utils/shared-styles';
 
 interface CartButtonProps {
   isSidebarOpen?: boolean;
+  hasItems?: boolean;
 }
+
+export const calcSvgFill = (isSidebarOpen?: boolean, hasItems?: boolean) => {
+  if (isSidebarOpen) {
+    return colours.white;
+  }
+
+  if (!isSidebarOpen && !hasItems) {
+    return colours.black;
+  }
+
+  if (!isSidebarOpen && hasItems) {
+    return colours.blue5;
+  }
+};
+
 export const CartButton = styled(IconButton)`
   background-color: ${(props: CartButtonProps) => props.isSidebarOpen ? colours.blackOpacity(0.8) : colours.blue1};
 
@@ -12,6 +28,6 @@ export const CartButton = styled(IconButton)`
   }
 
   > svg {
-    fill: ${(props: CartButtonProps) => props.isSidebarOpen ? colours.white : colours.black};
+    fill: ${(props: CartButtonProps) => calcSvgFill(props.isSidebarOpen, props.hasItems)};
   }
 `;

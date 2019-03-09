@@ -2,7 +2,7 @@ import addMilliseconds from 'date-fns/add_milliseconds';
 
 // Models
 import { ProductInfo, SizeOptions } from "./ProductCard-models";
-import { CartSidebarActionTypes } from '../CartSidebar/CartSidebar-models';
+import { CartSidebarActionTypes, CartSidebarReducerState } from '../CartSidebar/CartSidebar-models';
 import { ProductListActionTypes } from '../ProductList/ProductList-models';
 
 // Utils
@@ -106,31 +106,42 @@ export const verifyItemHasEnoughQty = (
 };
 
 /**
- * Used to avoid duplicate listings of the same product in the cart
+ * Avoids duplicate cartItem listings by adding or replacing items in the sidebar as required
  */
-export const consolidateCartItems = (
+export const adjustCartItems = (
   newItem: ProductInfo,
-  cartItems: ProductInfo[],
+  cartItemMicroStoreIds: string[],
+  cartSidebarStore: CartSidebarReducerState,
+  dispatch: React.Dispatch<any>,
 ) => {
-  // Scan for an existing item alredy in the cart
-  const [matchingCartItem] = cartItems.filter(item => item.value === newItem.value);
+  // Scan for an existing item already in the cart
+  const existingCartItem = cartSidebarStore[newItem.value];
 
-  if (!matchingCartItem) {
-    return [
-      ...cartItems,
-      newItem,
+  if (!existingCartItem) {
+    // Update microStoreIds to include the new cartItemMicroStore
+    const newCartItemMicroStoreIds = [
+      ...cartItemMicroStoreIds,
+      newItem.value,
     ];
+
+    dispatch({
+      type: CartSidebarActionTypes.UPDATE_CART_ITEM_MICROSTORE_ID_LIST,
+      cartItemMicroStoreIds: newCartItemMicroStoreIds,
+    });
   }
 
-  // Item exists so use the priceTimer from the cart if there is any duration left
-  const priceTimerDuration = calculateRemainingPriceDuration(matchingCartItem.priceTimer);
-  const mergedCartItem = {
+  // Generate a new cartItem using the existingCartItem.priceTimer if it exists
+  const cartItem = {
     ...newItem,
-    ...!!priceTimerDuration && { priceTimer: matchingCartItem.priceTimer },
+    ...{ priceTimer: !!existingCartItem ? existingCartItem.priceTimer : newItem.priceTimer },
   };
 
-  // Generate a new list of cartItems switching out the updated item so the display order in the UI is unaffected
-  return cartItems.map(item => (item.value === newItem.value) ? mergedCartItem : item);
+  // Create or Replace the cartItemMicroStore data
+  dispatch({
+    type: CartSidebarActionTypes.ASSIGN_MICROSTORE,
+    cartItemMicroStoreId: cartItem.value,
+    cartItemData: cartItem,
+  });
 };
 
 /**
@@ -207,7 +218,8 @@ export const refreshListedProductPrice = (data: ProductInfo, dispatch: React.Dis
 export const handleAddToCartOnClick = (
   data: ProductInfo,
   selectedSize: string,
-  cartItems: ProductInfo[],
+  cartItemMicroStoreIds: string[],
+  cartSidebarStore: CartSidebarReducerState,
   dispatch: React.Dispatch<any>,
 ) => {
   // Ensure any deep level changes to properties on the chosen item do not reference / affect the original
@@ -221,13 +233,12 @@ export const handleAddToCartOnClick = (
   }
 
   // Consolidate cart items
-  const newCartItems = consolidateCartItems(updatedProduct, cartItems);
-
-  // Update Cart Items
-  dispatch({
-    type: CartSidebarActionTypes.UPDATE_CART_ITEMS,
-    cartItems: newCartItems,
-  });
+  adjustCartItems(
+    updatedProduct,
+    cartItemMicroStoreIds,
+    cartSidebarStore,
+    dispatch
+  );
 
   // Update ProductList so available qty on items in the store remains accurate
   dispatch({
