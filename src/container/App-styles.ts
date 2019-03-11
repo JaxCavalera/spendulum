@@ -10,6 +10,18 @@ export const AppWrapper = styled.div`
   align-items: center;
   height: 100%;
   width: 100%;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 5rem;
+    background-color: ${colours.blue5};
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: -1;
+  }
 `;
 
 export const HeaderBar = styled.div`
@@ -23,17 +35,6 @@ export const HeaderBar = styled.div`
   padding: 1rem;
   background-color: ${colours.blue5};
   box-sizing: border-box;
-
-  &::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 5rem;
-    background-color: ${colours.blue5};
-    left: 0;
-    right: 0;
-    z-index: -1;
-  }
 `;
 
 export const PageContent = styled.div`

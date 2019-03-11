@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // Error Handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
@@ -7,12 +7,20 @@ import ErrorBoundary from '../../utils/ErrorBoundary';
 import { ProductInfo } from '../ProductCard/ProductCard-models';
 
 // Styles
+import { SectionParagraph } from '../../utils/shared-styles';
 import {
   CartItemWrapper,
   CartItemInfo,
   CartItemContent,
   TrashIconButton,
+  CartItemLabel,
+  CartPricePanel,
+  CartItemSize,
+  CartItemQty,
 } from './CartItem-styles';
+
+// Components
+import { CountTimer } from '../CountTimer/CountTimer';
 
 // Images
 import { TrashIcon } from '../../images/icons';
@@ -27,15 +35,31 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
     claimedSizes,
   } = cartItem;
 
+  const initialDuration = -9001;
+  const [priceDuration, updatePriceDuration] = useState(initialDuration);
+
+  const handleOnTimerEnd = () => {
+    // refreshPriceTimerInProductList(data, dispatch, updatePriceDuration);
+    // refreshListedProductPrice(data, dispatch);
+  };
+
   return (
     <ErrorBoundary>
       <CartItemWrapper>
+        <CartItemLabel>{label}</CartItemLabel>
         <CartItemContent>
-          <CartItemInfo>{label}</CartItemInfo>
+          <CartPricePanel>
+            <SectionParagraph nomargin={true}>${cartItem.price.toFixed(2)}</SectionParagraph>
+            <CountTimer duration={priceDuration} alertDuration={120000} onEnd={handleOnTimerEnd} />
+          </CartPricePanel>
           {
             Object.keys(claimedSizes).map(sizeOption => (
               <CartItemInfo key={sizeOption}>
-                {sizeOption} : {claimedSizes[sizeOption]}
+                <CartItemSize>{sizeOption}</CartItemSize>
+                <CartItemQty
+                  value={claimedSizes[sizeOption]}
+                  onChange={() => console.log('changed')}
+                />
               </CartItemInfo>
             ))
           }

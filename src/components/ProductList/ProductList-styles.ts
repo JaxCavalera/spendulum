@@ -9,6 +9,7 @@ export const ProductListWrapper = styled.div`
   justify-content: center;
   align-items: flex-start;
   flex-wrap: wrap;
+  width: 100%;
   height: ${(props: ProductListWrapperProps) => props.isLoading && '100%'};
 `;
 

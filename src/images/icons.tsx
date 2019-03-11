@@ -25,8 +25,8 @@ export const ShoppingCart = ({ children }: { children?: React.ReactElement }) =>
 );
 
 export const TrashIcon = ({ children }: { children?: React.ReactElement }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 195 235">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 235">
     {children}
-    <path d="M176 45h-37l-13 164h22zm-58 0H88l6 164h19zm-51 0H31l27 164h23zm131-16l-35 197H44L9 29H2c1-10 8-18 17-18h64c3-6 9-10 15-10h10c7 0 12 4 16 10h63c9 0 17 8 18 18z" />
+    <path d="M105 79v131h26V79zm-65 0v131h26V79zM1 50h168v189H1zM1 33h168V15h-56V1H57v14H1z" />
   </svg>
 );

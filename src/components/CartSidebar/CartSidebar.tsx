@@ -13,6 +13,7 @@ import { CartItem } from '../CartItem/CartItem';
 import {
   CartSidebarWrapper,
   CartHeading,
+  CartItemsList,
 } from './CartSidebar-styles';
 
 export interface CartSidebarProps { }
@@ -31,14 +32,17 @@ export const CartSidebar = ({ }: CartSidebarProps) => {
     <ErrorBoundary>
       <CartSidebarWrapper isSidebarOpen={isSidebarOpen}>
         <CartHeading>Shopping Cart</CartHeading>
-        {
-          cartItemMicroStoreIds.map((cartItemMicroStoreId) => (
-            <CartItem
-              key={cartSidebarStore[cartItemMicroStoreId].value}
-              cartItem={cartSidebarStore[cartItemMicroStoreId]}
-            />
-          ))
-        }
+        <CartItemsList>
+          {
+            cartItemMicroStoreIds.map((cartItemMicroStoreId) => (
+              <CartItem
+                key={cartSidebarStore[cartItemMicroStoreId].value}
+                cartItem={cartSidebarStore[cartItemMicroStoreId]}
+              />
+            ))
+          }
+        </CartItemsList>
+        <CartHeading>Total: $XX.XX</CartHeading>
       </CartSidebarWrapper>
     </ErrorBoundary>
   );
