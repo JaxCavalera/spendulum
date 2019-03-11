@@ -16,6 +16,9 @@ import {
   CartItemsList,
 } from './CartSidebar-styles';
 
+// Logic
+import { calcCartTotal } from './CartSidebar-logic';
+
 export interface CartSidebarProps { }
 
 export const CartSidebar = ({ }: CartSidebarProps) => {
@@ -42,7 +45,9 @@ export const CartSidebar = ({ }: CartSidebarProps) => {
             ))
           }
         </CartItemsList>
-        <CartHeading>Total: $XX.XX</CartHeading>
+        <CartHeading>
+          {`Total: $${calcCartTotal(cartSidebarStore, cartItemMicroStoreIds).toFixed(2)}`}
+        </CartHeading>
       </CartSidebarWrapper>
     </ErrorBoundary>
   );

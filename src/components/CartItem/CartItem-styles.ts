@@ -52,48 +52,6 @@ export const CartPricePanel = styled.div`
   box-sizing: border-box;
 `;
 
-export const CartItemInfo = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  margin: 0.5rem 0;
-`;
-
-export const CartItemSize = styled.span`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 3.5rem;
-  width: 50%;
-  margin-right: 1rem;
-`;
-
-export const CartItemQtyWrapper = styled.div`
-  width: 50%;
-`;
-
-export const CartItemQty = styled.input`
-  width: 50%;
-  height: 2rem;
-  padding: 0 0.5rem;
-  margin-left: 0.5rem;
-  outline: none;
-  border: dashed 0.1rem ${colours.black};
-  border-radius: 0.4rem;
-  background-color: ${colours.whiteOpacity(0.5)};
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${colours.whiteOpacity(0.7)};
-  }
-
-  &:focus {
-    border: solid 0.1rem ${colours.black};
-    background-color: ${colours.white};
-    cursor: text;
-  }
-`;
-
 export const TrashIconButton = styled(IconButton)`
   margin: 0.5rem 0 0;
   min-height: 3rem;

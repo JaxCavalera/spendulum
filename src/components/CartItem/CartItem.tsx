@@ -10,14 +10,10 @@ import { ProductInfo } from '../ProductCard/ProductCard-models';
 import { SectionParagraph } from '../../utils/shared-styles';
 import {
   CartItemWrapper,
-  CartItemInfo,
   CartItemContent,
   TrashIconButton,
   CartItemLabel,
   CartPricePanel,
-  CartItemSize,
-  CartItemQty,
-  CartItemQtyWrapper,
 } from './CartItem-styles';
 
 // Components
@@ -25,6 +21,7 @@ import { CountTimer } from '../CountTimer/CountTimer';
 
 // Images
 import { TrashIcon } from '../../images/icons';
+import { CartItemSizeInfo } from '../CartItemSizeInfo/CartItemSizeInfo';
 
 export interface CartItemProps {
   cartItem: ProductInfo;
@@ -32,8 +29,9 @@ export interface CartItemProps {
 
 export const CartItem = ({ cartItem }: CartItemProps) => {
   const {
-    label,
     claimedSizes,
+    label,
+    value,
   } = cartItem;
 
   const initialDuration = -9001;
@@ -55,21 +53,19 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
           </CartPricePanel>
           {
             Object.keys(claimedSizes).map(sizeOption => (
-              <CartItemInfo key={sizeOption}>
-                <CartItemSize>{sizeOption}</CartItemSize>
-                <CartItemQtyWrapper>
-                  <span>QTY</span>
-                  <CartItemQty
-                    value={claimedSizes[sizeOption]}
-                    onChange={() => console.log('changed')}
-                  />
-                </CartItemQtyWrapper>
-              </CartItemInfo>
+              <CartItemSizeInfo
+                key={sizeOption}
+                sizeOption={sizeOption}
+                claimedSizes={claimedSizes}
+                cartItemMicroStoreId={value}
+              />
             ))
           }
         </CartItemContent>
         <TrashIconButton>
-          <TrashIcon />
+          <TrashIcon>
+            <title>Remove Item</title>
+          </TrashIcon>
         </TrashIconButton>
       </CartItemWrapper>
     </ErrorBoundary>
