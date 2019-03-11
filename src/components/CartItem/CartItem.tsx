@@ -17,6 +17,7 @@ import {
   CartPricePanel,
   CartItemSize,
   CartItemQty,
+  CartItemQtyWrapper,
 } from './CartItem-styles';
 
 // Components
@@ -56,10 +57,13 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
             Object.keys(claimedSizes).map(sizeOption => (
               <CartItemInfo key={sizeOption}>
                 <CartItemSize>{sizeOption}</CartItemSize>
-                <CartItemQty
-                  value={claimedSizes[sizeOption]}
-                  onChange={() => console.log('changed')}
-                />
+                <CartItemQtyWrapper>
+                  <span>QTY</span>
+                  <CartItemQty
+                    value={claimedSizes[sizeOption]}
+                    onChange={() => console.log('changed')}
+                  />
+                </CartItemQtyWrapper>
               </CartItemInfo>
             ))
           }

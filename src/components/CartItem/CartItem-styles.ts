@@ -62,26 +62,33 @@ export const CartItemInfo = styled.div`
 export const CartItemSize = styled.span`
   display: flex;
   align-items: center;
+  justify-content: center;
   min-width: 3.5rem;
-  width: 3.5rem;
+  width: 50%;
   margin-right: 1rem;
 `;
 
+export const CartItemQtyWrapper = styled.div`
+  width: 50%;
+`;
+
 export const CartItemQty = styled.input`
-  width: 100%;
+  width: 50%;
   height: 2rem;
   padding: 0 0.5rem;
+  margin-left: 0.5rem;
   outline: none;
-  border: solid 0.1rem ${colours.black};
-  border-left: 0;
-  border-top: solid 0.1rem ${colours.blackOpacity(0)};
-  border-right: 0;
-  background-color: transparent;
+  border: dashed 0.1rem ${colours.black};
+  border-radius: 0.4rem;
+  background-color: ${colours.whiteOpacity(0.5)};
   cursor: pointer;
+
+  &:hover {
+    background-color: ${colours.whiteOpacity(0.7)};
+  }
 
   &:focus {
     border: solid 0.1rem ${colours.black};
-    border-radius: 0.4rem;
     background-color: ${colours.white};
     cursor: text;
   }
