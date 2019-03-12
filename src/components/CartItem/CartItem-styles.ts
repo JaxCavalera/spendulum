@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { colours, IconButton } from '../../utils/shared-styles';
 
 // Styled Components

@@ -24,8 +24,8 @@ export interface CartSidebarProps { }
 export const CartSidebar = ({ }: CartSidebarProps) => {
   const store = useContext(StoreContext);
   const {
-    cartSidebarReducer: cartSidebarStore,
-    cartSidebarReducer: {
+    cartSidebarStore,
+    cartSidebarStore: {
       cartItemMicroStoreIds,
       isSidebarOpen
     },

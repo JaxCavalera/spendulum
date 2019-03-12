@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 // Shared Styles
 import { colours } from '../../utils/shared-styles';
@@ -31,11 +31,11 @@ export const CartItemQty = styled.input`
   outline: none;
   border: dashed 0.1rem ${colours.black};
   border-radius: 0.4rem;
-  background-color: ${colours.whiteOpacity(0.5)};
+  background-color: transparent;
   cursor: pointer;
 
   &:hover {
-    background-color: ${colours.whiteOpacity(0.7)};
+    background-color: ${colours.whiteOpacity(0.4)};
   }
 
   &:focus {

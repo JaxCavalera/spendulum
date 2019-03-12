@@ -20,7 +20,7 @@ export interface CartWidgetProps { }
 export const CartWidget = ({ }: CartWidgetProps) => {
   const store = useContext(StoreContext);
   const dispatch = useContext(StoreDispatch);
-  const { isSidebarOpen, cartItemMicroStoreIds } = store.cartSidebarReducer;
+  const { isSidebarOpen, cartItemMicroStoreIds } = store.cartSidebarStore;
 
   const handleCartOnClick = () => {
     dispatch({

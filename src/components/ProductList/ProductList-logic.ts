@@ -2,7 +2,7 @@
 import { fetchAvailableProductsList } from './ProductList-apis';
 
 // Models
-import { ProductInfo } from '../ProductCard/ProductCard-models';
+import { ProductInfo } from '../../utils/product-info-helpers';
 import { ProductListActionTypes } from './ProductList-models';
 
 export const createProductMicroStores = (

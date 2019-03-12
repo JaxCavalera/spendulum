@@ -8,7 +8,7 @@ import { StoreContext, StoreDispatch } from '../../container/rootReducer';
 
 // Models
 import { ProductListActionTypes } from './ProductList-models';
-import { ProductInfo } from '../ProductCard/ProductCard-models';
+import { ProductInfo } from '../../utils/product-info-helpers';
 
 // Child Components
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
@@ -26,7 +26,7 @@ import { refreshProductList } from './ProductList-logic';
 export const ProductList = () => {
   const store = useContext(StoreContext);
   const dispatch = useContext(StoreDispatch);
-  const { productMicroStoreIds } = store.productListReducer;
+  const { productMicroStoreIds } = store.productListStore;
 
   useEffect(() => {
     // Only  refreshes when the Product List component is mounted
@@ -45,7 +45,7 @@ export const ProductList = () => {
               productMicroStoreIds.map((productId) => (
                 <ProductCard
                   key={productId}
-                  data={store.productListReducer[productId]}
+                  data={store.productListStore[productId]}
                 />
               ))
             )

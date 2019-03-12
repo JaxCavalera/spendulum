@@ -1,12 +1,13 @@
 import addMilliseconds from 'date-fns/add_milliseconds';
 
 // Models
-import { ProductInfo, SizeOptions } from "./ProductCard-models";
+import { ProductInfo } from '../../utils/product-info-helpers';
 import { CartSidebarActionTypes, CartSidebarReducerState } from '../CartSidebar/CartSidebar-models';
 import { ProductListActionTypes } from '../ProductList/ProductList-models';
 
 // Utils
 import { deepClone } from '../../utils/deep-clone';
+import { updateProductData } from '../../utils/product-info-helpers';
 
 /**
  * Generates a random duration to wait before changing the price of a product in the productList
@@ -63,48 +64,6 @@ export const refreshPriceTimerInProductList = (
   });
 };
 
-export const calculateClaimedSizes = (
-  existingClaimedSizes: SizeOptions,
-  selectedSize: string,
-  requestedQty: number,
-) => {
-  const existingQty = existingClaimedSizes[selectedSize];
-  const combinedQty = typeof existingQty !== 'undefined' && (existingQty + requestedQty);
-
-  const updatedClaimedSizes: SizeOptions = {
-    ...existingClaimedSizes,
-    [selectedSize]: combinedQty || requestedQty,
-  };
-
-  return updatedClaimedSizes;
-};
-
-export const calculateAvailableSizes = (
-  existingAvailableSizes: SizeOptions,
-  selectedSize: string,
-  requestedQty: number,
-) => {
-  const existingAvailableQty = existingAvailableSizes[selectedSize];
-  const newAvailableQty = typeof existingAvailableQty !== 'undefined' && (existingAvailableQty - requestedQty);
-
-  // Typescript compiler limitation workaround - default to 0
-  const updatedAvailableSizes: SizeOptions = {
-    ...existingAvailableSizes,
-    [selectedSize]: newAvailableQty || 0,
-  };
-
-  return updatedAvailableSizes;
-};
-
-export const verifyItemHasEnoughQty = (
-  targetItem: ProductInfo,
-  selectedSize: string,
-  requestedQty: number,
-) => {
-  const availableQty = targetItem.availableSizes[selectedSize];
-  return !!availableQty && (availableQty >= requestedQty);
-};
-
 /**
  * Avoids duplicate cartItem listings by adding or replacing items in the sidebar as required
  */
@@ -159,29 +118,6 @@ export const calculateUpdatedProductList = (
   newProductList[cardIndex] = targetItem;
 
   return newProductList;
-};
-
-/**
- * Updates quantity related details for the specified product
- * @param product - Details for the product represented by this productCard
- * @param selectedSize - Property referencing an availablesize on this productCard to b eadded to the cart
- * @param qty - Number of items in the selectedSize to be added to the cart
- * @returns - Updated copy of the provided product
- */
-export const updateProductData = (product: ProductInfo, selectedSize: string, qty: number) => {
-  if (!verifyItemHasEnoughQty(product, selectedSize, 1)) {
-    // Avoid updating the product data if it doesn't have enough of the selectedSize available
-    return;
-  }
-
-  const newClaimedSizes = calculateClaimedSizes(product.claimedSizes, selectedSize, qty);
-  const newAvailableSizes = calculateAvailableSizes(product.availableSizes, selectedSize, qty);
-
-  return {
-    ...product,
-    claimedSizes: newClaimedSizes,
-    availableSizes: newAvailableSizes,
-  };
 };
 
 export const createNewProductPrice = (currentPrice: number, minPrice: number, maxPrice: number): number => {

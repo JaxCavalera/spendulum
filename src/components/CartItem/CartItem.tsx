@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
 // Error Handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Models
-import { ProductInfo } from '../ProductCard/ProductCard-models';
+import { ProductInfo, SizeOptions } from '../../utils/product-info-helpers';
 
 // Styles
 import { SectionParagraph } from '../../utils/shared-styles';
@@ -18,20 +18,27 @@ import {
 
 // Components
 import { CountTimer } from '../CountTimer/CountTimer';
+import { CartItemSizeInfo } from '../CartItemSizeInfo/CartItemSizeInfo';
 
 // Images
 import { TrashIcon } from '../../images/icons';
-import { CartItemSizeInfo } from '../CartItemSizeInfo/CartItemSizeInfo';
+
+// Logic
+import { handleItemQtyOnChange } from './CartItem-logic';
+import { StoreContext, StoreDispatch } from '../../container/rootReducer';
 
 export interface CartItemProps {
   cartItem: ProductInfo;
 }
 
 export const CartItem = ({ cartItem }: CartItemProps) => {
+  const store = useContext(StoreContext);
+  const dispatch = useContext(StoreDispatch);
+
   const {
+    availableSizes,
     claimedSizes,
     label,
-    value,
   } = cartItem;
 
   const initialDuration = -9001;
@@ -40,6 +47,16 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
   const handleOnTimerEnd = () => {
     // refreshPriceTimerInProductList(data, dispatch, updatePriceDuration);
     // refreshListedProductPrice(data, dispatch);
+  };
+
+  const callHandleItemQtyOnChange = (newQty: number, sizeOption: string) => {
+    handleItemQtyOnChange(
+      newQty,
+      sizeOption,
+      cartItem,
+      store,
+      dispatch,
+    );
   };
 
   return (
@@ -55,9 +72,11 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
             Object.keys(claimedSizes).map(sizeOption => (
               <CartItemSizeInfo
                 key={sizeOption}
-                sizeOption={sizeOption}
+                availableQty={availableSizes[sizeOption] || 0}
                 claimedSizes={claimedSizes}
-                cartItemMicroStoreId={value}
+                minQty={1}
+                sizeOption={sizeOption}
+                itemQtyOnChange={callHandleItemQtyOnChange}
               />
             ))
           }

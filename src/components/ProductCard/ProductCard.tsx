@@ -48,8 +48,8 @@ export const ProductCard = ({ data }: ProductCardProps) => {
 
   // Extract consumed store data
   const {
-    cartSidebarReducer: cartSidebarStore,
-    cartSidebarReducer: {
+    cartSidebarStore: cartSidebarStore,
+    cartSidebarStore: {
       cartItemMicroStoreIds,
     }
   } = store;

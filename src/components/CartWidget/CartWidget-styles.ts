@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { IconButton, colours } from '../../utils/shared-styles';
 
 interface CartButtonProps {
