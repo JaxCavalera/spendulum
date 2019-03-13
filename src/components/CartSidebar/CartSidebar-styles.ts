@@ -16,6 +16,7 @@ export const CartSidebarWrapper = styled.div`
   overflow-x: hidden;
   padding: ${(props: CartSidebarWrapperProps) => props.isSidebarOpen ? '1rem' : '1rem 0'};
   width: ${(props: CartSidebarWrapperProps) => props.isSidebarOpen ? '50%' : '0'};
+  min-width: ${(props: CartSidebarWrapperProps) => props.isSidebarOpen ? '18rem' : '0'};
 `;
 
 export const CartHeading = styled.div`
