@@ -20,6 +20,9 @@ export const CartItemSize = styled.span`
 `;
 
 export const CartItemQtyWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   width: 50%;
 `;
 
