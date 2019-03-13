@@ -14,6 +14,7 @@ import {
   TrashIconButton,
   CartItemLabel,
   CartPricePanel,
+  EmptyCartAlert,
 } from './CartItem-styles';
 
 // Components
@@ -24,7 +25,7 @@ import { CartItemSizeInfo } from '../CartItemSizeInfo/CartItemSizeInfo';
 import { TrashIcon } from '../../images/icons';
 
 // Logic
-import { handleItemQtyOnChange } from './CartItem-logic';
+import { handleItemQtyOnChange, removeEmptyClaimedSizes } from './CartItem-logic';
 import { StoreContext, StoreDispatch } from '../../container/rootReducer';
 
 export interface CartItemProps {
@@ -43,6 +44,9 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
 
   const initialDuration = -9001;
   const [priceDuration, updatePriceDuration] = useState(initialDuration);
+
+  // Only display sizes with 1 or more qty 
+  const filteredClaimedSizes = removeEmptyClaimedSizes(claimedSizes);
 
   const handleOnTimerEnd = () => {
     // refreshPriceTimerInProductList(data, dispatch, updatePriceDuration);
@@ -69,16 +73,21 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
             <CountTimer duration={priceDuration} alertDuration={120000} onEnd={handleOnTimerEnd} />
           </CartPricePanel>
           {
-            Object.keys(claimedSizes).map(sizeOption => (
+            filteredClaimedSizes.map(sizeOption => (
               <CartItemSizeInfo
                 key={sizeOption}
-                availableQty={availableSizes[sizeOption] || 0}
                 claimedSizes={claimedSizes}
-                minQty={1}
                 sizeOption={sizeOption}
+                availableQty={availableSizes[sizeOption]}
                 itemQtyOnChange={callHandleItemQtyOnChange}
               />
             ))
+          }
+          {
+            !filteredClaimedSizes.length &&
+            <EmptyCartAlert>
+              Item will be removed when the active price timer expires if still empty.
+            </EmptyCartAlert>
           }
         </CartItemContent>
         <TrashIconButton>

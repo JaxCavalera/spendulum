@@ -24,7 +24,7 @@ import {
 } from './ProductCard-styles';
 
 // Models
-import { ProductInfo } from './ProductCard-models';
+import { ProductInfo } from '../../utils/product-info-helpers';
 
 // Logic
 import {

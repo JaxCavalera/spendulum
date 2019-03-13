@@ -1,5 +1,5 @@
 import styled from 'styled-components/macro';
-import { colours, IconButton } from '../../utils/shared-styles';
+import { colours, IconButton, SectionParagraph } from '../../utils/shared-styles';
 
 // Styled Components
 export const CartItemWrapper = styled.div`
@@ -49,6 +49,15 @@ export const CartPricePanel = styled.div`
   height: 2.5rem;
   min-height: 2.5rem;
   margin-top: 0.5rem;
+  box-sizing: border-box;
+`;
+
+export const EmptyCartAlert = styled(SectionParagraph)`
+  text-align: center;
+  color: ${colours.red5};
+  background-color: ${colours.whiteOpacity(0.6)};
+  border-radius: 0.4rem;
+  padding: 0.5rem;
   box-sizing: border-box;
 `;
 

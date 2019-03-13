@@ -1,7 +1,6 @@
 export const validateNewQty = (
   newQty: string,
   previousQty: number,
-  minQty: number,
   availableQty: number,
 ) => {
   const convertedQty = parseInt(newQty, 10);
@@ -12,7 +11,7 @@ export const validateNewQty = (
     return false;
   }
 
-  if (convertedQty < minQty) {
+  if (convertedQty < 0) {
     // New quantity is less than the allowed minimum
     return false;
   }

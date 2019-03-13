@@ -1,4 +1,4 @@
-import { ProductInfo } from '../../ProductCard/ProductCard-models';
+import { ProductInfo } from '../../../utils/product-info-helpers';
 
 export const mockProductList: ProductInfo[] = [
   {

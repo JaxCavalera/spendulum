@@ -1,10 +1,17 @@
 // Utils
-import { updateProductData, ProductInfo } from '../../utils/product-info-helpers';
+import { updateProductSizes, ProductInfo, SizeOptions } from '../../utils/product-info-helpers';
 
 // Models
 import { RootReducerStore } from '../../container/rootReducer';
 import { CartSidebarActionTypes } from '../CartSidebar/CartSidebar-models';
 import { ProductListActionTypes } from '../ProductList/ProductList-models';
+
+export const removeEmptyClaimedSizes = (
+  claimedSizes: SizeOptions,
+): string[] => Object.keys(claimedSizes).filter((name) => {
+  const sizeQty = claimedSizes[name];
+  return (typeof sizeQty !== 'undefined' && sizeQty > 0);
+});
 
 export const handleItemQtyOnChange = (
   newQty: number,
@@ -13,10 +20,17 @@ export const handleItemQtyOnChange = (
   store: RootReducerStore,
   dispatch: React.Dispatch<any>,
 ) => {
-  const previousQty = cartItem.claimedSizes[sizeOption];
-  const finalQty = typeof previousQty !== 'undefined' ? newQty - previousQty : newQty;
+  const currentQty = cartItem.claimedSizes[sizeOption];
 
-  const adjustedProductData = updateProductData(cartItem, sizeOption, finalQty);
+  // Avoid unnecessary processing
+  if (typeof currentQty === 'undefined' || currentQty === newQty) {
+    return;
+  }
+
+  const qtyDiff = newQty - currentQty;
+  const isAdding = qtyDiff > 0;
+
+  const adjustedProductData = updateProductSizes(cartItem, sizeOption, Math.abs(qtyDiff), isAdding);
 
   // Only continue the dispatch if the productData was successfully updated
   if (adjustedProductData) {

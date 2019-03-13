@@ -1,10 +1,11 @@
-import { updateProductData } from '../ProductCard-logic';
+// Mock data
+import { productCardData } from './product-info-helpers-mocks';
 
-// Mocks
-import { productCardData } from './ProductCard-mocks';
+// Tested Functions
+import { updateProductSizes } from '../product-info-helpers';
 
-// updateProductData
-describe('Given updateProductData is called with valid newItem and cartItems', () => {
+// updateProductSizes
+describe('Given updateProductSizes is called with valid newItem and cartItems', () => {
   describe('When the newItem has availableSizes for the selectedSize', () => {
     test('Then it will return a new cardData set with updated claimed and available sizes', () => {
       const finalProductData = {
@@ -21,7 +22,7 @@ describe('Given updateProductData is called with valid newItem and cartItems', (
         imgUrl: 'https://i.imgur.com/lrCkut9.png',
       };
 
-      const newCardData = updateProductData(productCardData, 'NA', 1);
+      const newCardData = updateProductSizes(productCardData, 'NA', 1, true);
 
       expect(newCardData).toEqual(finalProductData);
     });
@@ -30,7 +31,7 @@ describe('Given updateProductData is called with valid newItem and cartItems', (
   describe('When the newItem does NOT have any availableSizes for the selectedSize', () => {
     test('Then it will return undefined', () => {
       const requestedQty = (productCardData.availableSizes.NA && productCardData.availableSizes.NA + 1) || 9001;
-      const newCardData = updateProductData(productCardData, 'NA', requestedQty);
+      const newCardData = updateProductSizes(productCardData, 'NA', requestedQty, true);
 
       expect(newCardData).not.toBeDefined;
     });

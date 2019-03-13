@@ -16,18 +16,16 @@ import {
 import { validateNewQty } from './CartItemSizeInfo-logic';
 
 export interface CartItemSizeInfoProps {
-  availableQty: number,
   claimedSizes: SizeOptions;
-  minQty: number,
   sizeOption: string;
+  availableQty?: number;
   itemQtyOnChange?: (newQty: number, sizeOption: string) => void;
 }
 
 export const CartItemSizeInfo = ({
-  availableQty,
   claimedSizes,
-  minQty,
   sizeOption,
+  availableQty,
   itemQtyOnChange,
 }: CartItemSizeInfoProps) => {
   // Local State
@@ -36,9 +34,9 @@ export const CartItemSizeInfo = ({
 
   // Detect prop changes that need to trigger local state updates
   useEffect(() => {
-    const propsQty = claimedSizes[sizeOption];
-    if (typeof propsQty !== 'undefined' && propsQty.toFixed(0) !== localQty) {
-      updateLocalQty(propsQty.toFixed(0));
+    const newLocalQty = claimedSizes[sizeOption];
+    if (typeof newLocalQty !== 'undefined' && newLocalQty.toFixed(0) !== localQty) {
+      updateLocalQty(newLocalQty.toFixed(0));
     }
   }, [claimedSizes]);
 
@@ -48,13 +46,13 @@ export const CartItemSizeInfo = ({
   };
 
   const handleItemQtyOnBlur = () => {
-    if (!validateNewQty(localQty, initialQty, minQty, availableQty)) {
-      // Reset the localQty back to the initial value as the current localQty is invalid
+    if (typeof availableQty === 'undefined' || !validateNewQty(localQty, initialQty, availableQty)) {
+      // Revert the localQty to the last known allowed value (initialQty)
       updateLocalQty(initialQty.toFixed(0));
       return;
     }
 
-    // localQty is valid so pass up a change event to the parent if a handler was provided via props
+    // New localQty is valid so pass the change upstream via the onChange handler
     if (itemQtyOnChange) {
       itemQtyOnChange(parseInt(localQty, 10), sizeOption);
     }

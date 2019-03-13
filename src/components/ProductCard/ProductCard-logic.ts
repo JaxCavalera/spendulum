@@ -7,7 +7,7 @@ import { ProductListActionTypes } from '../ProductList/ProductList-models';
 
 // Utils
 import { deepClone } from '../../utils/deep-clone';
-import { updateProductData } from '../../utils/product-info-helpers';
+import { updateProductSizes } from '../../utils/product-info-helpers';
 
 /**
  * Generates a random duration to wait before changing the price of a product in the productList
@@ -161,7 +161,7 @@ export const handleAddToCartOnClick = (
   // Ensure any deep level changes to properties on the chosen item do not reference / affect the original
   const clonedData = deepClone(data);
 
-  const updatedProduct = updateProductData(clonedData, selectedSize, 1);
+  const updatedProduct = updateProductSizes(clonedData, selectedSize, 1, true);
 
   if (!updatedProduct) {
     // Failed to update the product so exit early
