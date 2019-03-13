@@ -1,5 +1,5 @@
 // Utils
-import { updateProductSizes, ProductInfo, SizeOptions } from '../../utils/product-info-helpers';
+import { updateProductSizes, ProductInfo, SizeOptions, maintainSizeOrder } from '../../utils/product-info-helpers';
 
 // Models
 import { RootReducerStore } from '../../container/rootReducer';
@@ -8,10 +8,14 @@ import { ProductListActionTypes } from '../ProductList/ProductList-models';
 
 export const removeEmptyClaimedSizes = (
   claimedSizes: SizeOptions,
-): string[] => Object.keys(claimedSizes).filter((name) => {
-  const sizeQty = claimedSizes[name];
-  return (typeof sizeQty !== 'undefined' && sizeQty > 0);
-});
+): string[] => {
+  const filteredSizes = Object.keys(claimedSizes).filter((name) => {
+    const sizeQty = claimedSizes[name];
+    return (typeof sizeQty !== 'undefined' && sizeQty > 0);
+  });
+
+  return filteredSizes.sort(maintainSizeOrder);
+};
 
 export const handleItemQtyOnChange = (
   newQty: number,

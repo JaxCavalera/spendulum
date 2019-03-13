@@ -36,6 +36,7 @@ import {
 
 // Images
 import { ShoppingCart } from '../../images/icons';
+import { maintainSizeOrder } from '../../utils/product-info-helpers';
 
 // ProductCard Props
 export interface ProductCardProps {
@@ -99,7 +100,7 @@ export const ProductCard = ({ data }: ProductCardProps) => {
             </PricePanel>
             <SizePicker onChange={handleSizePickerOnChange} value={selectedSize}>
               {
-                Object.keys(data.availableSizes).map(size => (
+                Object.keys(data.availableSizes).sort(maintainSizeOrder).map(size => (
                   <option key={size} value={size}>
                     Size {size} [{data.availableSizes[size]} Available]
                   </option>

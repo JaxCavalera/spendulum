@@ -26,6 +26,25 @@ export interface ProductInfo {
   imgUrl?: string;
 }
 
+const expectedSizeOrder = ['NA', 'XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+
+export const maintainSizeOrder = (a: string, b: string) => {
+  const aIndex = expectedSizeOrder.indexOf(a);
+  const bIndex = expectedSizeOrder.indexOf(b);
+
+  if (aIndex < bIndex) {
+    // Position size A in front of size B
+    return -1;
+  }
+
+  if (aIndex > bIndex) {
+    // Position size B in front of size A
+    return 1;
+  }
+
+  // Order of sizes will not be changed (unlikely to ever trigger)
+  return 0;
+};
 
 export const verifyItemQtyAdjustment = (
   targetItem: ProductInfo,

@@ -32,9 +32,11 @@ export const CartItemLabel = styled.p`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 2.5rem;
   min-height: 2.5rem;
+  text-align: center;
   margin: 0;
+  padding: 0.5rem;
+  box-sizing: border-box;
   background-color: ${colours.blackOpacity(0.5)};
   color: ${colours.white};
   font-weight: 600;
