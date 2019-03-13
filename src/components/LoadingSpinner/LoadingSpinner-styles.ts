@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components/macro';
 
 export const rotateSpinner = keyframes`
   0% {
@@ -31,5 +31,7 @@ export const Spinner = styled.div`
     border-top: solid 0.22rem #565555;
     border-radius: 50%;
     animation: ${rotateSpinner} 1s infinite linear;
+    left: 0;
+    top: -0.22rem;
   }
 `;

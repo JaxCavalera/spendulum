@@ -24,7 +24,7 @@ import {
 } from './ProductCard-styles';
 
 // Models
-import { ProductInfo } from './ProductCard-models';
+import { ProductInfo } from '../../utils/product-info-helpers';
 
 // Logic
 import {
@@ -47,7 +47,12 @@ export const ProductCard = ({ data }: ProductCardProps) => {
   const dispatch = useContext(StoreDispatch);
 
   // Extract consumed store data
-  const { cartItems } = store.cartSidebarReducer;
+  const {
+    cartSidebarStore: cartSidebarStore,
+    cartSidebarStore: {
+      cartItemMicroStoreIds,
+    }
+  } = store;
 
   // InitialDuration ensures we only calcualte remainingDuration once when the card is mounted
   const initialDuration = -9001;
@@ -62,7 +67,8 @@ export const ProductCard = ({ data }: ProductCardProps) => {
     handleAddToCartOnClick(
       data,
       selectedSize,
-      cartItems,
+      cartItemMicroStoreIds,
+      cartSidebarStore,
       dispatch,
     );
   };

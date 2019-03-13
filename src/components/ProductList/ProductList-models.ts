@@ -1,7 +1,6 @@
-import { ProductInfo } from '../ProductCard/ProductCard-models';
+import { ProductInfo } from '../../utils/product-info-helpers';
 
 export enum ProductListActionTypes {
-  UPDATE_PRODUCT_LIST = 'productList/UPDATE_PRODUCT_LIST',
   UPDATE_PRODUCT_MICROSTORE_ID_LIST = 'productList/UPDATE_PRODUCT_MICROSTORE_ID_LIST',
   ASSIGN_MICROSTORE = 'productList/ASSIGN_MICROSTORE',
   REMOVE_MICROSTORE = 'productList/REMOVE_MICROSTORE',
@@ -10,7 +9,6 @@ export enum ProductListActionTypes {
 
 export interface ProductListReducerAction {
   type: string;
-  productList?: ProductInfo[];
   productMicroStoreIds?: string[];
   productMicroStoreId?: string;
   productData?: ProductInfo;
@@ -20,6 +18,5 @@ export interface ProductListReducerAction {
 
 export interface ProductListReducerState {
   [key: string]: any;
-  productList: ProductInfo[];
   productMicroStoreIds: string[];
 }

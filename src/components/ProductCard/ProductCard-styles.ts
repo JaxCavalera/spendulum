@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 // Shared Styles
 import { colours, BasicButton } from '../../utils/shared-styles';
@@ -68,11 +68,16 @@ export const SizePicker = styled.select`
 `;
 
 export const AddToCartBtn = styled(BasicButton)`
-  justify-content: space-around;
+  justify-content: space-between;
   width: 100%;
+
+  > span {
+    width: 100%;
+  }
 
   > svg {
     height: 75%;
+    width: 50%;
     fill: ${colours.blue5};
   }
 

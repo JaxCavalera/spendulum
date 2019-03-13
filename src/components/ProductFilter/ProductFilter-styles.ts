@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 // Styled Components
 export const ProductFilterWrapper = styled.div`

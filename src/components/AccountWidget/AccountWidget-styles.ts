@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 // Shared Styles
 import { BasicButton, colours } from '../../utils/shared-styles';

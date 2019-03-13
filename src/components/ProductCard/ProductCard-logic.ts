@@ -1,13 +1,13 @@
-import { format } from 'date-fns';
 import addMilliseconds from 'date-fns/add_milliseconds';
 
 // Models
-import { ProductInfo, SizeOptions } from "./ProductCard-models";
-import { CartSidebarActionTypes } from '../CartSidebar/CartSidebar-models';
+import { ProductInfo } from '../../utils/product-info-helpers';
+import { CartSidebarActionTypes, CartSidebarReducerState } from '../CartSidebar/CartSidebar-models';
 import { ProductListActionTypes } from '../ProductList/ProductList-models';
 
 // Utils
 import { deepClone } from '../../utils/deep-clone';
+import { updateProductSizes } from '../../utils/product-info-helpers';
 
 /**
  * Generates a random duration to wait before changing the price of a product in the productList
@@ -64,74 +64,43 @@ export const refreshPriceTimerInProductList = (
   });
 };
 
-export const calculateClaimedSizes = (
-  existingClaimedSizes: SizeOptions,
-  selectedSize: string,
-  requestedQty: number,
-) => {
-  const existingQty = existingClaimedSizes[selectedSize];
-  const combinedQty = typeof existingQty !== 'undefined' && (existingQty + requestedQty);
-
-  const updatedClaimedSizes: SizeOptions = {
-    ...existingClaimedSizes,
-    [selectedSize]: combinedQty || requestedQty,
-  };
-
-  return updatedClaimedSizes;
-};
-
-export const calculateAvailableSizes = (
-  existingAvailableSizes: SizeOptions,
-  selectedSize: string,
-  requestedQty: number,
-) => {
-  const existingAvailableQty = existingAvailableSizes[selectedSize];
-  const newAvailableQty = typeof existingAvailableQty !== 'undefined' && (existingAvailableQty - requestedQty);
-
-  // Typescript compiler limitation workaround - default to 0
-  const updatedAvailableSizes: SizeOptions = {
-    ...existingAvailableSizes,
-    [selectedSize]: newAvailableQty || 0,
-  };
-
-  return updatedAvailableSizes;
-};
-
-export const verifyItemHasEnoughQty = (
-  targetItem: ProductInfo,
-  selectedSize: string,
-  requestedQty: number,
-) => {
-  const availableQty = targetItem.availableSizes[selectedSize];
-  return !!availableQty && (availableQty >= requestedQty);
-};
-
 /**
- * Used to avoid duplicate listings of the same product in the cart
+ * Avoids duplicate cartItem listings by adding or replacing items in the sidebar as required
  */
-export const consolidateCartItems = (
+export const adjustCartItems = (
   newItem: ProductInfo,
-  cartItems: ProductInfo[],
+  cartItemMicroStoreIds: string[],
+  cartSidebarStore: CartSidebarReducerState,
+  dispatch: React.Dispatch<any>,
 ) => {
-  // Scan for an existing item alredy in the cart
-  const [matchingCartItem] = cartItems.filter(item => item.value === newItem.value);
+  // Scan for an existing item already in the cart
+  const existingCartItem = cartSidebarStore[newItem.value];
 
-  if (!matchingCartItem) {
-    return [
-      ...cartItems,
-      newItem,
+  if (!existingCartItem) {
+    // Update microStoreIds to include the new cartItemMicroStore
+    const newCartItemMicroStoreIds = [
+      ...cartItemMicroStoreIds,
+      newItem.value,
     ];
+
+    dispatch({
+      type: CartSidebarActionTypes.UPDATE_CART_ITEM_MICROSTORE_ID_LIST,
+      cartItemMicroStoreIds: newCartItemMicroStoreIds,
+    });
   }
 
-  // Item exists so use the priceTimer from the cart if there is any duration left
-  const priceTimerDuration = calculateRemainingPriceDuration(matchingCartItem.priceTimer);
-  const mergedCartItem = {
+  // Generate a new cartItem using the existingCartItem.priceTimer if it exists
+  const cartItem = {
     ...newItem,
-    ...!!priceTimerDuration && { priceTimer: matchingCartItem.priceTimer },
+    ...{ priceTimer: !!existingCartItem ? existingCartItem.priceTimer : newItem.priceTimer },
   };
 
-  // Generate a new list of cartItems switching out the updated item so the display order in the UI is unaffected
-  return cartItems.map(item => (item.value === newItem.value) ? mergedCartItem : item);
+  // Create or Replace the cartItemMicroStore data
+  dispatch({
+    type: CartSidebarActionTypes.ASSIGN_MICROSTORE,
+    cartItemMicroStoreId: cartItem.value,
+    cartItemData: cartItem,
+  });
 };
 
 /**
@@ -149,29 +118,6 @@ export const calculateUpdatedProductList = (
   newProductList[cardIndex] = targetItem;
 
   return newProductList;
-};
-
-/**
- * Updates quantity related details for the specified product
- * @param product - Details for the product represented by this productCard
- * @param selectedSize - Property referencing an availablesize on this productCard to b eadded to the cart
- * @param qty - Number of items in the selectedSize to be added to the cart
- * @returns - Updated copy of the provided product
- */
-export const updateProductData = (product: ProductInfo, selectedSize: string, qty: number) => {
-  if (!verifyItemHasEnoughQty(product, selectedSize, 1)) {
-    // Avoid updating the product data if it doesn't have enough of the selectedSize available
-    return;
-  }
-
-  const newClaimedSizes = calculateClaimedSizes(product.claimedSizes, selectedSize, qty);
-  const newAvailableSizes = calculateAvailableSizes(product.availableSizes, selectedSize, qty);
-
-  return {
-    ...product,
-    claimedSizes: newClaimedSizes,
-    availableSizes: newAvailableSizes,
-  };
 };
 
 export const createNewProductPrice = (currentPrice: number, minPrice: number, maxPrice: number): number => {
@@ -208,13 +154,14 @@ export const refreshListedProductPrice = (data: ProductInfo, dispatch: React.Dis
 export const handleAddToCartOnClick = (
   data: ProductInfo,
   selectedSize: string,
-  cartItems: ProductInfo[],
+  cartItemMicroStoreIds: string[],
+  cartSidebarStore: CartSidebarReducerState,
   dispatch: React.Dispatch<any>,
 ) => {
   // Ensure any deep level changes to properties on the chosen item do not reference / affect the original
   const clonedData = deepClone(data);
 
-  const updatedProduct = updateProductData(clonedData, selectedSize, 1);
+  const updatedProduct = updateProductSizes(clonedData, selectedSize, 1, true);
 
   if (!updatedProduct) {
     // Failed to update the product so exit early
@@ -222,13 +169,12 @@ export const handleAddToCartOnClick = (
   }
 
   // Consolidate cart items
-  const newCartItems = consolidateCartItems(updatedProduct, cartItems);
-
-  // Update Cart Items
-  dispatch({
-    type: CartSidebarActionTypes.UPDATE_CART_ITEMS,
-    cartItems: newCartItems,
-  });
+  adjustCartItems(
+    updatedProduct,
+    cartItemMicroStoreIds,
+    cartSidebarStore,
+    dispatch
+  );
 
   // Update ProductList so available qty on items in the store remains accurate
   dispatch({

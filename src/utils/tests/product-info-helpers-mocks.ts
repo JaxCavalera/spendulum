@@ -1,4 +1,4 @@
-import { ProductInfo } from '../ProductCard-models';
+import { ProductInfo } from '../product-info-helpers';
 
 export const productCardData: ProductInfo = {
   label: 'Kate Spade New York',

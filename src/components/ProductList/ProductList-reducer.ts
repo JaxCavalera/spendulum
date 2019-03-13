@@ -5,7 +5,6 @@ import {
 } from './ProductList-models';
 
 export const productListInitialState: ProductListReducerState = {
-  productList: [],
   productMicroStoreIds: [],
 };
 
@@ -14,13 +13,6 @@ export const productListReducer = (
   action: ProductListReducerAction,
 ): ProductListReducerState => {
   switch (action.type) {
-    case ProductListActionTypes.UPDATE_PRODUCT_LIST: {
-      return {
-        ...state,
-        ...action.productList && { productList: action.productList },
-      };
-    }
-
     case ProductListActionTypes.UPDATE_PRODUCT_MICROSTORE_ID_LIST: {
       return {
         ...state,
