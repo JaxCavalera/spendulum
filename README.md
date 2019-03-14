@@ -8,7 +8,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 &nbsp;&nbsp;&nbsp;&nbsp;[Validating Reducer Shapes](#validating-reducer-shapes)    
 &nbsp;&nbsp;&nbsp;&nbsp;[Final Thoughts on Hooks](#final-thoughts-on-hooks)    
 [Available Scripts](#available-scripts)    
-[Developer Notes](#developer-notes---goals-for-v1)    
 
 # Introduction
 This project is built as a POC to identify a suitable designe pattern that can leverage React hooks. The design pattern is used to power a product called **"Spendulum"**.
@@ -91,45 +90,6 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 This should be an absolute last resort, preference using the config-overrides npm package if possible.
-
-[Back To Top](#contents)
-
----
-
-## Developer Notes - (Goals for v1)
-#### Todo List
-- Build cart sidebar
-    - remove item with no claimedSizes from cart -> NEXT UP  call same fn as remove btn  adds a confirm popup
-    - Handle removal directly from cart -> NEXT UP
-    - Display Price timer for cart items
-- Implement basic account login using generic credentials like `username`, `password1` as a way for testing ability to add new products in via a UI.
-
-#### Bugs
-- Identified underlying cause of a bug where it takes a few remounts before all product cards display their correct, fixed timers. This is caused by a race condition when the reducer attempts to update the same array for each product if 2 or more need an update at the same moment in time.
-    - SOLUTION: Implemented a really basic version of the Micro Store pattern:
-        - Any time there is an array of objects mapped to components, assign each object to a new property on the parent store
-        - Use a unique identifier per object as the microStoreId (UUID, value, etc.)
-        - Keep an array of microStoreIds to easily map over and reference associated microStore object
-        - Interact with microStore data using the associated microStoreId and 4 dedicated reducer ActionTypes:
-            - `ASSIGN_MICROSTORE` -> Used for replacing entire microStore object (create / full update)
-            - `REMOVE_MICROSTORE` -> Removes the specified microStore property + object from the parent store
-            - `UPDATE_MICROSTORE_VALUE` -> Update the value of a specific property inside a target microStore object
-            - `UPDATE_PRODUCT_MICROSTORE_ID_LIST` -> Updates the list of microStoreIds
-    - Drawbacks vs using the microStore pattern in mobx
-        - Updating any value in a microStore causes a re-render on all components hooked up to the shared reducer (mobx is very good at only triggering component updates on specific elements affected directly by the updating of a target microStore property value.
-        - Aside from slower performance, it's not as straight-forward to update the value of a specific property in a microStore as it is in mobx
-        - There may be a way to prevent all components re-rendering if a reducer could be dynamically created for individual microStores at runtime.
-
-#### Security
-Consider using socket.io with an express server to manage price, availableSizes & priceTimer calculations. Pushing down to clients on update alternatively some more convoluted client-side techniques could be employed to make forged requests more difficult (see below).
-
-Memoize the last 5 prices for each product inside the API fn responsible for submitting an order (Planned for v2)
-- Keeps the list much harder to mess with clientside
-- Can reject orders where the price does not match a tracked value
-- Can reject orders where more than 5 prices are listed since there is a min duration of (currently 5 mins) between a price change and cart items only freeze their added price point for (currently 20 mins) after the time of being added to the cart
-
-#### Tests
-Currently the majority of functionality is not covered by any unit / integration / snapshot tests, aside from the most critical sections in the application i.e. combineReducers helper function, deepClone and similar.
 
 [Back To Top](#contents)
 
