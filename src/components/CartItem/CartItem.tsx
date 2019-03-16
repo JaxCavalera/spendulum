@@ -4,7 +4,8 @@ import React, { useState, useContext, useEffect } from 'react';
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Models
-import { ProductInfo, SizeOptions } from '../../utils/product-info-helpers';
+import { ProductInfo } from '../../utils/product-info-helpers';
+import { StoreContext, StoreDispatch } from '../../container/rootReducer';
 
 // Styles
 import { SectionParagraph } from '../../utils/shared-styles';
@@ -25,8 +26,11 @@ import { CartItemSizeInfo } from '../CartItemSizeInfo/CartItemSizeInfo';
 import { TrashIcon } from '../../images/icons';
 
 // Logic
-import { handleItemQtyOnChange, removeEmptyClaimedSizes } from './CartItem-logic';
-import { StoreContext, StoreDispatch } from '../../container/rootReducer';
+import {
+  handleItemQtyOnChange,
+  removeEmptyClaimedSizes,
+  handleTrashBtnOnClick,
+} from './CartItem-logic';
 
 export interface CartItemProps {
   cartItem: ProductInfo;
@@ -63,6 +67,26 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
     );
   };
 
+  const callHandleTrashBtnOnClick = () => {
+    handleTrashBtnOnClick(
+      cartItem,
+      store,
+      dispatch,
+      false,
+    );
+  };
+
+  useEffect(() => {
+    if (!filteredClaimedSizes.length) {
+      handleTrashBtnOnClick(
+        cartItem,
+        store,
+        dispatch,
+        true,
+      );
+    }
+  }, [filteredClaimedSizes]);
+
   return (
     <ErrorBoundary>
       <CartItemWrapper>
@@ -83,14 +107,8 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
               />
             ))
           }
-          {
-            !filteredClaimedSizes.length &&
-            <EmptyCartAlert>
-              Item will be removed when the active price timer expires if still empty.
-            </EmptyCartAlert>
-          }
         </CartItemContent>
-        <TrashIconButton>
+        <TrashIconButton onClick={callHandleTrashBtnOnClick}>
           <TrashIcon>
             <title>Remove Item</title>
           </TrashIcon>
