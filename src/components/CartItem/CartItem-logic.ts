@@ -1,5 +1,12 @@
+import { addMinutes } from 'date-fns';
+
 // Utils
-import { updateProductSizes, ProductInfo, SizeOptions, maintainSizeOrder } from '../../utils/product-info-helpers';
+import {
+  updateProductSizes,
+  ProductInfo,
+  SizeOptions,
+  maintainSizeOrder,
+} from '../../utils/product-info-helpers';
 
 // Models
 import { RootReducerStore } from '../../container/rootReducer';
@@ -16,6 +23,38 @@ export const removeEmptyClaimedSizes = (
 
   return filteredSizes.sort(maintainSizeOrder);
 };
+
+export const calcNewPriceTimerStr = (minsDuration: number): string => {
+  const newPriceTimerDateObj = addMinutes(new Date(), minsDuration);
+  return newPriceTimerDateObj.toISOString();
+};
+
+// Event Handlers
+
+export const handleTimerOnEnd = (
+  cartItem: ProductInfo,
+  store: RootReducerStore,
+  dispatch: React.Dispatch<any>,
+) => {
+  const newPriceTimerStr = calcNewPriceTimerStr(20);
+  const productCardData: ProductInfo = store.productListStore[cartItem.value];
+
+  if (!productCardData) {
+    throw new Error('Cart item has no matching product data, verify checkout logic!');
+  }
+
+  const updatedCartItemData = {
+    ...cartItem,
+    priceTimer: newPriceTimerStr,
+    price: productCardData.price,
+  };
+
+  dispatch({
+    type: CartSidebarActionTypes.ASSIGN_MICROSTORE,
+    cartItemMicroStoreId: cartItem.value,
+    cartItemData: updatedCartItemData,
+  });
+}
 
 export const handleItemQtyOnChange = (
   newQty: number,
@@ -46,7 +85,7 @@ export const handleItemQtyOnChange = (
     });
 
     // Update the productCardMicroStore's Available and Claimed Sizes
-    const matchingProductData: ProductInfo = store.productListStore[cartItem.value];
+    const matchingProductData: ProductInfo | undefined = store.productListStore[cartItem.value];
 
     dispatch({
       type: ProductListActionTypes.ASSIGN_MICROSTORE,
@@ -54,6 +93,7 @@ export const handleItemQtyOnChange = (
       productData: {
         ...adjustedProductData,
         ...{ priceTimer: matchingProductData ? matchingProductData.priceTimer : cartItem.priceTimer },
+        ...{ price: matchingProductData ? matchingProductData.price : cartItem.price },
       },
     });
   }

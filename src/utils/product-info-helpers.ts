@@ -113,3 +113,20 @@ export const updateProductSizes = (product: ProductInfo, selectedSize: string, q
     availableSizes: newAvailableSizes,
   };
 };
+
+/**
+ * Calculates how many milliseconds are left before the current pricetimer will expire
+ * @param dateIsoString - Current stored value of a priceTimer on a productInfo data set (in cart or in productList)
+ * @returns number of milliseconds remaining before the current priceTimer expires
+ */
+export const calculateRemainingPriceDuration = (dateIsoString: string) => {
+  const currentTime = new Date();
+  const priceDurationTime = new Date(dateIsoString);
+
+  const currentTimeMs = currentTime.getTime();
+  const priceTimerMs = priceDurationTime.getTime();
+
+  // Remaining duration should be a positive value if the iso timestamp is still in the future
+  const remainingDuration = priceTimerMs - currentTimeMs;
+  return (remainingDuration > 0) ? remainingDuration : 0;
+};

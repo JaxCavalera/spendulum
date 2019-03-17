@@ -54,15 +54,6 @@ export const CartPricePanel = styled.div`
   box-sizing: border-box;
 `;
 
-export const EmptyCartAlert = styled(SectionParagraph)`
-  text-align: center;
-  color: ${colours.red5};
-  background-color: ${colours.whiteOpacity(0.6)};
-  border-radius: 0.4rem;
-  padding: 0.5rem;
-  box-sizing: border-box;
-`;
-
 export const TrashIconButton = styled(IconButton)`
   margin: 0.5rem 0 0;
   min-height: 3rem;
