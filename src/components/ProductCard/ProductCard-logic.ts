@@ -1,9 +1,8 @@
-import { addMinutes, addMilliseconds } from 'date-fns';
+import { addMinutes } from 'date-fns';
 
 // Models
 import { CartSidebarActionTypes, CartSidebarReducerState } from '../CartSidebar/CartSidebar-models';
 import { ProductListActionTypes } from '../ProductList/ProductList-models';
-import { RootReducerStore } from '../../container/rootReducer';
 
 // Utils
 import { deepClone } from '../../utils/deep-clone';
@@ -53,7 +52,7 @@ export const adjustCartItems = (
   // Generate a new cartItem using the existingCartItem.priceTimer if it exists
   const cartItem = {
     ...newItem,
-    ...{ priceTimer: !!existingCartItem ? existingCartItem.priceTimer : addMilliseconds(new Date(), -10000) },
+    ...{ priceTimer: !!existingCartItem ? existingCartItem.priceTimer : addMinutes(new Date(), -20) },
     ...{ price: !!existingCartItem ? existingCartItem.price : newItem.price },
   };
 
@@ -126,7 +125,6 @@ export const handleAddToCartOnClick = (
 ) => {
   // Ensure any deep level changes to properties on the chosen item do not reference / affect the original
   const clonedData = deepClone(data);
-
   const updatedProduct = updateProductSizes(clonedData, selectedSize, 1, true);
 
   if (!updatedProduct) {
