@@ -1,4 +1,10 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
+import React, {
+  ChangeEvent,
+  KeyboardEvent,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 // Error Handling
 import ErrorBoundary from '../../utils/ErrorBoundary';
@@ -28,6 +34,8 @@ export const CartItemSizeInfo = ({
   availableQty,
   itemQtyOnChange,
 }: CartItemSizeInfoProps) => {
+  const cartItemQtyRef = useRef<HTMLInputElement>(null);
+
   // Local State
   const initialQty = claimedSizes[sizeOption] || 1;
   const [localQty, updateLocalQty] = useState(initialQty.toFixed(0));
@@ -42,7 +50,9 @@ export const CartItemSizeInfo = ({
 
   // Event Handler Wrappers
   const handleItemQtyOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    updateLocalQty(e.currentTarget.value);
+    if (!/(\.|e|\+|\-)/.test(e.currentTarget.value)) {
+      updateLocalQty(e.currentTarget.value);
+    }
   };
 
   const handleItemQtyOnBlur = () => {
@@ -58,6 +68,16 @@ export const CartItemSizeInfo = ({
     }
   };
 
+  const handleItemQtyOnKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key.toLowerCase() === 'enter' && cartItemQtyRef.current !== null) {
+      cartItemQtyRef.current.blur();
+    }
+
+    if (/(\.|e|\+|\-)/.test(e.key)) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <ErrorBoundary>
       <CartItemSizeInfoWrapper>
@@ -65,10 +85,12 @@ export const CartItemSizeInfo = ({
         <CartItemQtyWrapper>
           <span>QTY</span>
           <CartItemQty
+            ref={cartItemQtyRef}
             type="number"
             value={localQty}
             onChange={handleItemQtyOnChange}
             onBlur={handleItemQtyOnBlur}
+            onKeyPress={handleItemQtyOnKeyPress}
           />
         </CartItemQtyWrapper>
       </CartItemSizeInfoWrapper>
