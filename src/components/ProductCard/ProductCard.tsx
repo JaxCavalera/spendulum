@@ -23,15 +23,16 @@ import {
   PricePanel,
 } from './ProductCard-styles';
 
-// Models
-import { ProductInfo } from '../../utils/product-info-helpers';
+// Utils
+import {
+  ProductInfo,
+  calculateRemainingPriceDuration,
+} from '../../utils/product-info-helpers';
 
 // Logic
 import {
   handleAddToCartOnClick,
-  calculateRemainingPriceDuration,
-  refreshPriceTimerInProductList,
-  refreshListedProductPrice,
+  handleProductTimerOnEnd,
 } from './ProductCard-logic';
 
 // Images
@@ -49,13 +50,13 @@ export const ProductCard = ({ data }: ProductCardProps) => {
 
   // Extract consumed store data
   const {
-    cartSidebarStore: cartSidebarStore,
+    cartSidebarStore,
     cartSidebarStore: {
       cartItemMicroStoreIds,
     }
   } = store;
 
-  // InitialDuration ensures we only calcualte remainingDuration once when the card is mounted
+  // negative InitialDuration ensures we only calculate remainingDuration once when the card is mounted
   const initialDuration = -9001;
   const [priceDuration, updatePriceDuration] = useState(initialDuration);
   const [selectedSize, updateSelectedSize] = useState(Object.keys(data.availableSizes)[0] || 'Sold Out');
@@ -74,15 +75,17 @@ export const ProductCard = ({ data }: ProductCardProps) => {
     );
   };
 
-  const handleOnTimerEnd = () => {
-    refreshPriceTimerInProductList(data, dispatch, updatePriceDuration);
-    refreshListedProductPrice(data, dispatch);
+  const callHandleProductTimerOnEnd = () => {
+    handleProductTimerOnEnd(data, dispatch);
   };
 
   useEffect(() => {
     const remainingDuration = calculateRemainingPriceDuration(data.priceTimer);
-    updatePriceDuration(remainingDuration);
-  }, []);
+
+    if (priceDuration !== remainingDuration) {
+      updatePriceDuration(remainingDuration);
+    }
+  }, [data.priceTimer]);
 
   return (
     <ErrorBoundary>
@@ -96,7 +99,7 @@ export const ProductCard = ({ data }: ProductCardProps) => {
           <CardActions>
             <PricePanel>
               <SectionParagraph nomargin={true}>${data.price.toFixed(2)}</SectionParagraph>
-              <CountTimer duration={priceDuration} alertDuration={120000} onEnd={handleOnTimerEnd} />
+              <CountTimer duration={priceDuration} alertDuration={120000} onEnd={callHandleProductTimerOnEnd} />
             </PricePanel>
             <SizePicker onChange={handleSizePickerOnChange} value={selectedSize}>
               {

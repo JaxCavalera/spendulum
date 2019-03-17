@@ -1,67 +1,27 @@
-import addMilliseconds from 'date-fns/add_milliseconds';
+import { addMinutes } from 'date-fns';
 
 // Models
-import { ProductInfo } from '../../utils/product-info-helpers';
 import { CartSidebarActionTypes, CartSidebarReducerState } from '../CartSidebar/CartSidebar-models';
 import { ProductListActionTypes } from '../ProductList/ProductList-models';
 
 // Utils
 import { deepClone } from '../../utils/deep-clone';
-import { updateProductSizes } from '../../utils/product-info-helpers';
+import { ProductInfo, updateProductSizes } from '../../utils/product-info-helpers';
 
 /**
  * Generates a random duration to wait before changing the price of a product in the productList
  * @param maxDurationMins - Upper limit to the randomly generated duration
  * @param minDurationMins - Optional lower limit to the randomly generated duration
- * @returns - duration to wait in milliseconds
+ * @returns - New priceTimer Date.toISOString
  */
-export const createPriceDuration = (maxDurationMins: number, minDurationMins?: number) => {
-  const maxDurationMilliseconds = ((maxDurationMins - (minDurationMins || 0)) * 60) * 1000;
-  const minDurationMilliseconds = minDurationMins ? (minDurationMins * 60) * 1000 : 0;
+export const createNewRandomPriceTimerStr = (maxDurationMins: number, minDurationMins?: number) => {
+  const finalMaxDuration = maxDurationMins - (minDurationMins || 0);
+  const finalMinDuration = minDurationMins ? minDurationMins : 0;
 
-  const newDuration = Math.ceil(Math.random() * maxDurationMilliseconds) + minDurationMilliseconds;
+  const newDuration = Math.ceil(Math.random() * finalMaxDuration) + finalMinDuration;
+  const newPriceTimerDateObj = addMinutes(new Date(), newDuration);
 
-  return newDuration;
-};
-
-/**
- * Calculates how many milliseconds are left before the current pricetimer will expire
- * @param dateIsoString - Current stored value of a priceTimer on a productInfo data set (in cart or in productList)
- * @returns number of milliseconds remaining before the current priceTimer expires
- */
-export const calculateRemainingPriceDuration = (dateIsoString: string) => {
-  const currentTime = new Date();
-  const priceDurationTime = new Date(dateIsoString);
-
-  const currentTimeMs = currentTime.getTime();
-  const priceTimerMs = priceDurationTime.getTime();
-
-  // Remaining duration should be a positive value if the iso timestamp is still in the future
-  const remainingDuration = priceTimerMs - currentTimeMs;
-  return (remainingDuration > 0) ? remainingDuration : 0;
-};
-
-export const refreshPriceTimerInProductList = (
-  data: ProductInfo,
-  dispatch: React.Dispatch<any>,
-  updatePriceDuration: React.SetStateAction<any>,
-) => {
-  const newPriceDuration = createPriceDuration(20, 5);
-  const newPriceDate = addMilliseconds(new Date(), newPriceDuration);
-
-  const updatedProductData = {
-    ...data,
-    priceTimer: newPriceDate.toISOString(),
-  };
-
-  // Update the item relating to this productCard in the list
-  updatePriceDuration(newPriceDuration);
-
-  dispatch({
-    type: ProductListActionTypes.ASSIGN_MICROSTORE,
-    productMicroStoreId: updatedProductData.value,
-    productData: updatedProductData,
-  });
+  return newPriceTimerDateObj.toISOString();
 };
 
 /**
@@ -74,7 +34,7 @@ export const adjustCartItems = (
   dispatch: React.Dispatch<any>,
 ) => {
   // Scan for an existing item already in the cart
-  const existingCartItem = cartSidebarStore[newItem.value];
+  const existingCartItem: ProductInfo | undefined = cartSidebarStore[newItem.value];
 
   if (!existingCartItem) {
     // Update microStoreIds to include the new cartItemMicroStore
@@ -92,7 +52,8 @@ export const adjustCartItems = (
   // Generate a new cartItem using the existingCartItem.priceTimer if it exists
   const cartItem = {
     ...newItem,
-    ...{ priceTimer: !!existingCartItem ? existingCartItem.priceTimer : newItem.priceTimer },
+    ...{ priceTimer: !!existingCartItem ? existingCartItem.priceTimer : addMinutes(new Date(), -20) },
+    ...{ price: !!existingCartItem ? existingCartItem.price : newItem.price },
   };
 
   // Create or Replace the cartItemMicroStore data
@@ -120,29 +81,33 @@ export const calculateUpdatedProductList = (
   return newProductList;
 };
 
-export const createNewProductPrice = (currentPrice: number, minPrice: number, maxPrice: number): number => {
+export const createNewRandomProductPrice = (minPrice: number, maxPrice: number): number => {
   const finalMax = maxPrice - minPrice;
-  const newPrice = Math.ceil(Math.random() * finalMax) + minPrice;
-
-  if (currentPrice !== newPrice) {
-    return newPrice;
-  }
-
-  return createNewProductPrice(currentPrice, minPrice, maxPrice);
-};
-
-export const refreshListedProductPrice = (data: ProductInfo, dispatch: React.Dispatch<any>) => {
-  const newPrice = createNewProductPrice(data.price, data.minPrice, data.maxPrice);
-
-  dispatch({
-    type: ProductListActionTypes.UPDATE_MICROSTORE_VALUE,
-    productMicroStoreId: data.value,
-    microStoreProperty: 'price',
-    microStorePropertyValue: newPrice,
-  });
+  const newPrice = (Math.random() * finalMax) + minPrice;
+  return Number(newPrice.toFixed(2));
 };
 
 // Event Handlers
+
+export const handleProductTimerOnEnd = (
+  data: ProductInfo,
+  dispatch: React.Dispatch<any>,
+) => {
+  const newPriceTimerStr = createNewRandomPriceTimerStr(20, 5);
+  const newProductPrice = createNewRandomProductPrice(data.minPrice, data.maxPrice);
+
+  const updatedProductData = {
+    ...data,
+    price: newProductPrice,
+    priceTimer: newPriceTimerStr,
+  };
+
+  dispatch({
+    type: ProductListActionTypes.ASSIGN_MICROSTORE,
+    productMicroStoreId: data.value,
+    productData: updatedProductData,
+  });
+};
 
 /**
  * Handles when the "Add to Cart" button on a ProductCard is clicked
@@ -160,7 +125,6 @@ export const handleAddToCartOnClick = (
 ) => {
   // Ensure any deep level changes to properties on the chosen item do not reference / affect the original
   const clonedData = deepClone(data);
-
   const updatedProduct = updateProductSizes(clonedData, selectedSize, 1, true);
 
   if (!updatedProduct) {

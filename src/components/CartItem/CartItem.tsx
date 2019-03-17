@@ -4,7 +4,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Models
-import { ProductInfo } from '../../utils/product-info-helpers';
+import { ProductInfo, calculateRemainingPriceDuration } from '../../utils/product-info-helpers';
 import { StoreContext, StoreDispatch } from '../../container/rootReducer';
 
 // Styles
@@ -15,7 +15,6 @@ import {
   TrashIconButton,
   CartItemLabel,
   CartPricePanel,
-  EmptyCartAlert,
 } from './CartItem-styles';
 
 // Components
@@ -30,6 +29,7 @@ import {
   handleItemQtyOnChange,
   removeEmptyClaimedSizes,
   handleTrashBtnOnClick,
+  handleTimerOnEnd,
 } from './CartItem-logic';
 
 export interface CartItemProps {
@@ -52,9 +52,8 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
   // Only display sizes with 1 or more qty 
   const filteredClaimedSizes = removeEmptyClaimedSizes(claimedSizes);
 
-  const handleOnTimerEnd = () => {
-    // refreshPriceTimerInProductList(data, dispatch, updatePriceDuration);
-    // refreshListedProductPrice(data, dispatch);
+  const callHandleTimerOnEnd = () => {
+    handleTimerOnEnd(cartItem, store, dispatch);
   };
 
   const callHandleItemQtyOnChange = (newQty: number, sizeOption: string) => {
@@ -87,6 +86,14 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
     }
   }, [filteredClaimedSizes]);
 
+  useEffect(() => {
+    const newPriceDuration = calculateRemainingPriceDuration(cartItem.priceTimer);
+
+    if (newPriceDuration !== priceDuration) {
+      updatePriceDuration(newPriceDuration);
+    }
+  }, [cartItem.priceTimer]);
+
   return (
     <ErrorBoundary>
       <CartItemWrapper>
@@ -94,7 +101,7 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
         <CartItemContent>
           <CartPricePanel>
             <SectionParagraph nomargin={true}>${cartItem.price.toFixed(2)}</SectionParagraph>
-            <CountTimer duration={priceDuration} alertDuration={120000} onEnd={handleOnTimerEnd} />
+            <CountTimer duration={priceDuration} alertDuration={120000} onEnd={callHandleTimerOnEnd} />
           </CartPricePanel>
           {
             filteredClaimedSizes.map(sizeOption => (
