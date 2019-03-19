@@ -5,17 +5,11 @@ import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Contexts
 import { StoreContext, StoreDispatch } from '../../container/rootReducer';
-
-// Models
-import { ProductListActionTypes } from './ProductList-models';
-import { ProductInfo } from '../../utils/product-info-helpers';
+import { BrowseApisContext } from '../../apis/api-contexts';
 
 // Child Components
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
 import { ProductCard } from '../ProductCard/ProductCard';
-
-// Shared Styles
-import { SectionParagraph } from '../../utils/shared-styles';
 
 // Styles
 import { ProductListWrapper, SpinnerWrapper } from './ProductList-styles';
@@ -26,11 +20,12 @@ import { refreshProductList } from './ProductList-logic';
 export const ProductList = () => {
   const store = useContext(StoreContext);
   const dispatch = useContext(StoreDispatch);
+  const browseApis = useContext(BrowseApisContext);
   const { productMicroStoreIds } = store.productListStore;
 
   useEffect(() => {
     // Only  refreshes when the Product List component is mounted
-    refreshProductList(productMicroStoreIds, dispatch);
+    refreshProductList(productMicroStoreIds, dispatch, browseApis);
   }, []);
 
   return (

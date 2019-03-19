@@ -1,9 +1,31 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { mount } from 'enzyme';
+import React, { ReactElement } from 'react';
+import { MemoryRouter } from 'react-router';
+
+// Components
 import { App } from '../App';
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
+describe('Given ', () => {
+  describe('When ', () => {
+    beforeEach(async () => {
+      jest.resetModules();
+    });
+
+    test('Then ', () => {
+      const mockBrowserRouter = ({ children }: { children: ReactElement }) => <div>{children}</div>;
+
+      jest.mock(
+        'react-router-dom/BrowserRouter',
+        () => {
+          return mockBrowserRouter;
+        }
+      );
+
+      const appWrapper = mount(
+        <MemoryRouter initialEntries={['/']}>
+          <App />
+        </MemoryRouter>
+      );
+    });
+  });
 });

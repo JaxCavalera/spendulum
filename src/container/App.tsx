@@ -7,7 +7,7 @@ import {
   RouteComponentProps,
 } from 'react-router-dom';
 
-// Root  Reducer
+// Root Reducer
 import {
   rootReducer,
   rootReducerInitialState,
@@ -40,16 +40,19 @@ import {
  * unwanted re-renders due to a potential bug in React.memo where the 2nd arg on React.memo ignores the evaluation
  * even if prevProps === nextProps
  */
-export const patchWithStableMatchProp = (TargetComponent: React.ComponentType<{ match: RouteComponentProps['match'] }>) => {
+export const patchWithStableMatchProp = (
+  TargetComponent: React.ComponentType<{ match: RouteComponentProps['match'] }>,
+  otherProps?: object,
+) => {
   let prevMatch = {} as RouteComponentProps['match'];
 
   const patchedComponent = (props: RouteComponentProps) => {
     if (JSON.stringify(prevMatch) !== JSON.stringify(props.match)) {
       prevMatch = props.match;
-      return <TargetComponent match={props.match} />;
+      return <TargetComponent match={props.match} {...otherProps} />;
     }
 
-    return <TargetComponent match={prevMatch} />;
+    return <TargetComponent match={prevMatch} {...otherProps} />;
   };
 
   return patchedComponent;
