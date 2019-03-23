@@ -39,6 +39,11 @@ import {
 import { ShoppingCart } from '../../images/icons';
 import { maintainSizeOrder } from '../../utils/product-info-helpers';
 
+// Test Ids
+export enum productCardTestIds {
+  ProductCardWrapper = 'ProductCardWrapper',
+}
+
 // ProductCard Props
 export interface ProductCardProps {
   data: ProductInfo;
@@ -91,7 +96,7 @@ export const ProductCard = ({ data }: ProductCardProps) => {
     <ErrorBoundary>
       {
         priceDuration !== initialDuration &&
-        <ProductCardWrapper>
+        <ProductCardWrapper data-testid={productCardTestIds.ProductCardWrapper}>
           <ImagePanel>
             <WrappedImage imgSrc={data.imgUrl || ''} imgHeight={'100%'} imgWidth={'100%'} />
             <FloatingLabel>{data.label}</FloatingLabel>

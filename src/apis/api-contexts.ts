@@ -7,13 +7,29 @@ import { ProductInfo } from '../utils/product-info-helpers';
 import { getAvailableProductsList } from './product-list-apis';
 
 // Context Interfaces
+export type ApiFn = (useMockData?: boolean) => Promise<ProductInfo[]>;
+
 export interface BrowseApis {
-  getAvailableProductsList: (useMockData?: boolean) => Promise<ProductInfo[]>;
+  getAvailableProductsList: ApiFn;
 }
 
-// Contexts
-export const browseLiveApis: BrowseApis = {
-  getAvailableProductsList,
+// Live Contexts
+export class BrowseLiveApis implements BrowseApis {
+  public getAvailableProductsList: ApiFn;
+
+  constructor() {
+    this.getAvailableProductsList = getAvailableProductsList;
+  }
 };
 
-export const BrowseApisContext = createContext(browseLiveApis);
+// Mock Contexts
+export class BrowseMockApis extends BrowseLiveApis {
+  constructor() {
+    super();
+
+    this.getAvailableProductsList = () => getAvailableProductsList(true);
+  }
+}
+
+// Context Wrappers
+export const BrowseApisContext = createContext(new BrowseMockApis());

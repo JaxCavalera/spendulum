@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // API Contexts
-import { BrowseApisContext, browseLiveApis } from '../../apis/api-contexts';
+import { BrowseApisContext, BrowseLiveApis } from '../../apis/api-contexts';
 
 // Components
 import { ProductList } from '../../components/ProductList/ProductList';
@@ -14,7 +14,7 @@ import { BrowseWrapper } from './Browse-styles';
 export const Browse = memo(() => {
   return (
     <ErrorBoundary>
-      <BrowseApisContext.Provider value={browseLiveApis}>
+      <BrowseApisContext.Provider value={new BrowseLiveApis()}>
         <BrowseWrapper>
           <span>Browse Items</span>
           <ProductList />
