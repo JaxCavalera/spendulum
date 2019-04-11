@@ -19,6 +19,11 @@ import {
 // Logic
 import { calcCartTotal } from './CartSidebar-logic';
 
+// Test Ids
+export enum cartSidebarTestIds {
+  CartSidebar = 'CartSidebar',
+}
+
 export interface CartSidebarProps { }
 
 export const CartSidebar = ({ }: CartSidebarProps) => {
@@ -33,7 +38,10 @@ export const CartSidebar = ({ }: CartSidebarProps) => {
 
   return (
     <ErrorBoundary>
-      <CartSidebarWrapper isSidebarOpen={isSidebarOpen}>
+      <CartSidebarWrapper
+        data-testid={cartSidebarTestIds.CartSidebar}
+        isSidebarOpen={isSidebarOpen}
+      >
         <CartHeading>Shopping Cart</CartHeading>
         <CartItemsList>
           {

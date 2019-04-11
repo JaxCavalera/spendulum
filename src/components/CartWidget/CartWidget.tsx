@@ -15,6 +15,11 @@ import { ShoppingCart } from '../../images/icons';
 // Styles
 import { CartButton } from './CartWidget-styles';
 
+// Test Ids
+export enum cartWidgetTestIds {
+  CartButton = 'cartWidget/CartButton',
+}
+
 export interface CartWidgetProps { }
 
 export const CartWidget = ({ }: CartWidgetProps) => {
@@ -32,6 +37,7 @@ export const CartWidget = ({ }: CartWidgetProps) => {
   return (
     <ErrorBoundary>
       <CartButton
+        data-testid={cartWidgetTestIds.CartButton}
         isSidebarOpen={isSidebarOpen}
         onClick={handleCartOnClick}
         title={`${isSidebarOpen ? 'Hide' : 'Show'} Cart`}

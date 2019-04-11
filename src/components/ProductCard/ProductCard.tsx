@@ -41,7 +41,9 @@ import { maintainSizeOrder } from '../../utils/product-info-helpers';
 
 // Test Ids
 export enum productCardTestIds {
-  ProductCardWrapper = 'ProductCardWrapper',
+  AddToCartBtn = 'productCard/AddToCartBtn',
+  FloatingLabel = 'productCard/FloatingLabel',
+  ProductCardWrapper = 'productCard/ProductCardWrapper',
 }
 
 // ProductCard Props
@@ -99,7 +101,9 @@ export const ProductCard = ({ data }: ProductCardProps) => {
         <ProductCardWrapper data-testid={productCardTestIds.ProductCardWrapper}>
           <ImagePanel>
             <WrappedImage imgSrc={data.imgUrl || ''} imgHeight={'100%'} imgWidth={'100%'} />
-            <FloatingLabel>{data.label}</FloatingLabel>
+            <FloatingLabel data-testid={productCardTestIds.FloatingLabel}>
+              {data.label}
+            </FloatingLabel>
           </ImagePanel>
           <CardActions>
             <PricePanel>
@@ -115,7 +119,7 @@ export const ProductCard = ({ data }: ProductCardProps) => {
                 ))
               }
             </SizePicker>
-            <AddToCartBtn onClick={callHandleAddToCartOnClick}>
+            <AddToCartBtn data-testid={productCardTestIds.AddToCartBtn} onClick={callHandleAddToCartOnClick}>
               <span>Add to Cart</span>
               {
                 !!data.claimedSizes[selectedSize] &&

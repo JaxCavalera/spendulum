@@ -19,7 +19,14 @@ import {
   CartItemQty,
   CartItemSizeInfoWrapper,
 } from './CartItemSizeInfo-styles';
+
+// Logic
 import { validateNewQty } from './CartItemSizeInfo-logic';
+
+// Test Ids
+export enum cartItemSizeInfoTestIds {
+  CartItemQty = 'cartItemSizeInfo/CartItemQty',
+}
 
 export interface CartItemSizeInfoProps {
   claimedSizes: SizeOptions;
@@ -85,6 +92,7 @@ export const CartItemSizeInfo = ({
         <CartItemQtyWrapper>
           <span>QTY</span>
           <CartItemQty
+            data-testid={cartItemSizeInfoTestIds.CartItemQty}
             ref={cartItemQtyRef}
             type="number"
             value={localQty}
