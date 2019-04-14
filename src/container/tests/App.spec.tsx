@@ -162,7 +162,6 @@ describe('Given the App is mounted at the / route', () => {
           // Isolate target product in the ProductList
           const [firstProduct] = productCards;
           const initialAvailableQty = extractQtyFromTxt(firstProduct.textContent);
-          const firstProductName = wrapper.getByTestId(productCardTestIds.FloatingLabel).textContent;
 
           // Add product
           fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtn));
@@ -198,6 +197,56 @@ describe('Given the App is mounted at the / route', () => {
     describe('And the available qty is less than the size qty being added', () => {
       describe('Then the available qty for the affected ProductList item size qty will NOT change', () => {
         test('And the qty of the affected product size in the CartSidebar will NOT change', async () => {
+          const adjustedQtyValue = 500;
+
+          const wrapper = render(
+            <MemoryRouter initialEntries={['/']}>
+              <App />
+            </MemoryRouter>
+          );
+
+          const [productCards] = await waitForElement(
+            () => [
+              wrapper.getAllByTestId(productCardTestIds.ProductCardWrapper),
+            ],
+            { container: wrapper.container },
+          );
+
+          // Open the CartSidebar
+          fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButton));
+          const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebar);
+
+          // Isolate target product in the ProductList
+          const [firstProduct] = productCards;
+          const initialAvailableQty = extractQtyFromTxt(firstProduct.textContent);
+
+          // Add product
+          fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtn));
+
+          // Scan for affected sidebar item's input field
+          const [cartSidebarSizeQtyInput] = await waitForElement(
+            () => [
+              getByTestId(
+                cartSidebar,
+                cartItemSizeInfoTestIds.CartItemQty
+              ),
+            ],
+          ) as [HTMLInputElement];
+
+          // Attempt to adjust qty of the added size in the CartSidebar
+          fireEvent.change(
+            cartSidebarSizeQtyInput,
+            { target: { value: `${adjustedQtyValue}` } },
+          );
+          fireEvent.blur(cartSidebarSizeQtyInput);
+
+          // Scan for affected product in the ProductList
+          const [updatedFirstProduct] = await wrapper.findAllByTestId(productCardTestIds.ProductCardWrapper);
+          const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
+
+          // Assertions
+          expect(cartSidebarSizeQtyInput.value).toEqual('1');
+          expect(finalAvailableQty).toEqual(initialAvailableQty - 1);
         });
       });
     });
@@ -207,6 +256,76 @@ describe('Given the App is mounted at the / route', () => {
     describe('And the current size qty is greater or equal to the qty being removed', () => {
       describe('Then the affected ProductList item, available size qty will be increased by the removed amount', () => {
         test('And the affected product size qty in the CartSidebar will be decreased by the removed amount', async () => {
+          const sidebarAddQty = 4;
+          const sidebarReduceQty = 3;
+
+          const wrapper = render(
+            <MemoryRouter initialEntries={['/']}>
+              <App />
+            </MemoryRouter>
+          );
+
+          const [productCards] = await waitForElement(
+            () => [
+              wrapper.getAllByTestId(productCardTestIds.ProductCardWrapper),
+            ],
+            { container: wrapper.container },
+          );
+
+          // Open the CartSidebar
+          fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButton));
+          const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebar);
+
+          // Isolate target product in the ProductList
+          const [firstProduct] = productCards;
+
+          // Add product
+          fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtn));
+
+          // Scan for current CartSidebar item's input field
+          const [currentSidebarItemInput] = await waitForElement(
+            () => [
+              getByTestId(
+                cartSidebar,
+                cartItemSizeInfoTestIds.CartItemQty
+              ),
+            ],
+          ) as [HTMLInputElement];
+
+          // Prepare current sidebar item by increasing the added size qty
+          fireEvent.change(
+            currentSidebarItemInput,
+            { target: { value: `${sidebarAddQty}` } },
+          );
+          fireEvent.blur(currentSidebarItemInput);
+
+          // Scan for affected sidebar item's input field to reduce size qty
+          const [affectedSidebarItemInput] = await waitForElement(
+            () => [
+              getByTestId(
+                cartSidebar,
+                cartItemSizeInfoTestIds.CartItemQty
+              ),
+            ],
+          ) as [HTMLInputElement];
+
+          // Extract the current item's available size qty from the ProductList
+          const currentProductListSizeQty = extractQtyFromTxt(firstProduct.textContent);
+
+          // Reduce size qty of the affected item in the CartSidebar
+          fireEvent.change(
+            affectedSidebarItemInput,
+            { target: { value: `${sidebarAddQty - sidebarReduceQty}` } },
+          );
+          fireEvent.blur(affectedSidebarItemInput);
+
+          // Scan for affected product in the ProductList
+          const [updatedFirstProduct] = await wrapper.findAllByTestId(productCardTestIds.ProductCardWrapper);
+          const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
+
+          // Assertions
+          expect(affectedSidebarItemInput.value).toEqual(`${sidebarAddQty - sidebarReduceQty}`);
+          expect(finalAvailableQty).toEqual(currentProductListSizeQty + sidebarReduceQty);
         });
       });
     });
@@ -214,7 +333,248 @@ describe('Given the App is mounted at the / route', () => {
     describe('And the current size qty is less than the qty being removed', () => {
       describe('Then the available qty for the affected ProductList item size will NOT change', () => {
         test('And the qty of the affected product size in the CartSidebar will NOT change', async () => {
+          const sidebarAddQty = 4;
+          const sidebarReduceQty = 7;
+
+          const wrapper = render(
+            <MemoryRouter initialEntries={['/']}>
+              <App />
+            </MemoryRouter>
+          );
+
+          const [productCards] = await waitForElement(
+            () => [
+              wrapper.getAllByTestId(productCardTestIds.ProductCardWrapper),
+            ],
+            { container: wrapper.container },
+          );
+
+          // Open the CartSidebar
+          fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButton));
+          const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebar);
+
+          // Isolate target product in the ProductList
+          const [firstProduct] = productCards;
+
+          // Add product
+          fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtn));
+
+          // Scan for current CartSidebar item's input field
+          const [currentSidebarItemInput] = await waitForElement(
+            () => [
+              getByTestId(
+                cartSidebar,
+                cartItemSizeInfoTestIds.CartItemQty
+              ),
+            ],
+          ) as [HTMLInputElement];
+
+          // Prepare current sidebar item by increasing the added size qty
+          fireEvent.change(
+            currentSidebarItemInput,
+            { target: { value: `${sidebarAddQty}` } },
+          );
+          fireEvent.blur(currentSidebarItemInput);
+
+          // Scan for affected sidebar item's input field to reduce size qty
+          const [affectedSidebarItemInput] = await waitForElement(
+            () => [
+              getByTestId(
+                cartSidebar,
+                cartItemSizeInfoTestIds.CartItemQty
+              ),
+            ],
+          ) as [HTMLInputElement];
+
+          // Extract the current item's available size qty from the ProductList
+          const currentProductListSizeQty = extractQtyFromTxt(firstProduct.textContent);
+
+          // Attempt to reduce size qty of the affected item in the CartSidebar by a negative value
+          fireEvent.change(
+            affectedSidebarItemInput,
+            { target: { value: `${sidebarAddQty - sidebarReduceQty}` } },
+          );
+          fireEvent.blur(affectedSidebarItemInput);
+
+          // Scan for affected product in the ProductList
+          const [updatedFirstProduct] = await wrapper.findAllByTestId(productCardTestIds.ProductCardWrapper);
+          const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
+
+          // Assertions
+          expect(affectedSidebarItemInput.value).toEqual(`${sidebarAddQty}`);
+          expect(finalAvailableQty).toEqual(currentProductListSizeQty);
         });
+      });
+    });
+  });
+
+  describe('When the TrashIconButton for an added product in the CartSidebar is clicked', () => {
+    describe('Then the affected ProductList item, available size qty will be set to the original amount', () => {
+      test('And the affected CartSidebar item will be removed from the cart', async () => {
+        // const adjustedQtyValue = 4;
+
+        // const wrapper = render(
+        //   <MemoryRouter initialEntries={['/']}>
+        //     <App />
+        //   </MemoryRouter>
+        // );
+
+        // const [productCards] = await waitForElement(
+        //   () => [
+        //     wrapper.getAllByTestId(productCardTestIds.ProductCardWrapper),
+        //   ],
+        //   { container: wrapper.container },
+        // );
+
+        // // Open the CartSidebar
+        // fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButton));
+        // const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebar);
+
+        // // Isolate target product in the ProductList
+        // const [firstProduct] = productCards;
+        // const initialAvailableQty = extractQtyFromTxt(firstProduct.textContent);
+
+        // // Add product
+        // fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtn));
+
+        // // Scan for affected sidebar item's input field
+        // const [cartSidebarSizeQtyInput] = await waitForElement(
+        //   () => [
+        //     getByTestId(
+        //       cartSidebar,
+        //       cartItemSizeInfoTestIds.CartItemQty
+        //     ),
+        //   ],
+        // ) as [HTMLInputElement];
+
+        // // Adjust qty of the added size in the CartSidebar
+        // fireEvent.change(
+        //   cartSidebarSizeQtyInput,
+        //   { target: { value: `${adjustedQtyValue}` } },
+        // );
+        // fireEvent.blur(cartSidebarSizeQtyInput);
+
+        // // Scan for affected product in the ProductList
+        // const [updatedFirstProduct] = await wrapper.findAllByTestId(productCardTestIds.ProductCardWrapper);
+        // const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
+
+        // // Assertions
+        // expect(cartSidebarSizeQtyInput.value).toEqual(`${adjustedQtyValue}`);
+        // expect(finalAvailableQty).toEqual(initialAvailableQty - adjustedQtyValue);
+      });
+    });
+  });
+
+  describe('When a product with 1 added size in the CartSidebar has the size qty set to 0', () => {
+    describe('Then the affected ProductList item, available size qty will be set to the original amount', () => {
+      test('And the affected CartSidebar item will be removed from the cart', async () => {
+        // const adjustedQtyValue = 4;
+
+        // const wrapper = render(
+        //   <MemoryRouter initialEntries={['/']}>
+        //     <App />
+        //   </MemoryRouter>
+        // );
+
+        // const [productCards] = await waitForElement(
+        //   () => [
+        //     wrapper.getAllByTestId(productCardTestIds.ProductCardWrapper),
+        //   ],
+        //   { container: wrapper.container },
+        // );
+
+        // // Open the CartSidebar
+        // fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButton));
+        // const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebar);
+
+        // // Isolate target product in the ProductList
+        // const [firstProduct] = productCards;
+        // const initialAvailableQty = extractQtyFromTxt(firstProduct.textContent);
+
+        // // Add product
+        // fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtn));
+
+        // // Scan for affected sidebar item's input field
+        // const [cartSidebarSizeQtyInput] = await waitForElement(
+        //   () => [
+        //     getByTestId(
+        //       cartSidebar,
+        //       cartItemSizeInfoTestIds.CartItemQty
+        //     ),
+        //   ],
+        // ) as [HTMLInputElement];
+
+        // // Adjust qty of the added size in the CartSidebar
+        // fireEvent.change(
+        //   cartSidebarSizeQtyInput,
+        //   { target: { value: `${adjustedQtyValue}` } },
+        // );
+        // fireEvent.blur(cartSidebarSizeQtyInput);
+
+        // // Scan for affected product in the ProductList
+        // const [updatedFirstProduct] = await wrapper.findAllByTestId(productCardTestIds.ProductCardWrapper);
+        // const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
+
+        // // Assertions
+        // expect(cartSidebarSizeQtyInput.value).toEqual(`${adjustedQtyValue}`);
+        // expect(finalAvailableQty).toEqual(initialAvailableQty - adjustedQtyValue);
+      });
+    });
+  });
+
+  describe('When a product with 2 added sizes in the CartSidebar has the first size qty set to 0', () => {
+    describe('Then the affected ProductList item, first available size qty will be set to the original amount', () => {
+      test('And the affected CartSidebar item first size qty will be removed from the cart', async () => {
+        // const adjustedQtyValue = 4;
+
+        // const wrapper = render(
+        //   <MemoryRouter initialEntries={['/']}>
+        //     <App />
+        //   </MemoryRouter>
+        // );
+
+        // const [productCards] = await waitForElement(
+        //   () => [
+        //     wrapper.getAllByTestId(productCardTestIds.ProductCardWrapper),
+        //   ],
+        //   { container: wrapper.container },
+        // );
+
+        // // Open the CartSidebar
+        // fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButton));
+        // const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebar);
+
+        // // Isolate target product in the ProductList
+        // const [firstProduct] = productCards;
+        // const initialAvailableQty = extractQtyFromTxt(firstProduct.textContent);
+
+        // // Add product
+        // fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtn));
+
+        // // Scan for affected sidebar item's input field
+        // const [cartSidebarSizeQtyInput] = await waitForElement(
+        //   () => [
+        //     getByTestId(
+        //       cartSidebar,
+        //       cartItemSizeInfoTestIds.CartItemQty
+        //     ),
+        //   ],
+        // ) as [HTMLInputElement];
+
+        // // Adjust qty of the added size in the CartSidebar
+        // fireEvent.change(
+        //   cartSidebarSizeQtyInput,
+        //   { target: { value: `${adjustedQtyValue}` } },
+        // );
+        // fireEvent.blur(cartSidebarSizeQtyInput);
+
+        // // Scan for affected product in the ProductList
+        // const [updatedFirstProduct] = await wrapper.findAllByTestId(productCardTestIds.ProductCardWrapper);
+        // const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
+
+        // // Assertions
+        // expect(cartSidebarSizeQtyInput.value).toEqual(`${adjustedQtyValue}`);
+        // expect(finalAvailableQty).toEqual(initialAvailableQty - adjustedQtyValue);
       });
     });
   });
