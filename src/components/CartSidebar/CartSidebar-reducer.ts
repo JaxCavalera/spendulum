@@ -5,7 +5,6 @@ import {
 } from './CartSidebar-models';
 
 export const cartSidebarInitialState: CartSidebarReducerState = {
-  cartItems: [],
   cartItemMicroStoreIds: [],
   isSidebarOpen: false,
 };
@@ -19,12 +18,6 @@ export const cartSidebarReducer = (
       return {
         ...state,
         isSidebarOpen: action.isSidebarOpen,
-      };
-
-    case CartSidebarActionTypes.UPDATE_CART_ITEMS:
-      return {
-        ...state,
-        cartItems: action.cartItems,
       };
 
     case CartSidebarActionTypes.UPDATE_CART_ITEM_MICROSTORE_ID_LIST: {

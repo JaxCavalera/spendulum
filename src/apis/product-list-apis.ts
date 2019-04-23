@@ -1,5 +1,5 @@
 // Mock data
-import productListMock from './tests/product-list-mock.json';
+import * as productListMock from './tests/product-list-mock.json';
 
 // Models
 import { ProductInfo } from '../utils/product-info-helpers';
@@ -10,7 +10,7 @@ import { fetchWrapper } from './fetch-wrapper';
 export const getAvailableProductsList = async (useMockData?: boolean) => {
   if (useMockData) {
     const newProductsList: ProductInfo[] = await new Promise(
-      (resolve) => resolve(productListMock),
+      resolve => resolve(productListMock),
     );
 
     return newProductsList;

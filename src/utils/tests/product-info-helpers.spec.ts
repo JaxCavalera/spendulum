@@ -5,7 +5,7 @@ import { productCardData } from './product-info-helpers-mocks';
 import { updateProductSizes } from '../product-info-helpers';
 
 // updateProductSizes
-describe('Given updateProductSizes is called with valid newItem and cartItems', () => {
+describe('Given updateProductSizes is called with a valid newItem', () => {
   describe('When the newItem has availableSizes for the selectedSize', () => {
     test('Then it will return a new cardData set with updated claimed and available sizes', () => {
       const finalProductData = {

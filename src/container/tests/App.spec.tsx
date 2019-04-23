@@ -10,6 +10,10 @@ import {
 
 // Mocked Functionality
 import { BrowseMockApis } from '../../apis/api-contexts';
+import * as rootReducer from '../rootReducer';
+import {
+  singleAddedProductSizeInitState,
+} from './App-mock-initial-states';
 
 // Component TestIds
 import { cartItemSizeInfoTestIds } from '../../components/CartItemSizeInfo/CartItemSizeInfo';
@@ -409,6 +413,14 @@ describe('Given the App is mounted at the / route', () => {
   });
 
   describe('When the TrashIconButton for an added product in the CartSidebar is clicked', () => {
+    beforeEach(() => {
+      // Establish initial app state
+      jest.mock('../rootReducer', () => ({
+        ...rootReducer,
+        rootReducerInitialState: singleAddedProductSizeInitState,
+      }));
+    });
+
     describe('Then the affected ProductList item, available size qty will be set to the original amount', () => {
       test('And the affected CartSidebar item will be removed from the cart', async () => {
         // const adjustedQtyValue = 4;
