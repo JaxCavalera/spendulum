@@ -36,8 +36,9 @@ import {
 } from './App-styles';
 
 /**
- * Wrap page components with this if they have children being wrapped by React.memo otherwise props.match will cause
- * unwanted re-renders due to a potential bug in React.memo where the 2nd arg on React.memo ignores the evaluation
+ * Wrap page components with this if they have children being wrapped by React.memo
+ * otherwise props.match will cause unwanted re-renders due to a potential bug in
+ * React.memo where the 2nd arg on React.memo ignores the evaluation
  * even if prevProps === nextProps
  */
 export const patchWithStableMatchProp = (
@@ -46,10 +47,10 @@ export const patchWithStableMatchProp = (
 ) => {
   let prevMatch = {} as RouteComponentProps['match'];
 
-  const patchedComponent = (props: RouteComponentProps) => {
-    if (JSON.stringify(prevMatch) !== JSON.stringify(props.match)) {
-      prevMatch = props.match;
-      return <TargetComponent match={props.match} {...otherProps} />;
+  const patchedComponent = ({ match }: RouteComponentProps) => {
+    if (JSON.stringify(prevMatch) !== JSON.stringify(match)) {
+      prevMatch = match;
+      return <TargetComponent match={match} {...otherProps} />;
     }
 
     return <TargetComponent match={prevMatch} {...otherProps} />;

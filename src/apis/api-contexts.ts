@@ -20,7 +20,7 @@ export class BrowseLiveApis implements BrowseApis {
   constructor() {
     this.getAvailableProductsList = getAvailableProductsList;
   }
-};
+}
 
 // Mock Contexts
 export class BrowseMockApis extends BrowseLiveApis {
