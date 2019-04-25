@@ -14,22 +14,14 @@ export interface BrowseApis {
 }
 
 // Live Contexts
-export class BrowseLiveApis implements BrowseApis {
-  public getAvailableProductsList: ApiFn;
-
-  constructor() {
-    this.getAvailableProductsList = getAvailableProductsList;
-  }
-}
+export const browseLiveApis = (): BrowseApis => ({
+  getAvailableProductsList,
+});
 
 // Mock Contexts
-export class BrowseMockApis extends BrowseLiveApis {
-  constructor() {
-    super();
-
-    this.getAvailableProductsList = () => getAvailableProductsList(true);
-  }
-}
+export const browseMockApis = (): BrowseApis => ({
+  getAvailableProductsList: () => getAvailableProductsList(true),
+});
 
 // Context Wrappers
-export const BrowseApisContext = createContext(new BrowseMockApis());
+export const BrowseApisContext = createContext(browseMockApis());

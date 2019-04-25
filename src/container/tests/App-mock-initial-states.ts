@@ -1,6 +1,12 @@
 export const singleAddedProductSizeInitState = {
   productListStore: {
-    productMicroStoreIds: ['ksny-1'],
+    productMicroStoreIds: [
+      'ksny-1',
+      'jcsvm-1',
+      'snwflk-1',
+      'nvyjns-1',
+      'nsocr-1',
+    ],
     'ksny-1': {
       label: 'Kate Spade New York',
       value: 'ksny-1',
@@ -68,29 +74,16 @@ export const singleAddedProductSizeInitState = {
       priceTimer: '2019-03-03T12: 27: 08.030Z',
       imgUrl: 'https: //i.imgur.com/EHQoYlJ.jpg',
     },
-    // 'ksny-1': {
-    //   label: 'Kate Spade New York',
-    //   value: 'ksny-1',
-    //   claimedSizes: { NA: 1 },
-    //   availableSizes: {
-    //     NA: 9,
-    //   },
-    //   price: 77.4,
-    //   minPrice: 63,
-    //   maxPrice: 85,
-    //   priceTimer: '2019-03-03T12:27:08.030Z',
-    //   imgUrl: 'https://i.imgur.com/lrCkut9.png',
-    // }
   },
   cartSidebarStore: {
-    cartItemMicroStoreIds: ['ksny-1'],
     isSidebarOpen: true,
+    cartItemMicroStoreIds: ['ksny-1'],
     'ksny-1': {
       label: 'Kate Spade New York',
       value: 'ksny-1',
-      claimedSizes: { NA: 1 },
+      claimedSizes: { NA: 4 },
       availableSizes: {
-        NA: 9,
+        NA: 6,
       },
       price: 77.4,
       minPrice: 63,

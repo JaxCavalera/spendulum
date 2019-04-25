@@ -34,16 +34,16 @@ export const ProductList = () => {
         {
           !productMicroStoreIds.length ? (
             <SpinnerWrapper>
-              <LoadingSpinner msg={'Loading products...'} />
+              <LoadingSpinner msg="Loading products..." />
             </SpinnerWrapper>
           ) : (
-              productMicroStoreIds.map((productId) => (
-                <ProductCard
-                  key={productId}
-                  data={store.productListStore[productId]}
-                />
-              ))
-            )
+            productMicroStoreIds.map(productId => (
+              <ProductCard
+                key={productId}
+                data={store.productListStore[productId]}
+              />
+            ))
+          )
         }
       </ProductListWrapper>
     </ErrorBoundary>

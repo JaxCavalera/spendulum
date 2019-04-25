@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter } from 'react-router-dom';
 import {
   render,
   waitForElement,
@@ -9,11 +9,10 @@ import {
 } from 'react-testing-library';
 
 // Mocked Functionality
-import { BrowseMockApis } from '../../apis/api-contexts';
-import * as rootReducer from '../rootReducer';
-import {
-  singleAddedProductSizeInitState,
-} from './App-mock-initial-states';
+import * as apiContexts from '../../apis/api-contexts';
+// import {
+//   singleAddedProductSizeInitState,
+// } from './App-mock-initial-states';
 
 // Component TestIds
 import { cartItemSizeInfoTestIds } from '../../components/CartItemSizeInfo/CartItemSizeInfo';
@@ -25,7 +24,7 @@ import { productCardTestIds } from '../../components/ProductCard/ProductCard';
 // Tested Component
 import { App } from '../App';
 
-// Test Helper Functions
+// Test Helpers
 const extractQtyFromTxt = (txt: string | null): number => {
   if (txt === null) {
     return 0;
@@ -43,16 +42,28 @@ const extractQtyFromTxt = (txt: string | null): number => {
 
 // Tests
 describe('Given the App is mounted at the / route', () => {
-  beforeEach(async () => {
+  const mockBrowseApis = jest.spyOn(
+    apiContexts as { browseLiveApis: any; browseMockApis: any; },
+    'browseLiveApis',
+  );
+
+  beforeEach(() => {
     jest.resetModules();
 
     // Mock Contents
     const mockBrowserRouter = ({ children }: { children: ReactElement }) => <div>{children}</div>;
-    const mockBrowseApis = BrowseMockApis;
 
     // Mocks
     jest.mock('react-router-dom/BrowserRouter', () => mockBrowserRouter);
-    jest.mock('../../apis/api-contexts', () => ({ BrowseLiveApis: mockBrowseApis }));
+    mockBrowseApis.mockImplementation(apiContexts.browseMockApis);
+  });
+
+  afterEach(() => {
+    mockBrowseApis.mockReset();
+  });
+
+  afterAll(() => {
+    mockBrowseApis.mockRestore();
   });
 
   describe('When it first loads', () => {
@@ -60,10 +71,10 @@ describe('Given the App is mounted at the / route', () => {
       const { getAllByTestId } = render(
         <MemoryRouter initialEntries={['/']}>
           <App />
-        </MemoryRouter>
+        </MemoryRouter>,
       );
 
-      const spinners = getAllByTestId(loadingSpinnerTestIds.Spinner);
+      const spinners = getAllByTestId(loadingSpinnerTestIds.SpinnerId);
 
       expect(spinners).toHaveLength(1);
     });
@@ -74,17 +85,17 @@ describe('Given the App is mounted at the / route', () => {
       const { container, getAllByTestId, queryAllByTestId } = render(
         <MemoryRouter initialEntries={['/']}>
           <App />
-        </MemoryRouter>
+        </MemoryRouter>,
       );
 
       const [productCards] = await waitForElement(
         () => [
-          getAllByTestId(productCardTestIds.ProductCardWrapper),
+          getAllByTestId(productCardTestIds.ProductCardWrapperId),
         ],
         { container },
       );
 
-      const spinners = queryAllByTestId(loadingSpinnerTestIds.Spinner);
+      const spinners = queryAllByTestId(loadingSpinnerTestIds.SpinnerId);
 
       expect(productCards).toHaveLength(5);
       expect(spinners).toHaveLength(0);
@@ -97,27 +108,29 @@ describe('Given the App is mounted at the / route', () => {
         const wrapper = render(
           <MemoryRouter initialEntries={['/']}>
             <App />
-          </MemoryRouter>
+          </MemoryRouter>,
         );
 
         const [productCards] = await waitForElement(
           () => [
-            wrapper.getAllByTestId(productCardTestIds.ProductCardWrapper),
+            wrapper.getAllByTestId(productCardTestIds.ProductCardWrapperId),
           ],
           { container: wrapper.container },
         );
 
         // Open the CartSidebar
-        fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButton));
-        const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebar);
+        fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButtonId));
+        const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebarId);
 
         // Isolate target product in the ProductList
         const [firstProduct] = productCards;
         const initialAvailableQty = extractQtyFromTxt(firstProduct.textContent);
-        const firstProductName = wrapper.getByTestId(productCardTestIds.FloatingLabel).textContent;
+        const firstProductName = wrapper.getByTestId(
+          productCardTestIds.FloatingLabelId,
+        ).textContent;
 
         // Add product
-        fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtn));
+        fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtnId));
 
         // Scan for affected sidebar item
         const [matchingCartSidebarProducts] = await waitForElement(
@@ -130,7 +143,9 @@ describe('Given the App is mounted at the / route', () => {
         );
 
         // Scan for affected product in the ProductList
-        const [updatedFirstProduct] = await wrapper.findAllByTestId(productCardTestIds.ProductCardWrapper);
+        const [updatedFirstProduct] = await wrapper.findAllByTestId(
+          productCardTestIds.ProductCardWrapperId,
+        );
         const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
 
         // Assertions
@@ -149,33 +164,33 @@ describe('Given the App is mounted at the / route', () => {
           const wrapper = render(
             <MemoryRouter initialEntries={['/']}>
               <App />
-            </MemoryRouter>
+            </MemoryRouter>,
           );
 
           const [productCards] = await waitForElement(
             () => [
-              wrapper.getAllByTestId(productCardTestIds.ProductCardWrapper),
+              wrapper.getAllByTestId(productCardTestIds.ProductCardWrapperId),
             ],
             { container: wrapper.container },
           );
 
           // Open the CartSidebar
-          fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButton));
-          const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebar);
+          fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButtonId));
+          const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebarId);
 
           // Isolate target product in the ProductList
           const [firstProduct] = productCards;
           const initialAvailableQty = extractQtyFromTxt(firstProduct.textContent);
 
           // Add product
-          fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtn));
+          fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtnId));
 
           // Scan for affected sidebar item's input field
           const [cartSidebarSizeQtyInput] = await waitForElement(
             () => [
               getByTestId(
                 cartSidebar,
-                cartItemSizeInfoTestIds.CartItemQty
+                cartItemSizeInfoTestIds.CartItemQtyId,
               ),
             ],
           ) as [HTMLInputElement];
@@ -188,7 +203,9 @@ describe('Given the App is mounted at the / route', () => {
           fireEvent.blur(cartSidebarSizeQtyInput);
 
           // Scan for affected product in the ProductList
-          const [updatedFirstProduct] = await wrapper.findAllByTestId(productCardTestIds.ProductCardWrapper);
+          const [updatedFirstProduct] = await wrapper.findAllByTestId(
+            productCardTestIds.ProductCardWrapperId,
+          );
           const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
 
           // Assertions
@@ -206,33 +223,33 @@ describe('Given the App is mounted at the / route', () => {
           const wrapper = render(
             <MemoryRouter initialEntries={['/']}>
               <App />
-            </MemoryRouter>
+            </MemoryRouter>,
           );
 
           const [productCards] = await waitForElement(
             () => [
-              wrapper.getAllByTestId(productCardTestIds.ProductCardWrapper),
+              wrapper.getAllByTestId(productCardTestIds.ProductCardWrapperId),
             ],
             { container: wrapper.container },
           );
 
           // Open the CartSidebar
-          fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButton));
-          const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebar);
+          fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButtonId));
+          const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebarId);
 
           // Isolate target product in the ProductList
           const [firstProduct] = productCards;
           const initialAvailableQty = extractQtyFromTxt(firstProduct.textContent);
 
           // Add product
-          fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtn));
+          fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtnId));
 
           // Scan for affected sidebar item's input field
           const [cartSidebarSizeQtyInput] = await waitForElement(
             () => [
               getByTestId(
                 cartSidebar,
-                cartItemSizeInfoTestIds.CartItemQty
+                cartItemSizeInfoTestIds.CartItemQtyId,
               ),
             ],
           ) as [HTMLInputElement];
@@ -245,7 +262,9 @@ describe('Given the App is mounted at the / route', () => {
           fireEvent.blur(cartSidebarSizeQtyInput);
 
           // Scan for affected product in the ProductList
-          const [updatedFirstProduct] = await wrapper.findAllByTestId(productCardTestIds.ProductCardWrapper);
+          const [updatedFirstProduct] = await wrapper.findAllByTestId(
+            productCardTestIds.ProductCardWrapperId,
+          );
           const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
 
           // Assertions
@@ -266,32 +285,32 @@ describe('Given the App is mounted at the / route', () => {
           const wrapper = render(
             <MemoryRouter initialEntries={['/']}>
               <App />
-            </MemoryRouter>
+            </MemoryRouter>,
           );
 
           const [productCards] = await waitForElement(
             () => [
-              wrapper.getAllByTestId(productCardTestIds.ProductCardWrapper),
+              wrapper.getAllByTestId(productCardTestIds.ProductCardWrapperId),
             ],
             { container: wrapper.container },
           );
 
           // Open the CartSidebar
-          fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButton));
-          const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebar);
+          fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButtonId));
+          const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebarId);
 
           // Isolate target product in the ProductList
           const [firstProduct] = productCards;
 
           // Add product
-          fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtn));
+          fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtnId));
 
           // Scan for current CartSidebar item's input field
           const [currentSidebarItemInput] = await waitForElement(
             () => [
               getByTestId(
                 cartSidebar,
-                cartItemSizeInfoTestIds.CartItemQty
+                cartItemSizeInfoTestIds.CartItemQtyId,
               ),
             ],
           ) as [HTMLInputElement];
@@ -308,7 +327,7 @@ describe('Given the App is mounted at the / route', () => {
             () => [
               getByTestId(
                 cartSidebar,
-                cartItemSizeInfoTestIds.CartItemQty
+                cartItemSizeInfoTestIds.CartItemQtyId,
               ),
             ],
           ) as [HTMLInputElement];
@@ -324,7 +343,9 @@ describe('Given the App is mounted at the / route', () => {
           fireEvent.blur(affectedSidebarItemInput);
 
           // Scan for affected product in the ProductList
-          const [updatedFirstProduct] = await wrapper.findAllByTestId(productCardTestIds.ProductCardWrapper);
+          const [updatedFirstProduct] = await wrapper.findAllByTestId(
+            productCardTestIds.ProductCardWrapperId,
+          );
           const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
 
           // Assertions
@@ -343,32 +364,32 @@ describe('Given the App is mounted at the / route', () => {
           const wrapper = render(
             <MemoryRouter initialEntries={['/']}>
               <App />
-            </MemoryRouter>
+            </MemoryRouter>,
           );
 
           const [productCards] = await waitForElement(
             () => [
-              wrapper.getAllByTestId(productCardTestIds.ProductCardWrapper),
+              wrapper.getAllByTestId(productCardTestIds.ProductCardWrapperId),
             ],
             { container: wrapper.container },
           );
 
           // Open the CartSidebar
-          fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButton));
-          const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebar);
+          fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButtonId));
+          const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebarId);
 
           // Isolate target product in the ProductList
           const [firstProduct] = productCards;
 
           // Add product
-          fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtn));
+          fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtnId));
 
           // Scan for current CartSidebar item's input field
           const [currentSidebarItemInput] = await waitForElement(
             () => [
               getByTestId(
                 cartSidebar,
-                cartItemSizeInfoTestIds.CartItemQty
+                cartItemSizeInfoTestIds.CartItemQtyId,
               ),
             ],
           ) as [HTMLInputElement];
@@ -385,7 +406,7 @@ describe('Given the App is mounted at the / route', () => {
             () => [
               getByTestId(
                 cartSidebar,
-                cartItemSizeInfoTestIds.CartItemQty
+                cartItemSizeInfoTestIds.CartItemQtyId,
               ),
             ],
           ) as [HTMLInputElement];
@@ -401,7 +422,9 @@ describe('Given the App is mounted at the / route', () => {
           fireEvent.blur(affectedSidebarItemInput);
 
           // Scan for affected product in the ProductList
-          const [updatedFirstProduct] = await wrapper.findAllByTestId(productCardTestIds.ProductCardWrapper);
+          const [updatedFirstProduct] = await wrapper.findAllByTestId(
+            productCardTestIds.ProductCardWrapperId,
+          );
           const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
 
           // Assertions
@@ -413,61 +436,37 @@ describe('Given the App is mounted at the / route', () => {
   });
 
   describe('When the TrashIconButton for an added product in the CartSidebar is clicked', () => {
-    beforeEach(() => {
-      // Establish initial app state
-      jest.mock('../rootReducer', () => ({
-        ...rootReducer,
-        rootReducerInitialState: singleAddedProductSizeInitState,
-      }));
-    });
-
     describe('Then the affected ProductList item, available size qty will be set to the original amount', () => {
       test('And the affected CartSidebar item will be removed from the cart', async () => {
-        // const adjustedQtyValue = 4;
+        // Establish initial app state
+        // const mockRootReducerInitialState = singleAddedProductSizeInitState;
+
+        // jest.mock('../rootReducer', () => ({
+        //   rootReducerInitialState: mockRootReducerInitialState,
+        // }));
 
         // const wrapper = render(
         //   <MemoryRouter initialEntries={['/']}>
         //     <App />
-        //   </MemoryRouter>
+        //   </MemoryRouter>,
         // );
 
         // const [productCards] = await waitForElement(
         //   () => [
-        //     wrapper.getAllByTestId(productCardTestIds.ProductCardWrapper),
+        //     wrapper.getAllByTestId(productCardTestIds.ProductCardWrapperId),
         //   ],
         //   { container: wrapper.container },
         // );
 
-        // // Open the CartSidebar
-        // fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButton));
-        // const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebar);
-
-        // // Isolate target product in the ProductList
-        // const [firstProduct] = productCards;
-        // const initialAvailableQty = extractQtyFromTxt(firstProduct.textContent);
-
-        // // Add product
-        // fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtn));
-
-        // // Scan for affected sidebar item's input field
-        // const [cartSidebarSizeQtyInput] = await waitForElement(
-        //   () => [
-        //     getByTestId(
-        //       cartSidebar,
-        //       cartItemSizeInfoTestIds.CartItemQty
-        //     ),
-        //   ],
-        // ) as [HTMLInputElement];
-
-        // // Adjust qty of the added size in the CartSidebar
-        // fireEvent.change(
-        //   cartSidebarSizeQtyInput,
-        //   { target: { value: `${adjustedQtyValue}` } },
+        // // Simulate clicking the TrashIconButton
+        // fireEvent.click(
+        //   wrapper.queryAllByTestId(),
         // );
-        // fireEvent.blur(cartSidebarSizeQtyInput);
 
         // // Scan for affected product in the ProductList
-        // const [updatedFirstProduct] = await wrapper.findAllByTestId(productCardTestIds.ProductCardWrapper);
+        // const [updatedFirstProduct] = await wrapper.findAllByTestId(
+        //   productCardTestIds.ProductCardWrapperId,
+        // );
         // const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
 
         // // Assertions
@@ -490,28 +489,28 @@ describe('Given the App is mounted at the / route', () => {
 
         // const [productCards] = await waitForElement(
         //   () => [
-        //     wrapper.getAllByTestId(productCardTestIds.ProductCardWrapper),
+        //     wrapper.getAllByTestId(productCardTestIds.ProductCardWrapperId),
         //   ],
         //   { container: wrapper.container },
         // );
 
         // // Open the CartSidebar
-        // fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButton));
-        // const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebar);
+        // fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButtonId));
+        // const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebarId);
 
         // // Isolate target product in the ProductList
         // const [firstProduct] = productCards;
         // const initialAvailableQty = extractQtyFromTxt(firstProduct.textContent);
 
         // // Add product
-        // fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtn));
+        // fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtnId));
 
         // // Scan for affected sidebar item's input field
         // const [cartSidebarSizeQtyInput] = await waitForElement(
         //   () => [
         //     getByTestId(
         //       cartSidebar,
-        //       cartItemSizeInfoTestIds.CartItemQty
+        //       cartItemSizeInfoTestIds.CartItemQtyId
         //     ),
         //   ],
         // ) as [HTMLInputElement];
@@ -524,7 +523,9 @@ describe('Given the App is mounted at the / route', () => {
         // fireEvent.blur(cartSidebarSizeQtyInput);
 
         // // Scan for affected product in the ProductList
-        // const [updatedFirstProduct] = await wrapper.findAllByTestId(productCardTestIds.ProductCardWrapper);
+        // const [updatedFirstProduct] = await wrapper.findAllByTestId(
+        //   productCardTestIds.ProductCardWrapperId,
+        // );
         // const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
 
         // // Assertions
@@ -547,28 +548,28 @@ describe('Given the App is mounted at the / route', () => {
 
         // const [productCards] = await waitForElement(
         //   () => [
-        //     wrapper.getAllByTestId(productCardTestIds.ProductCardWrapper),
+        //     wrapper.getAllByTestId(productCardTestIds.ProductCardWrapperId),
         //   ],
         //   { container: wrapper.container },
         // );
 
         // // Open the CartSidebar
-        // fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButton));
-        // const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebar);
+        // fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButtonId));
+        // const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebarId);
 
         // // Isolate target product in the ProductList
         // const [firstProduct] = productCards;
         // const initialAvailableQty = extractQtyFromTxt(firstProduct.textContent);
 
         // // Add product
-        // fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtn));
+        // fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtnId));
 
         // // Scan for affected sidebar item's input field
         // const [cartSidebarSizeQtyInput] = await waitForElement(
         //   () => [
         //     getByTestId(
         //       cartSidebar,
-        //       cartItemSizeInfoTestIds.CartItemQty
+        //       cartItemSizeInfoTestIds.CartItemQtyId
         //     ),
         //   ],
         // ) as [HTMLInputElement];
@@ -581,7 +582,9 @@ describe('Given the App is mounted at the / route', () => {
         // fireEvent.blur(cartSidebarSizeQtyInput);
 
         // // Scan for affected product in the ProductList
-        // const [updatedFirstProduct] = await wrapper.findAllByTestId(productCardTestIds.ProductCardWrapper);
+        // const [updatedFirstProduct] = await wrapper.findAllByTestId(
+        //   productCardTestIds.ProductCardWrapperId,
+        // );
         // const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
 
         // // Assertions

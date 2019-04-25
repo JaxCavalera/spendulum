@@ -98,14 +98,24 @@ export const calculateUpdatedSizes = (
  * @param isAdded - True when the qty is being added to claimedSizes[selectedSize]
  * @returns - Updated copy of the provided product info
  */
-export const updateProductSizes = (product: ProductInfo, selectedSize: string, qty: number, isAdded: boolean) => {
+export const updateProductSizes = (
+  product: ProductInfo,
+  selectedSize: string,
+  qty: number,
+  isAdded: boolean,
+) => {
   if (!verifyItemQtyAdjustment(product, selectedSize, qty, isAdded)) {
     // Avoid updating the product data if an invalid operation was attempted
-    return;
+    return undefined;
   }
 
-  const newClaimedSizes = calculateUpdatedSizes(product.claimedSizes, selectedSize, qty, isAdded);
-  const newAvailableSizes = calculateUpdatedSizes(product.availableSizes, selectedSize, qty, !isAdded);
+  const {
+    claimedSizes,
+    availableSizes,
+  } = product;
+
+  const newClaimedSizes = calculateUpdatedSizes(claimedSizes, selectedSize, qty, isAdded);
+  const newAvailableSizes = calculateUpdatedSizes(availableSizes, selectedSize, qty, !isAdded);
 
   return {
     ...product,
@@ -116,7 +126,7 @@ export const updateProductSizes = (product: ProductInfo, selectedSize: string, q
 
 /**
  * Calculates how many milliseconds are left before the current pricetimer will expire
- * @param dateIsoString - Current stored value of a priceTimer on a productInfo data set (in cart or in productList)
+ * @param dateIsoString - priceTimer on a productInfo data set (in cartSidebar or productList area)
  * @returns number of milliseconds remaining before the current priceTimer expires
  */
 export const calculateRemainingPriceDuration = (dateIsoString: string) => {

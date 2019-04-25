@@ -25,7 +25,7 @@ import { validateNewQty } from './CartItemSizeInfo-logic';
 
 // Test Ids
 export enum cartItemSizeInfoTestIds {
-  CartItemQty = 'cartItemSizeInfo/CartItemQty',
+  CartItemQtyId = 'cartItemSizeInfo/CartItemQty',
 }
 
 export interface CartItemSizeInfoProps {
@@ -57,7 +57,7 @@ export const CartItemSizeInfo = ({
 
   // Event Handler Wrappers
   const handleItemQtyOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!/(\.|e|\+|\-)/.test(e.currentTarget.value)) {
+    if (!/(\.|e|\+|-)/.test(e.currentTarget.value)) {
       updateLocalQty(e.currentTarget.value);
     }
   };
@@ -80,7 +80,7 @@ export const CartItemSizeInfo = ({
       cartItemQtyRef.current.blur();
     }
 
-    if (/(\.|e|\+|\-)/.test(e.key)) {
+    if (/(\.|e|\+|-)/.test(e.key)) {
       e.preventDefault();
     }
   };
@@ -92,7 +92,7 @@ export const CartItemSizeInfo = ({
         <CartItemQtyWrapper>
           <span>QTY</span>
           <CartItemQty
-            data-testid={cartItemSizeInfoTestIds.CartItemQty}
+            data-testid={cartItemSizeInfoTestIds.CartItemQtyId}
             ref={cartItemQtyRef}
             type="number"
             value={localQty}

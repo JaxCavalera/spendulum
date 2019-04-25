@@ -54,7 +54,7 @@ export const handleTimerOnEnd = (
     cartItemMicroStoreId: cartItem.value,
     cartItemData: updatedCartItemData,
   });
-}
+};
 
 export const handleItemQtyOnChange = (
   newQty: number,
@@ -92,7 +92,13 @@ export const handleItemQtyOnChange = (
       productMicroStoreId: cartItem.value,
       productData: {
         ...adjustedProductData,
-        ...{ priceTimer: matchingProductData ? matchingProductData.priceTimer : cartItem.priceTimer },
+        ...{
+          priceTimer: matchingProductData ? (
+            matchingProductData.priceTimer
+          ) : (
+            cartItem.priceTimer
+          ),
+        },
         ...{ price: matchingProductData ? matchingProductData.price : cartItem.price },
       },
     });
@@ -106,7 +112,9 @@ export const handleTrashBtnOnClick = (
   claimedSizesIsEmpty: boolean,
 ) => {
   const { cartItemMicroStoreIds } = store.cartSidebarStore;
-  const newCartItemMicroStoreIdList = cartItemMicroStoreIds.filter(microStoreId => microStoreId !== cartItem.value);
+  const newCartItemMicroStoreIdList = cartItemMicroStoreIds.filter(
+    microStoreId => microStoreId !== cartItem.value,
+  );
 
   dispatch({
     type: CartSidebarActionTypes.UPDATE_CART_ITEM_MICROSTORE_ID_LIST,
@@ -149,7 +157,6 @@ export const handleTrashBtnOnClick = (
     return;
   }
 
-  // No matching productMicroStore was found for a cartItem (should be impossible)
-  console.error('A matching product does not exist for an item in the cartSidebar!');
-  return;
+  // No matching productMicroStore was found for a cartItem (critical error if this happens)
+  throw new Error('A matching product does not exist for an item in the cartSidebar!');
 };

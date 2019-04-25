@@ -6,7 +6,7 @@ export enum CartSidebarActionTypes {
   ASSIGN_MICROSTORE = 'cartSidebar/ASSIGN_MICROSTORE',
   REMOVE_MICROSTORE = 'cartSidebar/REMOVE_MICROSTORE',
   UPDATE_MICROSTORE_VALUE = 'cartSidebar/UPDATE_MICROSTORE_VALUE',
-};
+}
 
 export interface CartSidebarReducerAction {
   type: string;

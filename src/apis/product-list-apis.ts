@@ -1,5 +1,5 @@
 // Mock data
-import * as productListMock from './tests/product-list-mock.json';
+import productListMock from './tests/product-list-mock.json';
 
 // Models
 import { ProductInfo } from '../utils/product-info-helpers';

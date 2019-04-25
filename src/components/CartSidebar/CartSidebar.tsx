@@ -21,31 +21,29 @@ import { calcCartTotal } from './CartSidebar-logic';
 
 // Test Ids
 export enum cartSidebarTestIds {
-  CartSidebar = 'CartSidebar',
+  CartSidebarId = 'CartSidebar',
 }
 
-export interface CartSidebarProps { }
-
-export const CartSidebar = ({ }: CartSidebarProps) => {
+export const CartSidebar = () => {
   const store = useContext(StoreContext);
   const {
     cartSidebarStore,
     cartSidebarStore: {
       cartItemMicroStoreIds,
-      isSidebarOpen
+      isSidebarOpen,
     },
   } = store;
 
   return (
     <ErrorBoundary>
       <CartSidebarWrapper
-        data-testid={cartSidebarTestIds.CartSidebar}
+        data-testid={cartSidebarTestIds.CartSidebarId}
         isSidebarOpen={isSidebarOpen}
       >
         <CartHeading>Shopping Cart</CartHeading>
         <CartItemsList>
           {
-            cartItemMicroStoreIds.map((cartItemMicroStoreId) => (
+            cartItemMicroStoreIds.map(cartItemMicroStoreId => (
               <CartItem
                 key={cartSidebarStore[cartItemMicroStoreId].value}
                 cartItem={cartSidebarStore[cartItemMicroStoreId]}
