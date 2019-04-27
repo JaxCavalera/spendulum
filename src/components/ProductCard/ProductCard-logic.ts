@@ -14,9 +14,12 @@ import { ProductInfo, updateProductSizes } from '../../utils/product-info-helper
  * @param minDurationMins - Optional lower limit to the randomly generated duration
  * @returns - New priceTimer Date.toISOString
  */
-export const createNewRandomPriceTimerStr = (maxDurationMins: number, minDurationMins?: number) => {
-  const finalMaxDuration = maxDurationMins - (minDurationMins || 0);
-  const finalMinDuration = minDurationMins ? minDurationMins : 0;
+export const createNewRandomPriceTimerStr = (
+  maxDurationMins: number,
+  minDurationMins: number = 0,
+) => {
+  const finalMaxDuration = maxDurationMins - minDurationMins;
+  const finalMinDuration = minDurationMins;
 
   const newDuration = Math.ceil(Math.random() * finalMaxDuration) + finalMinDuration;
   const newPriceTimerDateObj = addMinutes(new Date(), newDuration);
@@ -52,8 +55,8 @@ export const adjustCartItems = (
   // Generate a new cartItem using the existingCartItem.priceTimer if it exists
   const cartItem = {
     ...newItem,
-    ...{ priceTimer: !!existingCartItem ? existingCartItem.priceTimer : addMinutes(new Date(), -20) },
-    ...{ price: !!existingCartItem ? existingCartItem.price : newItem.price },
+    ...{ priceTimer: existingCartItem ? existingCartItem.priceTimer : addMinutes(new Date(), -20) },
+    ...{ price: existingCartItem ? existingCartItem.price : newItem.price },
   };
 
   // Create or Replace the cartItemMicroStore data
@@ -137,7 +140,7 @@ export const handleAddToCartOnClick = (
     updatedProduct,
     cartItemMicroStoreIds,
     cartSidebarStore,
-    dispatch
+    dispatch,
   );
 
   // Update ProductList so available qty on items in the store remains accurate

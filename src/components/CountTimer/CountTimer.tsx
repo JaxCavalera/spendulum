@@ -35,11 +35,17 @@ export const CountTimer = ({
   const [isAlert, updateIsAlert] = useState(false);
   const [timer, updateTimer] = useState(duration);
 
+  if (duration === 0 && onEnd) {
+    onEnd();
+  }
+
   useEffect(() => {
     if (timer === 0 && onEnd) {
       onEnd();
     }
+  }, [timer, onEnd]);
 
+  useEffect(() => {
     if (alertDuration && timer <= alertDuration && !isAlert) {
       updateIsAlert(true);
     }
@@ -47,7 +53,7 @@ export const CountTimer = ({
     if (alertDuration && timer > alertDuration && isAlert) {
       updateIsAlert(false);
     }
-  }, [timer])
+  }, [timer, alertDuration, isAlert]);
 
   // Mount / Unmount
   useEffect(() => {
@@ -55,20 +61,20 @@ export const CountTimer = ({
 
     return () => {
       clearTimer();
-    }
-  }, [duration]);
+    };
+  }, [duration, updateTimer, countDirection]);
 
   return (
     <ErrorBoundary>
       <CountTimerWrapper>
         {
-          beforeMsg &&
-          <TimerInfo>{beforeMsg}</TimerInfo>
+          beforeMsg
+          && <TimerInfo>{beforeMsg}</TimerInfo>
         }
         <TimerInfo alertMode={isAlert}>{format(timer, 'mm:ss')}</TimerInfo>
         {
-          afterMsg &&
-          <TimerInfo>{afterMsg}</TimerInfo>
+          afterMsg
+          && <TimerInfo>{afterMsg}</TimerInfo>
         }
       </CountTimerWrapper>
     </ErrorBoundary>

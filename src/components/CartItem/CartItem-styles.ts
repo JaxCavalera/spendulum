@@ -1,5 +1,5 @@
 import styled from 'styled-components/macro';
-import { colours, IconButton, SectionParagraph } from '../../utils/shared-styles';
+import { colours, IconButton } from '../../utils/shared-styles';
 
 // Styled Components
 export const CartItemWrapper = styled.div`

@@ -24,9 +24,8 @@ export const ProductList = () => {
   const { productMicroStoreIds } = store.productListStore;
 
   useEffect(() => {
-    // Only  refreshes when the Product List component is mounted
     refreshProductList(productMicroStoreIds, dispatch, browseApis);
-  }, []);
+  }, [productMicroStoreIds, dispatch, browseApis]);
 
   return (
     <ErrorBoundary>

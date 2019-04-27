@@ -50,10 +50,10 @@ export const CartItemSizeInfo = ({
   // Detect prop changes that need to trigger local state updates
   useEffect(() => {
     const newLocalQty = claimedSizes[sizeOption];
-    if (typeof newLocalQty !== 'undefined' && newLocalQty.toFixed(0) !== localQty) {
+    if (typeof newLocalQty !== 'undefined') {
       updateLocalQty(newLocalQty.toFixed(0));
     }
-  }, [claimedSizes]);
+  }, [claimedSizes, sizeOption]);
 
   // Event Handler Wrappers
   const handleItemQtyOnChange = (e: ChangeEvent<HTMLInputElement>) => {

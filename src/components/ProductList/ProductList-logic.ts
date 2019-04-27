@@ -34,8 +34,6 @@ export const refreshProductList = async (
     try {
       // Fetch available products from the server and update the store when retrieved
       const newProductList = await browseApis.getAvailableProductsList();
-      console.log(newProductList);
-
 
       // Create microStores
       createProductMicroStores(newProductList, dispatch);

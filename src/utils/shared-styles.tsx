@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro';
+import styled, { css } from 'styled-components/macro';
 
 export const colours = {
   black: 'rgb(0, 0, 0)',
@@ -25,7 +25,7 @@ interface SectionParagraphProps {
 export const SectionParagraph = styled('p')`
   font-size: 1.4rem;
   color: ${colours.black};
-  ${(props: SectionParagraphProps) => props.nomargin ? 'margin: 0' : ''}
+  ${(props: SectionParagraphProps) => (props.nomargin ? 'margin: 0' : '')}
 `;
 
 export const BasicTextInput = styled.input`
@@ -44,6 +44,24 @@ export const BasicTextInput = styled.input`
   }
 `;
 
+export const disabledBtnCss = css`
+  background-color: ${colours.grey5};
+  color: ${colours.grey1};
+  cursor: default;
+
+  &:hover {
+    background-color: ${colours.grey5};
+  }
+
+  > svg {
+    fill: ${colours.grey1};
+  }
+`;
+
+interface BasicButtonProps {
+  disabled?: boolean;
+}
+
 export const BasicButton = styled.button`
   display: flex;
   flex-direction: row;
@@ -60,6 +78,8 @@ export const BasicButton = styled.button`
   &:hover {
     background-color: ${colours.white};
   }
+
+  ${(props: BasicButtonProps) => props.disabled && disabledBtnCss}
 `;
 
 export const PrimaryButton = styled(BasicButton)`
@@ -71,23 +91,13 @@ export const PrimaryButton = styled(BasicButton)`
   }
 `;
 
-interface IconButtonProps {
-  disabled?: boolean;
-}
 export const IconButton = styled(BasicButton)`
   width: 4rem;
   margin-left: 1rem;
   padding: 0.3rem;
-  cursor: ${(props: IconButtonProps) => props.disabled ? 'default' : 'pointer'};
-  background-color: ${(props: IconButtonProps) => props.disabled && colours.grey5};
-
-  &:hover {
-    background-color: ${(props: IconButtonProps) => props.disabled && colours.grey5};
-  }
 
   > svg {
     height: 100%;
-    fill: ${(props: IconButtonProps) => props.disabled && colours.grey1};
   }
 `;
 
