@@ -5,7 +5,7 @@ import { ProductListReducerState } from '../components/ProductList/ProductList-m
 import { CartSidebarReducerState } from '../components/CartSidebar/CartSidebar-models';
 
 // Reducer Helpers
-import combineReducers, { validateReducers } from '../utils/combineReducers';
+import { combineReducers, validateReducers } from '../utils/combineReducers';
 
 // Reducers
 import { productListReducer, productListInitialState } from '../components/ProductList/ProductList-reducer';

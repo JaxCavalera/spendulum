@@ -10,9 +10,8 @@ import {
 
 // Mocked Functionality
 import * as apiContexts from '../../apis/api-contexts';
-// import {
-//   singleAddedProductSizeInitState,
-// } from './App-mock-initial-states';
+import * as rootReducer from '../rootReducer';
+import * as mockInitialStates from './App-mock-initial-states';
 
 // Component TestIds
 import { cartItemSizeInfoTestIds } from '../../components/CartItemSizeInfo/CartItemSizeInfo';
@@ -125,7 +124,9 @@ describe('Given the App is mounted at the / route', () => {
         // Isolate target product in the ProductList
         const [firstProduct] = productCards;
         const initialAvailableQty = extractQtyFromTxt(firstProduct.textContent);
-        const firstProductName = wrapper.getByTestId(
+
+        const firstProductName = getByTestId(
+          firstProduct,
           productCardTestIds.FloatingLabelId,
         ).textContent;
 
@@ -436,6 +437,11 @@ describe('Given the App is mounted at the / route', () => {
   });
 
   describe('When the TrashIconButton for an added product in the CartSidebar is clicked', () => {
+    // const mockRootReducerInitialState = jest.spyOn(
+    //   rootReducer as { rootReducerInitialState:  },
+    //   'browseLiveApis',
+    // );
+
     describe('Then the affected ProductList item, available size qty will be set to the original amount', () => {
       test('And the affected CartSidebar item will be removed from the cart', async () => {
         // Establish initial app state
@@ -451,12 +457,14 @@ describe('Given the App is mounted at the / route', () => {
         //   </MemoryRouter>,
         // );
 
-        // const [productCards] = await waitForElement(
-        //   () => [
-        //     wrapper.getAllByTestId(productCardTestIds.ProductCardWrapperId),
-        //   ],
-        //   { container: wrapper.container },
-        // );
+        // // const [productCards] = await waitForElement(
+        // //   () => [
+        // //     wrapper.getAllByTestId(productCardTestIds.ProductCardWrapperId),
+        // //   ],
+        // //   { container: wrapper.container },
+        // // );
+
+        // wrapper.debug();
 
         // // Simulate clicking the TrashIconButton
         // fireEvent.click(
