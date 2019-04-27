@@ -46,9 +46,9 @@ import { ShoppingCart } from '../../images/icons';
 
 // Test Ids
 export enum productCardTestIds {
-  AddToCartBtnId = 'productCard/AddToCartBtn',
-  FloatingLabelId = 'productCard/FloatingLabel',
-  ProductCardWrapperId = 'productCard/ProductCardWrapper',
+  AddToCartBtnId = 'ProductCard/AddToCartBtn',
+  FloatingLabelId = 'ProductCard/FloatingLabel',
+  ProductCard = 'ProductCard',
 }
 
 // ProductCard Props
@@ -107,7 +107,7 @@ export const ProductCard = ({ data }: ProductCardProps) => {
 
   return (
     <ErrorBoundary>
-      <ProductCardWrapper data-testid={productCardTestIds.ProductCardWrapperId}>
+      <ProductCardWrapper data-testid={productCardTestIds.ProductCard}>
         <ImagePanel>
           <WrappedImage imgSrc={data.imgUrl || ''} imgHeight="100%" imgWidth="100%" />
           <FloatingLabel data-testid={productCardTestIds.FloatingLabelId}>

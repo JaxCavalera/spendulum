@@ -32,6 +32,13 @@ import {
   handleTimerOnEnd,
 } from './CartItem-logic';
 
+// Test Ids
+export enum cartItemTestIds {
+  CartItemId = 'CartItem',
+  CartItemLabelId = 'CartItem/CartItemLabel',
+  TrashIconButtonId = 'CartItem/TrashIconButton',
+}
+
 export interface CartItemProps {
   cartItem: ProductInfo;
 }
@@ -95,8 +102,8 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
 
   return (
     <ErrorBoundary>
-      <CartItemWrapper>
-        <CartItemLabel>{label}</CartItemLabel>
+      <CartItemWrapper data-testid={cartItemTestIds.CartItemId}>
+        <CartItemLabel data-testid={cartItemTestIds.CartItemLabelId}>{label}</CartItemLabel>
         <CartItemContent>
           <CartPricePanel>
             <SectionParagraph nomargin>
@@ -120,7 +127,10 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
             ))
           }
         </CartItemContent>
-        <TrashIconButton onClick={callHandleTrashBtnOnClick}>
+        <TrashIconButton
+          onClick={callHandleTrashBtnOnClick}
+          data-testid={cartItemTestIds.TrashIconButtonId}
+        >
           <TrashIcon>
             <title>Remove Item</title>
           </TrashIcon>

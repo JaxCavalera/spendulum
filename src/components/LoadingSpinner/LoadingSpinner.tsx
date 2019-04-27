@@ -8,7 +8,7 @@ export interface LoadingSpinnerProps {
 }
 
 export enum loadingSpinnerTestIds {
-  SpinnerId = 'LoadingSpinner',
+  SpinnerId = 'LoadingSpinner/Spinner',
 }
 
 export const LoadingSpinner = ({ msg }: LoadingSpinnerProps) => (

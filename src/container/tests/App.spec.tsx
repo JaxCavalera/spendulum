@@ -6,12 +6,15 @@ import {
   getByTestId,
   fireEvent,
   queryAllByText,
+  getAllByTestId,
 } from 'react-testing-library';
 
 // Mocked Functionality
 import * as apiContexts from '../../apis/api-contexts';
-import * as rootReducer from '../rootReducer';
-import * as mockInitialStates from './App-mock-initial-states';
+import * as rootReducerExports from '../rootReducer';
+import {
+  singleAddedProductSizeInitState,
+} from './App-mock-initial-states';
 
 // Component TestIds
 import { cartItemSizeInfoTestIds } from '../../components/CartItemSizeInfo/CartItemSizeInfo';
@@ -22,6 +25,7 @@ import { productCardTestIds } from '../../components/ProductCard/ProductCard';
 
 // Tested Component
 import { App } from '../App';
+import { cartItemTestIds } from '../../components/CartItem/CartItem';
 
 // Test Helpers
 const extractQtyFromTxt = (txt: string | null): number => {
@@ -41,10 +45,7 @@ const extractQtyFromTxt = (txt: string | null): number => {
 
 // Tests
 describe('Given the App is mounted at the / route', () => {
-  const mockBrowseApis = jest.spyOn(
-    apiContexts as { browseLiveApis: any; browseMockApis: any; },
-    'browseLiveApis',
-  );
+  const mockBrowseApis = jest.spyOn(apiContexts as any, 'browseLiveApis');
 
   beforeEach(() => {
     jest.resetModules();
@@ -67,13 +68,13 @@ describe('Given the App is mounted at the / route', () => {
 
   describe('When it first loads', () => {
     test('Then the LoadingSpinner component will be displayed', () => {
-      const { getAllByTestId } = render(
+      const wrapper = render(
         <MemoryRouter initialEntries={['/']}>
           <App />
         </MemoryRouter>,
       );
 
-      const spinners = getAllByTestId(loadingSpinnerTestIds.SpinnerId);
+      const spinners = wrapper.getAllByTestId(loadingSpinnerTestIds.SpinnerId);
 
       expect(spinners).toHaveLength(1);
     });
@@ -81,7 +82,7 @@ describe('Given the App is mounted at the / route', () => {
 
   describe('When it has finished loading', () => {
     test('Then the LoadingSpinner component will NOT be displayed', async () => {
-      const { container, getAllByTestId, queryAllByTestId } = render(
+      const wrapper = render(
         <MemoryRouter initialEntries={['/']}>
           <App />
         </MemoryRouter>,
@@ -89,12 +90,12 @@ describe('Given the App is mounted at the / route', () => {
 
       const [productCards] = await waitForElement(
         () => [
-          getAllByTestId(productCardTestIds.ProductCardWrapperId),
+          wrapper.getAllByTestId(productCardTestIds.ProductCard),
         ],
-        { container },
+        { container: wrapper.container },
       );
 
-      const spinners = queryAllByTestId(loadingSpinnerTestIds.SpinnerId);
+      const spinners = wrapper.queryAllByTestId(loadingSpinnerTestIds.SpinnerId);
 
       expect(productCards).toHaveLength(5);
       expect(spinners).toHaveLength(0);
@@ -112,7 +113,7 @@ describe('Given the App is mounted at the / route', () => {
 
         const [productCards] = await waitForElement(
           () => [
-            wrapper.getAllByTestId(productCardTestIds.ProductCardWrapperId),
+            wrapper.getAllByTestId(productCardTestIds.ProductCard),
           ],
           { container: wrapper.container },
         );
@@ -145,7 +146,7 @@ describe('Given the App is mounted at the / route', () => {
 
         // Scan for affected product in the ProductList
         const [updatedFirstProduct] = await wrapper.findAllByTestId(
-          productCardTestIds.ProductCardWrapperId,
+          productCardTestIds.ProductCard,
         );
         const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
 
@@ -170,7 +171,7 @@ describe('Given the App is mounted at the / route', () => {
 
           const [productCards] = await waitForElement(
             () => [
-              wrapper.getAllByTestId(productCardTestIds.ProductCardWrapperId),
+              wrapper.getAllByTestId(productCardTestIds.ProductCard),
             ],
             { container: wrapper.container },
           );
@@ -205,7 +206,7 @@ describe('Given the App is mounted at the / route', () => {
 
           // Scan for affected product in the ProductList
           const [updatedFirstProduct] = await wrapper.findAllByTestId(
-            productCardTestIds.ProductCardWrapperId,
+            productCardTestIds.ProductCard,
           );
           const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
 
@@ -229,7 +230,7 @@ describe('Given the App is mounted at the / route', () => {
 
           const [productCards] = await waitForElement(
             () => [
-              wrapper.getAllByTestId(productCardTestIds.ProductCardWrapperId),
+              wrapper.getAllByTestId(productCardTestIds.ProductCard),
             ],
             { container: wrapper.container },
           );
@@ -264,7 +265,7 @@ describe('Given the App is mounted at the / route', () => {
 
           // Scan for affected product in the ProductList
           const [updatedFirstProduct] = await wrapper.findAllByTestId(
-            productCardTestIds.ProductCardWrapperId,
+            productCardTestIds.ProductCard,
           );
           const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
 
@@ -291,7 +292,7 @@ describe('Given the App is mounted at the / route', () => {
 
           const [productCards] = await waitForElement(
             () => [
-              wrapper.getAllByTestId(productCardTestIds.ProductCardWrapperId),
+              wrapper.getAllByTestId(productCardTestIds.ProductCard),
             ],
             { container: wrapper.container },
           );
@@ -345,7 +346,7 @@ describe('Given the App is mounted at the / route', () => {
 
           // Scan for affected product in the ProductList
           const [updatedFirstProduct] = await wrapper.findAllByTestId(
-            productCardTestIds.ProductCardWrapperId,
+            productCardTestIds.ProductCard,
           );
           const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
 
@@ -370,7 +371,7 @@ describe('Given the App is mounted at the / route', () => {
 
           const [productCards] = await waitForElement(
             () => [
-              wrapper.getAllByTestId(productCardTestIds.ProductCardWrapperId),
+              wrapper.getAllByTestId(productCardTestIds.ProductCard),
             ],
             { container: wrapper.container },
           );
@@ -424,7 +425,7 @@ describe('Given the App is mounted at the / route', () => {
 
           // Scan for affected product in the ProductList
           const [updatedFirstProduct] = await wrapper.findAllByTestId(
-            productCardTestIds.ProductCardWrapperId,
+            productCardTestIds.ProductCard,
           );
           const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
 
@@ -437,49 +438,54 @@ describe('Given the App is mounted at the / route', () => {
   });
 
   describe('When the TrashIconButton for an added product in the CartSidebar is clicked', () => {
-    // const mockRootReducerInitialState = jest.spyOn(
-    //   rootReducer as { rootReducerInitialState:  },
-    //   'browseLiveApis',
-    // );
+    beforeEach(() => {
+      const mockInitialState = jest.spyOn(rootReducerExports as any, 'rootReducerInitialState');
+      mockInitialState.mockImplementation(() => singleAddedProductSizeInitState);
+    });
 
     describe('Then the affected ProductList item, available size qty will be set to the original amount', () => {
       test('And the affected CartSidebar item will be removed from the cart', async () => {
-        // Establish initial app state
-        // const mockRootReducerInitialState = singleAddedProductSizeInitState;
+        const wrapper = render(
+          <MemoryRouter initialEntries={['/']}>
+            <App />
+          </MemoryRouter>,
+        );
 
-        // jest.mock('../rootReducer', () => ({
-        //   rootReducerInitialState: mockRootReducerInitialState,
-        // }));
+        const [firstCartItem] = wrapper.getAllByTestId(cartItemTestIds.CartItemId);
+        const firstCartItemName = getByTestId(
+          firstCartItem,
+          cartItemTestIds.CartItemLabelId,
+        ).textContent;
 
-        // const wrapper = render(
-        //   <MemoryRouter initialEntries={['/']}>
-        //     <App />
-        //   </MemoryRouter>,
-        // );
+        // Simulate clicking the TrashIconButton
+        fireEvent.click(getByTestId(firstCartItem, cartItemTestIds.TrashIconButtonId));
 
-        // // const [productCards] = await waitForElement(
-        // //   () => [
-        // //     wrapper.getAllByTestId(productCardTestIds.ProductCardWrapperId),
-        // //   ],
-        // //   { container: wrapper.container },
-        // // );
+        // Scan for affected product in the ProductList
+        const productListItems = await wrapper.findAllByTestId(
+          productCardTestIds.ProductCard,
+        );
 
-        // wrapper.debug();
+        const [updatedFirstProduct] = Array.prototype.filter.call(
+          productListItems,
+          (item: HTMLElement) => (
+            item.textContent !== null
+            && firstCartItemName !== null
+            && item.textContent.indexOf(firstCartItemName) !== -1
+          ),
+        );
 
-        // // Simulate clicking the TrashIconButton
-        // fireEvent.click(
-        //   wrapper.queryAllByTestId(),
-        // );
+        const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
 
-        // // Scan for affected product in the ProductList
-        // const [updatedFirstProduct] = await wrapper.findAllByTestId(
-        //   productCardTestIds.ProductCardWrapperId,
-        // );
-        // const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
+        // Scan for removed cartSidebar item
+        const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebarId);
+        const matchingCartSidebarProducts = queryAllByText(
+          cartSidebar,
+          (firstCartItemName === null) ? 'failtest' : firstCartItemName,
+        );
 
-        // // Assertions
-        // expect(cartSidebarSizeQtyInput.value).toEqual(`${adjustedQtyValue}`);
-        // expect(finalAvailableQty).toEqual(initialAvailableQty - adjustedQtyValue);
+        // Assertions
+        expect(matchingCartSidebarProducts).toHaveLength(0);
+        expect(finalAvailableQty).toEqual(10);
       });
     });
   });
@@ -497,7 +503,7 @@ describe('Given the App is mounted at the / route', () => {
 
         // const [productCards] = await waitForElement(
         //   () => [
-        //     wrapper.getAllByTestId(productCardTestIds.ProductCardWrapperId),
+        //     wrapper.getAllByTestId(productCardTestIds.ProductCard),
         //   ],
         //   { container: wrapper.container },
         // );
@@ -532,7 +538,7 @@ describe('Given the App is mounted at the / route', () => {
 
         // // Scan for affected product in the ProductList
         // const [updatedFirstProduct] = await wrapper.findAllByTestId(
-        //   productCardTestIds.ProductCardWrapperId,
+        //   productCardTestIds.ProductCard,
         // );
         // const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
 
@@ -556,7 +562,7 @@ describe('Given the App is mounted at the / route', () => {
 
         // const [productCards] = await waitForElement(
         //   () => [
-        //     wrapper.getAllByTestId(productCardTestIds.ProductCardWrapperId),
+        //     wrapper.getAllByTestId(productCardTestIds.ProductCard),
         //   ],
         //   { container: wrapper.container },
         // );
@@ -591,7 +597,7 @@ describe('Given the App is mounted at the / route', () => {
 
         // // Scan for affected product in the ProductList
         // const [updatedFirstProduct] = await wrapper.findAllByTestId(
-        //   productCardTestIds.ProductCardWrapperId,
+        //   productCardTestIds.ProductCard,
         // );
         // const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
 

@@ -17,7 +17,7 @@ import { CartButton } from './CartWidget-styles';
 
 // Test Ids
 export enum cartWidgetTestIds {
-  CartButtonId = 'cartWidget/CartButton',
+  CartButtonId = 'CartWidget/CartButton',
 }
 
 export const CartWidget = () => {

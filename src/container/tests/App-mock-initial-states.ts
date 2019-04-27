@@ -1,4 +1,6 @@
-export const singleAddedProductSizeInitState = {
+import { RootReducerStore } from '../rootReducer';
+
+export const singleAddedProductSizeInitState: RootReducerStore = {
   productListStore: {
     productMicroStoreIds: [
       'ksny-1',

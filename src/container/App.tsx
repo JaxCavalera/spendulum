@@ -64,7 +64,7 @@ const patchedBrowse = patchWithStableMatchProp(Browse);
 const patchedCheckout = patchWithStableMatchProp(Checkout);
 
 export const App = () => {
-  const [store, dispatch] = useReducer(rootReducer, rootReducerInitialState);
+  const [store, dispatch] = useReducer(rootReducer, rootReducerInitialState());
 
   return (
     <ErrorBoundary>

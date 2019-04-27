@@ -17,13 +17,13 @@ export interface RootReducerStore {
   cartSidebarStore: CartSidebarReducerState;
 }
 
-export const rootReducerInitialState: RootReducerStore = {
+export const rootReducerInitialState = (): RootReducerStore => ({
   productListStore: productListInitialState,
   cartSidebarStore: cartSidebarInitialState,
-};
+});
 
 export const StoreDispatch = createContext({} as Dispatch<any>);
-export const StoreContext = createContext(rootReducerInitialState);
+export const StoreContext = createContext(rootReducerInitialState());
 
 // Defines the collection of reducers to be validated
 const validReducerCollection = validateReducers({
