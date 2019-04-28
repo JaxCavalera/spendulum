@@ -21,6 +21,7 @@ import ErrorBoundary from '../utils/ErrorBoundary';
 // Pages
 import { Browse } from '../pages/Browse/Browse';
 import { Checkout } from '../pages/Checkout/Checkout';
+import { Config } from '../pages/Config/Config';
 import { PageNotFound } from '../pages/PageNotFound/PageNotFound';
 
 // Components
@@ -62,6 +63,7 @@ export const patchWithStableMatchProp = (
 // Memo ready patched render functions
 const patchedBrowse = patchWithStableMatchProp(Browse);
 const patchedCheckout = patchWithStableMatchProp(Checkout);
+const patchedConfig = patchWithStableMatchProp(Config);
 
 export const App = () => {
   const [store, dispatch] = useReducer(rootReducer, rootReducerInitialState());
@@ -76,12 +78,13 @@ export const App = () => {
                 <AppName>
                   <Link to="/">Spendulum</Link>
                 </AppName>
-                <NavWidgets />
+                <Route render={props => <NavWidgets {...props} />} />
               </HeaderBar>
               <PageContent>
                 <Switch>
                   <Route exact path="/" render={patchedBrowse} />
                   <Route exact path="/checkout" render={patchedCheckout} />
+                  <Route exact path="/config" render={patchedConfig} />
                   <Route component={PageNotFound} />
                 </Switch>
                 <CartSidebar />

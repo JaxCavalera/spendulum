@@ -13,8 +13,15 @@ export interface BrowseApis {
   getAvailableProductsList: ApiFn;
 }
 
+export interface ConfigApis {
+  getAvailableProductsList: ApiFn;
+}
+
 // Live Contexts
 export const browseLiveApis = (): BrowseApis => ({
+  getAvailableProductsList,
+});
+export const configLiveApis = (): ConfigApis => ({
   getAvailableProductsList,
 });
 
@@ -22,6 +29,10 @@ export const browseLiveApis = (): BrowseApis => ({
 export const browseMockApis = (): BrowseApis => ({
   getAvailableProductsList: () => getAvailableProductsList(true),
 });
+export const configMockApis = (): ConfigApis => ({
+  getAvailableProductsList: () => getAvailableProductsList(true),
+});
 
 // Context Wrappers
 export const BrowseApisContext = createContext(browseMockApis());
+export const ConfigApisContext = createContext(configMockApis());
