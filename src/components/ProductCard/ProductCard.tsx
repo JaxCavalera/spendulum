@@ -46,9 +46,10 @@ import { ShoppingCart } from '../../images/icons';
 
 // Test Ids
 export enum productCardTestIds {
+  ProductCard = 'ProductCard',
   AddToCartBtnId = 'ProductCard/AddToCartBtn',
   FloatingLabelId = 'ProductCard/FloatingLabel',
-  ProductCard = 'ProductCard',
+  SizePickerOption = 'ProductCard/SizePickerOption',
 }
 
 // ProductCard Props
@@ -132,11 +133,19 @@ export const ProductCard = ({ data }: ProductCardProps) => {
             {
               sizeOptions.length ? (
                 sizeOptions.map(size => (
-                  <option key={size} value={size}>
+                  <option
+                    key={size}
+                    value={size}
+                    data-testid={productCardTestIds.SizePickerOption}
+                  >
                     {`Size ${size} [${data.availableSizes[size]} Available]`}
                   </option>
                 ))
-              ) : <option value={soldOutTxt}>Sold Out</option>
+              ) : (
+                <option value={soldOutTxt} data-testid={productCardTestIds.SizePickerOption}>
+                  {soldOutTxt}
+                </option>
+              )
             }
           </SizePicker>
           <AddToCartBtn

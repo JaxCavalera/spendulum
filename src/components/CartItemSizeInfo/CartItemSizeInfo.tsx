@@ -25,6 +25,7 @@ import { validateNewQty } from './CartItemSizeInfo-logic';
 
 // Test Ids
 export enum cartItemSizeInfoTestIds {
+  CartItemSizeId = 'CartItemSizeInfo/CartItemSizeId',
   CartItemQtyId = 'CartItemSizeInfo/CartItemQty',
 }
 
@@ -88,7 +89,9 @@ export const CartItemSizeInfo = ({
   return (
     <ErrorBoundary>
       <CartItemSizeInfoWrapper>
-        <CartItemSize>{sizeOption}</CartItemSize>
+        <CartItemSize data-testid={cartItemSizeInfoTestIds.CartItemSizeId}>
+          {sizeOption}
+        </CartItemSize>
         <CartItemQtyWrapper>
           <span>QTY</span>
           <CartItemQty

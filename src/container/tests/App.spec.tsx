@@ -13,7 +13,8 @@ import {
 import * as apiContexts from '../../apis/api-contexts';
 import * as rootReducerExports from '../rootReducer';
 import {
-  singleAddedProductSizeInitState,
+  singleAddedProductOneSize,
+  singleAddedProductTwoSizes,
 } from './App-mock-initial-states';
 
 // Component TestIds
@@ -438,13 +439,13 @@ describe('Given the App is mounted at the / route', () => {
   });
 
   describe('When the TrashIconButton for an added product in the CartSidebar is clicked', () => {
-    beforeEach(() => {
-      const mockInitialState = jest.spyOn(rootReducerExports as any, 'rootReducerInitialState');
-      mockInitialState.mockImplementation(() => singleAddedProductSizeInitState);
-    });
-
     describe('Then the affected ProductList item, available size qty will be set to the original amount', () => {
       test('And the affected CartSidebar item will be removed from the cart', async () => {
+        // Mocks
+        const mockInitialState = jest.spyOn(rootReducerExports as any, 'rootReducerInitialState');
+        mockInitialState.mockImplementation(() => singleAddedProductOneSize);
+
+        // Mount wrapper component
         const wrapper = render(
           <MemoryRouter initialEntries={['/']}>
             <App />
@@ -486,6 +487,9 @@ describe('Given the App is mounted at the / route', () => {
         // Assertions
         expect(matchingCartSidebarProducts).toHaveLength(0);
         expect(finalAvailableQty).toEqual(10);
+
+        // Cleanup mocks
+        mockInitialState.mockRestore();
       });
     });
   });
@@ -493,58 +497,64 @@ describe('Given the App is mounted at the / route', () => {
   describe('When a product with 1 added size in the CartSidebar has the size qty set to 0', () => {
     describe('Then the affected ProductList item, available size qty will be set to the original amount', () => {
       test('And the affected CartSidebar item will be removed from the cart', async () => {
-        // const adjustedQtyValue = 4;
+        // Mocks
+        const mockInitialState = jest.spyOn(rootReducerExports as any, 'rootReducerInitialState');
+        mockInitialState.mockImplementation(() => singleAddedProductOneSize);
 
-        // const wrapper = render(
-        //   <MemoryRouter initialEntries={['/']}>
-        //     <App />
-        //   </MemoryRouter>
-        // );
+        // Mount wrapper component
+        const wrapper = render(
+          <MemoryRouter initialEntries={['/']}>
+            <App />
+          </MemoryRouter>,
+        );
 
-        // const [productCards] = await waitForElement(
-        //   () => [
-        //     wrapper.getAllByTestId(productCardTestIds.ProductCard),
-        //   ],
-        //   { container: wrapper.container },
-        // );
+        const [firstCartItem] = wrapper.getAllByTestId(cartItemTestIds.CartItemId);
+        const firstCartItemName = getByTestId(
+          firstCartItem,
+          cartItemTestIds.CartItemLabelId,
+        ).textContent;
 
-        // // Open the CartSidebar
-        // fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButtonId));
-        // const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebarId);
+        // Simulate reducing the added qty to 0 on the target CartSidebar item
+        const firstCartItemSizeQtyInput = getByTestId(
+          firstCartItem,
+          cartItemSizeInfoTestIds.CartItemQtyId,
+        ) as HTMLInputElement;
 
-        // // Isolate target product in the ProductList
-        // const [firstProduct] = productCards;
-        // const initialAvailableQty = extractQtyFromTxt(firstProduct.textContent);
+        fireEvent.change(
+          firstCartItemSizeQtyInput,
+          { target: { value: '0' } },
+        );
+        fireEvent.blur(firstCartItemSizeQtyInput);
 
-        // // Add product
-        // fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtnId));
+        // Scan for affected product in the ProductList
+        const productListItems = await wrapper.findAllByTestId(
+          productCardTestIds.ProductCard,
+        );
 
-        // // Scan for affected sidebar item's input field
-        // const [cartSidebarSizeQtyInput] = await waitForElement(
-        //   () => [
-        //     getByTestId(
-        //       cartSidebar,
-        //       cartItemSizeInfoTestIds.CartItemQtyId
-        //     ),
-        //   ],
-        // ) as [HTMLInputElement];
+        const [updatedFirstProduct] = Array.prototype.filter.call(
+          productListItems,
+          (item: HTMLElement) => (
+            item.textContent !== null
+            && firstCartItemName !== null
+            && item.textContent.indexOf(firstCartItemName) !== -1
+          ),
+        );
 
-        // // Adjust qty of the added size in the CartSidebar
-        // fireEvent.change(
-        //   cartSidebarSizeQtyInput,
-        //   { target: { value: `${adjustedQtyValue}` } },
-        // );
-        // fireEvent.blur(cartSidebarSizeQtyInput);
+        const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
 
-        // // Scan for affected product in the ProductList
-        // const [updatedFirstProduct] = await wrapper.findAllByTestId(
-        //   productCardTestIds.ProductCard,
-        // );
-        // const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
+        // Scan for removed cartSidebar item
+        const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebarId);
+        const matchingCartSidebarProducts = queryAllByText(
+          cartSidebar,
+          (firstCartItemName === null) ? 'failtest' : firstCartItemName,
+        );
 
-        // // Assertions
-        // expect(cartSidebarSizeQtyInput.value).toEqual(`${adjustedQtyValue}`);
-        // expect(finalAvailableQty).toEqual(initialAvailableQty - adjustedQtyValue);
+        // Assertions
+        expect(matchingCartSidebarProducts).toHaveLength(0);
+        expect(finalAvailableQty).toEqual(10);
+
+        // Cleanup mocks
+        mockInitialState.mockRestore();
       });
     });
   });
@@ -552,58 +562,101 @@ describe('Given the App is mounted at the / route', () => {
   describe('When a product with 2 added sizes in the CartSidebar has the first size qty set to 0', () => {
     describe('Then the affected ProductList item, first available size qty will be set to the original amount', () => {
       test('And the affected CartSidebar item first size qty will be removed from the cart', async () => {
-        // const adjustedQtyValue = 4;
+        // Mocks
+        const mockInitialState = jest.spyOn(rootReducerExports as any, 'rootReducerInitialState');
+        mockInitialState.mockImplementation(() => singleAddedProductTwoSizes);
 
-        // const wrapper = render(
-        //   <MemoryRouter initialEntries={['/']}>
-        //     <App />
-        //   </MemoryRouter>
-        // );
+        // Mount wrapper component
+        const wrapper = render(
+          <MemoryRouter initialEntries={['/']}>
+            <App />
+          </MemoryRouter>,
+        );
 
-        // const [productCards] = await waitForElement(
-        //   () => [
-        //     wrapper.getAllByTestId(productCardTestIds.ProductCard),
-        //   ],
-        //   { container: wrapper.container },
-        // );
+        const [firstCartItem] = wrapper.getAllByTestId(cartItemTestIds.CartItemId);
+        const firstCartItemName = getByTestId(
+          firstCartItem,
+          cartItemTestIds.CartItemLabelId,
+        ).textContent;
 
-        // // Open the CartSidebar
-        // fireEvent.click(wrapper.getByTestId(cartWidgetTestIds.CartButtonId));
-        // const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebarId);
+        const [firstCartItemFirstSizeElement] = getAllByTestId(
+          firstCartItem,
+          cartItemSizeInfoTestIds.CartItemSizeId,
+        );
+        const firstCartItemFirstSize = firstCartItemFirstSizeElement.textContent;
 
-        // // Isolate target product in the ProductList
-        // const [firstProduct] = productCards;
-        // const initialAvailableQty = extractQtyFromTxt(firstProduct.textContent);
+        // Simulate reducing the added qty to 0 on the target CartSidebar item
+        const [firstCartItemSizeQtyInput] = getAllByTestId(
+          firstCartItem,
+          cartItemSizeInfoTestIds.CartItemQtyId,
+        ) as [HTMLInputElement];
 
-        // // Add product
-        // fireEvent.click(getByTestId(firstProduct, productCardTestIds.AddToCartBtnId));
+        fireEvent.change(
+          firstCartItemSizeQtyInput,
+          { target: { value: '0' } },
+        );
+        fireEvent.blur(firstCartItemSizeQtyInput);
 
-        // // Scan for affected sidebar item's input field
-        // const [cartSidebarSizeQtyInput] = await waitForElement(
-        //   () => [
-        //     getByTestId(
-        //       cartSidebar,
-        //       cartItemSizeInfoTestIds.CartItemQtyId
-        //     ),
-        //   ],
-        // ) as [HTMLInputElement];
+        // Scan for affected product in the ProductList
+        const productListItems = await wrapper.findAllByTestId(
+          productCardTestIds.ProductCard,
+        );
 
-        // // Adjust qty of the added size in the CartSidebar
-        // fireEvent.change(
-        //   cartSidebarSizeQtyInput,
-        //   { target: { value: `${adjustedQtyValue}` } },
-        // );
-        // fireEvent.blur(cartSidebarSizeQtyInput);
+        const [updatedFirstProduct] = Array.prototype.filter.call(
+          productListItems,
+          (item: HTMLElement) => (
+            item.textContent !== null
+            && firstCartItemName !== null
+            && item.textContent.indexOf(firstCartItemName) !== -1
+          ),
+        );
 
-        // // Scan for affected product in the ProductList
-        // const [updatedFirstProduct] = await wrapper.findAllByTestId(
-        //   productCardTestIds.ProductCard,
-        // );
-        // const finalAvailableQty = extractQtyFromTxt(updatedFirstProduct.textContent);
+        // Isolate the affected size option in the updatedFirstProduct
+        const firstProductSizeOptions = getAllByTestId(
+          updatedFirstProduct,
+          productCardTestIds.SizePickerOption,
+        );
+        const [updatedSizeOption] = Array.prototype.filter.call(
+          firstProductSizeOptions,
+          (sizeOption: HTMLOptionElement) => (
+            sizeOption.textContent !== null
+            && firstCartItemFirstSize !== null
+            && sizeOption.value === firstCartItemFirstSize
+          ),
+        );
 
-        // // Assertions
-        // expect(cartSidebarSizeQtyInput.value).toEqual(`${adjustedQtyValue}`);
-        // expect(finalAvailableQty).toEqual(initialAvailableQty - adjustedQtyValue);
+        const finalAvailableQty = extractQtyFromTxt(updatedSizeOption.textContent);
+
+        // Scan for cartSidebar items
+        const cartSidebar = wrapper.getByTestId(cartSidebarTestIds.CartSidebarId);
+        const matchingCartSidebarProducts = queryAllByText(
+          cartSidebar,
+          (firstCartItemName === null) ? 'failtest' : firstCartItemName,
+        );
+
+        // Scan for remaining added size quantities in the CartSidebar
+        const remainingAddedSizes = getAllByTestId(
+          firstCartItem,
+          cartItemSizeInfoTestIds.CartItemSizeId,
+        );
+
+        // Filter out added sizes that don't match the affected one (should be empty list)
+        const affectedAddedSize = Array.prototype.filter.call(
+          remainingAddedSizes,
+          (item: HTMLElement) => (
+            item.textContent !== null
+            && firstCartItemName !== null
+            && item.textContent.indexOf(firstCartItemName) !== -1
+          ),
+        );
+
+        // Assertions
+        expect(affectedAddedSize).toHaveLength(0);
+        expect(matchingCartSidebarProducts).toHaveLength(1);
+        expect(finalAvailableQty).toEqual(7);
+
+        // Cleanup mocks
+        mockInitialState.mockRestore();
       });
     });
   });
