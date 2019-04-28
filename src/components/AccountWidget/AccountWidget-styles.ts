@@ -19,7 +19,7 @@ interface AccountPanelBackdropProps {
 }
 export const AccountPanelBackdrop = styled.div`
   position: absolute;
-  display: ${(props: AccountPanelBackdropProps) => props.isShown ? 'flex' : 'none'};
+  display: ${(props: AccountPanelBackdropProps) => (props.isShown ? 'flex' : 'none')};
   align-items: center;
   justify-content: center;
   height: 100%;
@@ -44,11 +44,11 @@ interface AccountHeaderBtnProps {
 }
 export const AccountHeaderBtn = styled(BasicButton)`
   width: 100%;
-  background-color: ${(props: AccountHeaderBtnProps) => props.isActive ? colours.white : colours.grey1};
+  background-color: ${(props: AccountHeaderBtnProps) => (props.isActive ? colours.white : colours.grey1)};
   font-weight: 600;
   border: none;
   border-radius: 0.4rem 0 0 0;
-  cursor: ${(props: AccountHeaderBtnProps) => props.isActive ? 'default' : 'pointer'};
+  cursor: ${(props: AccountHeaderBtnProps) => (props.isActive ? 'default' : 'pointer')};
 
   &:hover {
     background-color: ${colours.whiteOpacity(0.8)};
@@ -71,32 +71,12 @@ export const AccountPanelHeader = styled.div`
   height: 3rem;
 `;
 
-interface TabContentProps {
-  isActive?: boolean;
-}
 export const TabContent = styled.div`
-  display: ${(props: TabContentProps) => props.isActive ? 'flex' : 'none'};
+  display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
   height: 100%;
   padding: 1rem;
   box-sizing: border-box;
-`;
-
-export const LoginInputs = styled.div`
-  width: 75%;
-
-  > input:last-child {
-    margin-top: 0.5rem;
-  }
-`;
-
-export const LoginActions = styled.div`
-  display: flex;
-  flex-direction: row;
-
-  > button:last-child {
-    margin-left: 0.5rem;
-  }
 `;

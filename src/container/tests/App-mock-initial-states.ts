@@ -1,6 +1,9 @@
 import { RootReducerStore } from '../rootReducer';
 
 export const singleAddedProductOneSize: RootReducerStore = {
+  accountWidgetStore: {
+    loggedIn: false,
+  },
   productListStore: {
     productMicroStoreIds: [
       'ksny-1',
@@ -97,6 +100,9 @@ export const singleAddedProductOneSize: RootReducerStore = {
 };
 
 export const singleAddedProductTwoSizes: RootReducerStore = {
+  accountWidgetStore: {
+    loggedIn: false,
+  },
   productListStore: {
     productMicroStoreIds: [
       'ksny-1',

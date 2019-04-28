@@ -1,10 +1,14 @@
-import React, { useState, MouseEvent } from 'react';
+import React, { useState, MouseEvent, useContext } from 'react';
 
 // Error Handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
-// Shared Styles
-import { BasicTextInput, PrimaryButton, BasicButton } from '../../utils/shared-styles';
+// Contexts
+import { StoreContext, StoreDispatch } from '../../container/rootReducer';
+import { AccountWidgetActionTypes } from './AccountWidget-models';
+
+// Child Components
+import { AccountLogin } from '../AccountLogin/AccountLogin';
 
 // Styles
 import {
@@ -14,21 +18,22 @@ import {
   AccountPanelBackdrop,
   AccountPanelHeader,
   AccountHeaderBtn,
-  LoginActions,
-  LoginInputs,
   TabContent,
 } from './AccountWidget-styles';
 
 export const AccountWidget = () => {
-  const accountPopupClassName = 'account-widget__popup-toggle';
+  const store = useContext(StoreContext);
+  const dispatch = useContext(StoreDispatch);
+
   const [showAccountPanel, updateShowAccountPanel] = useState(false);
   const [loginHasFocus, updateLoginHasFocus] = useState(true);
 
-  const handleAccountBtnOnClick = (e: MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
-    if (e.currentTarget.className.match(accountPopupClassName) !== null) {
-      updateShowAccountPanel(!showAccountPanel);
-    }
-  };
+  const {
+    loggedIn,
+  } = store.accountWidgetStore;
+
+  const handleOnOpen = () => updateShowAccountPanel(true);
+  const handleOnClose = () => updateShowAccountPanel(false);
 
   const handleLoginTabOnclick = () => {
     if (!loginHasFocus) {
@@ -47,20 +52,29 @@ export const AccountWidget = () => {
     e.stopPropagation();
   };
 
+  const handleLogoutOnClick = () => dispatch({
+    type: AccountWidgetActionTypes.UPDATE_LOGGED_IN,
+    loggedIn: false,
+  });
+
   return (
     <ErrorBoundary>
       <AccountWidgetWrapper>
-        <AccountBtn
-          className={accountPopupClassName}
-          onClick={handleAccountBtnOnClick}
-        >
-          Account
-        </AccountBtn>
+        {
+          loggedIn ? (
+            <AccountBtn onClick={handleLogoutOnClick}>
+              Logout
+            </AccountBtn>
+          ) : (
+            <AccountBtn onClick={handleOnOpen}>
+              Account
+            </AccountBtn>
+          )
+        }
         <AccountPanelBackdrop
-          className={accountPopupClassName}
           tabIndex={-1}
           isShown={showAccountPanel}
-          onClick={handleAccountBtnOnClick}
+          onClick={handleOnClose}
         >
           <AccountPanel onClick={ignoreOnClickEvent}>
             <AccountPanelHeader>
@@ -77,22 +91,15 @@ export const AccountWidget = () => {
                 Login
               </AccountHeaderBtn>
             </AccountPanelHeader>
-            <TabContent isActive={loginHasFocus}>
-              <LoginInputs>
-                <BasicTextInput placeholder="Username" />
-                <BasicTextInput type="password" placeholder="Password" />
-              </LoginInputs>
-              <LoginActions>
-                <PrimaryButton>Login</PrimaryButton>
-                <BasicButton
-                  className={accountPopupClassName}
-                  onClick={handleAccountBtnOnClick}
-                >
-                  Cancel
-                </BasicButton>
-              </LoginActions>
-            </TabContent>
-            <TabContent isActive={!loginHasFocus}>Personal accounts coming soon!</TabContent>
+            {
+              loginHasFocus ? (
+                <TabContent>
+                  <AccountLogin handleOnClose={handleOnClose} />
+                </TabContent>
+              ) : (
+                <TabContent>Personal accounts coming soon!</TabContent>
+              )
+            }
           </AccountPanel>
         </AccountPanelBackdrop>
       </AccountWidgetWrapper>

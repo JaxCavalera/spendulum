@@ -4,12 +4,23 @@ import {
   AccountWidgetActionTypes,
 } from './AccountWidget-models';
 
-export const accountWidgetActionTypes: AccountWidgetActionTypes = {};
+export const accountWidgetInitialState: AccountWidgetReducerState = {
+  loggedIn: false,
+};
 
-export const accountWidgetInitialState: AccountWidgetReducerState = {};
-
-export const accountWidgetReducer = (state: AccountWidgetReducerState, action: AccountWidgetReducerAction) => {
+export const accountWidgetReducer = (
+  state: AccountWidgetReducerState,
+  action: AccountWidgetReducerAction,
+) => {
   switch (action.type) {
+    case AccountWidgetActionTypes.UPDATE_LOGGED_IN: {
+      return {
+        ...state,
+        ...typeof action.loggedIn !== 'undefined' && {
+          loggedIn: action.loggedIn,
+        },
+      };
+    }
 
     default:
       return state;
