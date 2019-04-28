@@ -19,9 +19,7 @@ import {
   TabContent,
 } from './AccountWidget-styles';
 
-export interface AccountWidgetProps { }
-
-export const AccountWidget = ({ }: AccountWidgetProps) => {
+export const AccountWidget = () => {
   const accountPopupClassName = 'account-widget__popup-toggle';
   const [showAccountPanel, updateShowAccountPanel] = useState(false);
   const [loginHasFocus, updateLoginHasFocus] = useState(true);
@@ -66,8 +64,18 @@ export const AccountWidget = ({ }: AccountWidgetProps) => {
         >
           <AccountPanel onClick={ignoreOnClickEvent}>
             <AccountPanelHeader>
-              <AccountHeaderBtn isActive={!loginHasFocus} onClick={handleSignUpTabOnclick}>Sign Up</AccountHeaderBtn>
-              <AccountHeaderBtn isActive={loginHasFocus} onClick={handleLoginTabOnclick}>Login</AccountHeaderBtn>
+              <AccountHeaderBtn
+                isActive={!loginHasFocus}
+                onClick={handleSignUpTabOnclick}
+              >
+                Sign Up
+              </AccountHeaderBtn>
+              <AccountHeaderBtn
+                isActive={loginHasFocus}
+                onClick={handleLoginTabOnclick}
+              >
+                Login
+              </AccountHeaderBtn>
             </AccountPanelHeader>
             <TabContent isActive={loginHasFocus}>
               <LoginInputs>
@@ -76,7 +84,12 @@ export const AccountWidget = ({ }: AccountWidgetProps) => {
               </LoginInputs>
               <LoginActions>
                 <PrimaryButton>Login</PrimaryButton>
-                <BasicButton className={accountPopupClassName} onClick={handleAccountBtnOnClick}>Cancel</BasicButton>
+                <BasicButton
+                  className={accountPopupClassName}
+                  onClick={handleAccountBtnOnClick}
+                >
+                  Cancel
+                </BasicButton>
               </LoginActions>
             </TabContent>
             <TabContent isActive={!loginHasFocus}>Personal accounts coming soon!</TabContent>

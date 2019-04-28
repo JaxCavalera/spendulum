@@ -32,6 +32,13 @@ import {
   handleTimerOnEnd,
 } from './CartItem-logic';
 
+// Test Ids
+export enum cartItemTestIds {
+  CartItemId = 'CartItem',
+  CartItemLabelId = 'CartItem/CartItemLabel',
+  TrashIconButtonId = 'CartItem/TrashIconButton',
+}
+
 export interface CartItemProps {
   cartItem: ProductInfo;
 }
@@ -46,14 +53,18 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
     label,
   } = cartItem;
 
-  const initialDuration = -9001;
+  const initialDuration = calculateRemainingPriceDuration(cartItem.priceTimer);
   const [priceDuration, updatePriceDuration] = useState(initialDuration);
 
-  // Only display sizes with 1 or more qty 
+  // Only display sizes with 1 or more qty
   const filteredClaimedSizes = removeEmptyClaimedSizes(claimedSizes);
 
   const callHandleTimerOnEnd = () => {
-    handleTimerOnEnd(cartItem, store, dispatch);
+    const remainingDuration = calculateRemainingPriceDuration(cartItem.priceTimer);
+
+    if (remainingDuration === 0) {
+      handleTimerOnEnd(cartItem, store, dispatch);
+    }
   };
 
   const callHandleItemQtyOnChange = (newQty: number, sizeOption: string) => {
@@ -64,6 +75,15 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
       store,
       dispatch,
     );
+
+    if (filteredClaimedSizes.length === 1 && newQty === 0) {
+      handleTrashBtnOnClick(
+        cartItem,
+        store,
+        dispatch,
+        true,
+      );
+    }
   };
 
   const callHandleTrashBtnOnClick = () => {
@@ -76,32 +96,24 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
   };
 
   useEffect(() => {
-    if (!filteredClaimedSizes.length) {
-      handleTrashBtnOnClick(
-        cartItem,
-        store,
-        dispatch,
-        true,
-      );
-    }
-  }, [filteredClaimedSizes]);
-
-  useEffect(() => {
     const newPriceDuration = calculateRemainingPriceDuration(cartItem.priceTimer);
-
-    if (newPriceDuration !== priceDuration) {
-      updatePriceDuration(newPriceDuration);
-    }
+    updatePriceDuration(newPriceDuration);
   }, [cartItem.priceTimer]);
 
   return (
     <ErrorBoundary>
-      <CartItemWrapper>
-        <CartItemLabel>{label}</CartItemLabel>
+      <CartItemWrapper data-testid={cartItemTestIds.CartItemId}>
+        <CartItemLabel data-testid={cartItemTestIds.CartItemLabelId}>{label}</CartItemLabel>
         <CartItemContent>
           <CartPricePanel>
-            <SectionParagraph nomargin={true}>${cartItem.price.toFixed(2)}</SectionParagraph>
-            <CountTimer duration={priceDuration} alertDuration={120000} onEnd={callHandleTimerOnEnd} />
+            <SectionParagraph nomargin>
+              {`$${cartItem.price.toFixed(2)}`}
+            </SectionParagraph>
+            <CountTimer
+              duration={priceDuration}
+              alertDuration={120000}
+              onEnd={callHandleTimerOnEnd}
+            />
           </CartPricePanel>
           {
             filteredClaimedSizes.map(sizeOption => (
@@ -115,7 +127,10 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
             ))
           }
         </CartItemContent>
-        <TrashIconButton onClick={callHandleTrashBtnOnClick}>
+        <TrashIconButton
+          onClick={callHandleTrashBtnOnClick}
+          data-testid={cartItemTestIds.TrashIconButtonId}
+        >
           <TrashIcon>
             <title>Remove Item</title>
           </TrashIcon>

@@ -7,14 +7,15 @@ export interface LoadingSpinnerProps {
   msg?: string;
 }
 
-export const LoadingSpinner = ({ msg }: LoadingSpinnerProps) => {
-  return (
-    <>
-      <Spinner />
-      {
-        msg &&
-        <span>{msg}</span>
-      }
-    </>
-  );
-};
+export enum loadingSpinnerTestIds {
+  SpinnerId = 'LoadingSpinner/Spinner',
+}
+
+export const LoadingSpinner = ({ msg }: LoadingSpinnerProps) => (
+  <>
+    <Spinner data-testid={loadingSpinnerTestIds.SpinnerId} />
+    {
+      !!msg && <span>{msg}</span>
+    }
+  </>
+);

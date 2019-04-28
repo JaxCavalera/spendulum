@@ -12,13 +12,15 @@ export interface FetchWrapperProps {
 }
 
 export const fetchWrapper = async (fetchWrapperProps: FetchWrapperProps) => {
-  const { url, method, binName, bodyPayload } = fetchWrapperProps;
+  const {
+    url, method, binName, bodyPayload,
+  } = fetchWrapperProps;
 
   const secretKey = '$2a$10$FvactLzAWw.A5bf0sNeZheXmYdlULpRcaxp/4Yrd7dD7If4EMzZb6';
   const initObj = {
     method,
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       'secret-key': secretKey,
       name: binName,
     },
@@ -35,6 +37,6 @@ export const fetchWrapper = async (fetchWrapperProps: FetchWrapperProps) => {
     // Something went wrong
     throw response;
   } catch (error) {
-    return error;
+    throw error;
   }
 };

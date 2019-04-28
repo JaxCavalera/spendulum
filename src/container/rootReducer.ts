@@ -5,7 +5,7 @@ import { ProductListReducerState } from '../components/ProductList/ProductList-m
 import { CartSidebarReducerState } from '../components/CartSidebar/CartSidebar-models';
 
 // Reducer Helpers
-import combineReducers, { validateReducers } from '../utils/combineReducers';
+import { combineReducers, validateReducers } from '../utils/combineReducers';
 
 // Reducers
 import { productListReducer, productListInitialState } from '../components/ProductList/ProductList-reducer';
@@ -17,13 +17,13 @@ export interface RootReducerStore {
   cartSidebarStore: CartSidebarReducerState;
 }
 
-export const rootReducerInitialState: RootReducerStore = {
+export const rootReducerInitialState = (): RootReducerStore => ({
   productListStore: productListInitialState,
   cartSidebarStore: cartSidebarInitialState,
-};
+});
 
 export const StoreDispatch = createContext({} as Dispatch<any>);
-export const StoreContext = createContext(rootReducerInitialState);
+export const StoreContext = createContext(rootReducerInitialState());
 
 // Defines the collection of reducers to be validated
 const validReducerCollection = validateReducers({

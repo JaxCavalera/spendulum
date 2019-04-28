@@ -19,7 +19,15 @@ import {
   CartItemQty,
   CartItemSizeInfoWrapper,
 } from './CartItemSizeInfo-styles';
+
+// Logic
 import { validateNewQty } from './CartItemSizeInfo-logic';
+
+// Test Ids
+export enum cartItemSizeInfoTestIds {
+  CartItemSizeId = 'CartItemSizeInfo/CartItemSizeId',
+  CartItemQtyId = 'CartItemSizeInfo/CartItemQty',
+}
 
 export interface CartItemSizeInfoProps {
   claimedSizes: SizeOptions;
@@ -43,14 +51,14 @@ export const CartItemSizeInfo = ({
   // Detect prop changes that need to trigger local state updates
   useEffect(() => {
     const newLocalQty = claimedSizes[sizeOption];
-    if (typeof newLocalQty !== 'undefined' && newLocalQty.toFixed(0) !== localQty) {
+    if (typeof newLocalQty !== 'undefined') {
       updateLocalQty(newLocalQty.toFixed(0));
     }
-  }, [claimedSizes]);
+  }, [claimedSizes, sizeOption]);
 
   // Event Handler Wrappers
   const handleItemQtyOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!/(\.|e|\+|\-)/.test(e.currentTarget.value)) {
+    if (!/(\.|e|\+|-)/.test(e.currentTarget.value)) {
       updateLocalQty(e.currentTarget.value);
     }
   };
@@ -73,7 +81,7 @@ export const CartItemSizeInfo = ({
       cartItemQtyRef.current.blur();
     }
 
-    if (/(\.|e|\+|\-)/.test(e.key)) {
+    if (/(\.|e|\+|-)/.test(e.key)) {
       e.preventDefault();
     }
   };
@@ -81,10 +89,13 @@ export const CartItemSizeInfo = ({
   return (
     <ErrorBoundary>
       <CartItemSizeInfoWrapper>
-        <CartItemSize>{sizeOption}</CartItemSize>
+        <CartItemSize data-testid={cartItemSizeInfoTestIds.CartItemSizeId}>
+          {sizeOption}
+        </CartItemSize>
         <CartItemQtyWrapper>
           <span>QTY</span>
           <CartItemQty
+            data-testid={cartItemSizeInfoTestIds.CartItemQtyId}
             ref={cartItemQtyRef}
             type="number"
             value={localQty}

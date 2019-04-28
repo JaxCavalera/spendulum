@@ -14,7 +14,7 @@ interface ErrorBoundaryState {
 export default class ErrorBoundary extends PureComponent<ErrorBoundaryProps, ErrorBoundaryState> {
   state = {
     hasError: false,
-    errorMsg: new Error,
+    errorMsg: new Error(),
     errorInfo: {},
   };
 
@@ -28,6 +28,7 @@ export default class ErrorBoundary extends PureComponent<ErrorBoundaryProps, Err
 
   render() {
     const { hasError, errorMsg, errorInfo } = this.state;
+    const { children } = this.props;
 
     const ErrorPanel = () => (
       <div>
@@ -42,6 +43,6 @@ export default class ErrorBoundary extends PureComponent<ErrorBoundaryProps, Err
       console.log('errobj:', errorMsg, 'info:', errorInfo);
     }
 
-    return hasError ? <ErrorPanel /> : this.props.children;
+    return hasError ? <ErrorPanel /> : children;
   }
 }
