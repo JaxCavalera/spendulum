@@ -18,7 +18,7 @@ export const Config = memo(() => (
   <ErrorBoundary>
     <ConfigApisContext.Provider value={configMockApis()}>
       <ConfigWrapper>
-        <span>Config Items</span>
+        <span>Configuration</span>
       </ConfigWrapper>
     </ConfigApisContext.Provider>
   </ErrorBoundary>

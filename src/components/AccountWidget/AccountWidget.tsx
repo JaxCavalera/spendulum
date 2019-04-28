@@ -1,6 +1,7 @@
 import React, { useState, MouseEvent, useContext } from 'react';
 
 // Error Handlers
+import { Link } from 'react-router-dom';
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Contexts
@@ -62,9 +63,11 @@ export const AccountWidget = () => {
       <AccountWidgetWrapper>
         {
           loggedIn ? (
-            <AccountBtn onClick={handleLogoutOnClick}>
+            <Link to="/">
+              <AccountBtn onClick={handleLogoutOnClick}>
               Logout
-            </AccountBtn>
+              </AccountBtn>
+            </Link>
           ) : (
             <AccountBtn onClick={handleOnOpen}>
               Account

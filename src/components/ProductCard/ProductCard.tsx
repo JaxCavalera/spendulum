@@ -52,7 +52,6 @@ export enum productCardTestIds {
   SizePickerOption = 'ProductCard/SizePickerOption',
 }
 
-// ProductCard Props
 export interface ProductCardProps {
   data: ProductInfo;
 }

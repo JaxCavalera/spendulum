@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 // Error Handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
@@ -23,13 +23,16 @@ export const ProductList = () => {
   const browseApis = useContext(BrowseApisContext);
   const { productMicroStoreIds } = store.productListStore;
 
+  const [isLoading, updateIsLoading] = useState(!productMicroStoreIds.length);
+
   useEffect(() => {
     refreshProductList(productMicroStoreIds, dispatch, browseApis);
+    updateIsLoading(false);
   }, [productMicroStoreIds, dispatch, browseApis]);
 
   return (
     <ErrorBoundary>
-      <ProductListWrapper isLoading={!productMicroStoreIds.length}>
+      <ProductListWrapper isLoading={isLoading}>
         {
           !productMicroStoreIds.length ? (
             <SpinnerWrapper>
