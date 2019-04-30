@@ -10,7 +10,7 @@ import { fetchWrapper } from './fetch-wrapper';
 export const getAvailableProductsList = async (useMockData?: boolean) => {
   if (useMockData) {
     const newProductsList: ProductInfo[] = await new Promise(
-      resolve => resolve(productListMock),
+      resolve => setTimeout(() => resolve(productListMock), 1000),
     );
 
     return newProductsList;

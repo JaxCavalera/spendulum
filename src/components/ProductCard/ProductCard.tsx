@@ -71,13 +71,13 @@ export const ProductCard = ({ data }: ProductCardProps) => {
   } = store;
 
   const initialDuration = calculateRemainingPriceDuration(data.priceTimer);
-  const [priceDuration, updatePriceDuration] = useState(initialDuration);
-  const [selectedSize, updateSelectedSize] = useState(
+  const [priceDuration, setPriceDuration] = useState(initialDuration);
+  const [selectedSize, setSelectedSize] = useState(
     Object.keys(data.availableSizes)[0] || soldOutTxt,
   );
 
   const handleSizePickerOnChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    updateSelectedSize(e.currentTarget.value);
+    setSelectedSize(e.currentTarget.value);
   };
 
   const callHandleAddToCartOnClick = () => {
@@ -100,7 +100,7 @@ export const ProductCard = ({ data }: ProductCardProps) => {
 
   useEffect(() => {
     const newDuration = calculateRemainingPriceDuration(data.priceTimer);
-    updatePriceDuration(newDuration);
+    setPriceDuration(newDuration);
   }, [data.priceTimer]);
 
   const sizeOptions = Object.keys(data.availableSizes).sort(maintainSizeOrder);

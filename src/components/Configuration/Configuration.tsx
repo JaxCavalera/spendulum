@@ -1,15 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 
 // Error Handlers
-import { Link } from 'react-router-dom';
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Contexts
-// import { StoreContext, StoreDispatch } from '../../container/rootReducer';
-// import { ConfigurationActionTypes } from './Configuration-models';
-
-// Child Components
-import { AccountLogin } from '../AccountLogin/AccountLogin';
+import { StoreContext, StoreDispatch } from '../../container/rootReducer';
+import { ConfigApisContext } from '../../apis/api-contexts';
 
 // Components
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
@@ -19,11 +15,11 @@ import {
   ConfigurationWrapper,
 } from './Configuration-styles';
 
+// Logic
+import { useUpdateCurrentProducts } from './Configuration-logic';
+
 /**
  * TODO
- *
- * - add configuration reducer to rootReducer
- * - use configApis context triggering a refreshProductList action
  * - display products mapping over microstore ids
  *     - edit
  *     - delete
@@ -35,10 +31,16 @@ import {
  */
 
 export const Configuration = () => {
-  // const store = useContext(StoreContext);
-  // const dispatch = useContext(StoreDispatch);
+  const {
+    configurationStore,
+    configurationStore: {
+      productMicroStoreIds,
+    },
+  } = useContext(StoreContext);
 
-  const [isLoading, updateIsLoading] = useState(true);
+  const dispatch = useContext(StoreDispatch);
+  const configApis = useContext(ConfigApisContext);
+  const isLoading = useUpdateCurrentProducts(dispatch, configApis, configurationStore);
 
   return (
     <ErrorBoundary>
@@ -47,7 +49,7 @@ export const Configuration = () => {
           isLoading ? (
             <LoadingSpinner msg="Loading current products..." />
           ) : (
-            <div>Products go here</div>
+            <p>config</p>
           )
         }
       </ConfigurationWrapper>

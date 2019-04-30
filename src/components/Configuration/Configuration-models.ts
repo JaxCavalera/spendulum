@@ -20,3 +20,7 @@ export interface ConfigurationReducerState {
   [key: string]: any;
   productMicroStoreIds: string[];
 }
+
+export interface ConfigurationHookSettings {
+  asyncEnabled: boolean
+}

@@ -4,7 +4,6 @@ import {
   Route,
   Switch,
   Link,
-  RouteComponentProps,
 } from 'react-router-dom';
 
 // Root Reducer
@@ -36,35 +35,6 @@ import {
   PageContent,
 } from './App-styles';
 
-/**
- * Wrap page components with this if they have children being wrapped by React.memo
- * otherwise props.match will cause unwanted re-renders due to a potential bug in
- * React.memo where the 2nd arg on React.memo ignores the evaluation
- * even if prevProps === nextProps
- */
-export const patchWithStableMatchProp = (
-  TargetComponent: React.ComponentType<{ match: RouteComponentProps['match'] }>,
-  otherProps?: object,
-) => {
-  let prevMatch = {} as RouteComponentProps['match'];
-
-  const patchedComponent = ({ match }: RouteComponentProps) => {
-    if (JSON.stringify(prevMatch) !== JSON.stringify(match)) {
-      prevMatch = match;
-      return <TargetComponent match={match} {...otherProps} />;
-    }
-
-    return <TargetComponent match={prevMatch} {...otherProps} />;
-  };
-
-  return patchedComponent;
-};
-
-// Memo ready patched render functions
-const patchedBrowse = patchWithStableMatchProp(Browse);
-const patchedCheckout = patchWithStableMatchProp(Checkout);
-const patchedConfig = patchWithStableMatchProp(Config);
-
 export const App = () => {
   const [store, dispatch] = useReducer(rootReducer, rootReducerInitialState());
 
@@ -82,9 +52,9 @@ export const App = () => {
               </HeaderBar>
               <PageContent>
                 <Switch>
-                  <Route exact path="/" render={patchedBrowse} />
-                  <Route exact path="/checkout" render={patchedCheckout} />
-                  <Route exact path="/config" render={patchedConfig} />
+                  <Route exact path="/" component={Browse} />
+                  <Route exact path="/checkout" component={Checkout} />
+                  <Route exact path="/config" component={Config} />
                   <Route component={PageNotFound} />
                 </Switch>
                 <CartSidebar />

@@ -54,7 +54,7 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
   } = cartItem;
 
   const initialDuration = calculateRemainingPriceDuration(cartItem.priceTimer);
-  const [priceDuration, updatePriceDuration] = useState(initialDuration);
+  const [priceDuration, setPriceDuration] = useState(initialDuration);
 
   // Only display sizes with 1 or more qty
   const filteredClaimedSizes = removeEmptyClaimedSizes(claimedSizes);
@@ -97,7 +97,7 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
 
   useEffect(() => {
     const newPriceDuration = calculateRemainingPriceDuration(cartItem.priceTimer);
-    updatePriceDuration(newPriceDuration);
+    setPriceDuration(newPriceDuration);
   }, [cartItem.priceTimer]);
 
   return (

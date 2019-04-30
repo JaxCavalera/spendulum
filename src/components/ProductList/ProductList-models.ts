@@ -5,7 +5,7 @@ export enum ProductListActionTypes {
   ASSIGN_MICROSTORE = 'productList/ASSIGN_MICROSTORE',
   REMOVE_MICROSTORE = 'productList/REMOVE_MICROSTORE',
   UPDATE_MICROSTORE_VALUE = 'productList/UPDATE_MICROSTORE_VALUE',
-};
+}
 
 export interface ProductListReducerAction {
   type: string;
@@ -19,4 +19,8 @@ export interface ProductListReducerAction {
 export interface ProductListReducerState {
   [key: string]: any;
   productMicroStoreIds: string[];
+}
+
+export interface ProductListHookSettings {
+  asyncEnabled: boolean
 }

@@ -3,6 +3,7 @@ import { createContext, Dispatch } from 'react';
 // Models
 import { AccountWidgetReducerState } from '../components/AccountWidget/AccountWidget-models';
 import { CartSidebarReducerState } from '../components/CartSidebar/CartSidebar-models';
+import { ConfigurationReducerState } from '../components/Configuration/Configuration-models';
 import { ProductListReducerState } from '../components/ProductList/ProductList-models';
 
 // Reducer Helpers
@@ -24,16 +25,23 @@ import {
   productListInitialState,
 } from '../components/ProductList/ProductList-reducer';
 
+import {
+  configurationReducer,
+  configurationInitialState,
+} from '../components/Configuration/Configuration-reducer';
+
 // Root Reducer Models
 export interface RootReducerStore {
   accountWidgetStore: AccountWidgetReducerState;
   cartSidebarStore: CartSidebarReducerState;
+  configurationStore: ConfigurationReducerState;
   productListStore: ProductListReducerState;
 }
 
 export const rootReducerInitialState = (): RootReducerStore => ({
   accountWidgetStore: accountWidgetInitialState,
   cartSidebarStore: cartSidebarInitialState,
+  configurationStore: configurationInitialState,
   productListStore: productListInitialState,
 });
 
@@ -44,6 +52,7 @@ export const StoreContext = createContext(rootReducerInitialState());
 const validReducerCollection = validateReducers({
   accountWidgetStore: accountWidgetReducer,
   cartSidebarStore: cartSidebarReducer,
+  configurationStore: configurationReducer,
   productListStore: productListReducer,
 });
 

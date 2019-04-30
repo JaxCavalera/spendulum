@@ -26,25 +26,25 @@ export const AccountWidget = () => {
   const store = useContext(StoreContext);
   const dispatch = useContext(StoreDispatch);
 
-  const [showAccountPanel, updateShowAccountPanel] = useState(false);
-  const [loginHasFocus, updateLoginHasFocus] = useState(true);
+  const [showAccountPanel, setShowAccountPanel] = useState(false);
+  const [loginHasFocus, setLoginHasFocus] = useState(true);
 
   const {
     loggedIn,
   } = store.accountWidgetStore;
 
-  const handleOnOpen = () => updateShowAccountPanel(true);
-  const handleOnClose = () => updateShowAccountPanel(false);
+  const handleOnOpen = () => setShowAccountPanel(true);
+  const handleOnClose = () => setShowAccountPanel(false);
 
   const handleLoginTabOnclick = () => {
     if (!loginHasFocus) {
-      updateLoginHasFocus(true);
+      setLoginHasFocus(true);
     }
   };
 
   const handleSignUpTabOnclick = () => {
     if (loginHasFocus) {
-      updateLoginHasFocus(false);
+      setLoginHasFocus(false);
     }
   };
 

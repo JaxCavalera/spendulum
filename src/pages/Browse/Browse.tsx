@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
@@ -24,4 +25,6 @@ export const Browse = memo(() => (
       </BrowseWrapper>
     </BrowseApisContext.Provider>
   </ErrorBoundary>
+), (prevProps: RouteComponentProps, nextProps: RouteComponentProps) => (
+  prevProps.location.pathname === nextProps.location.pathname
 ));

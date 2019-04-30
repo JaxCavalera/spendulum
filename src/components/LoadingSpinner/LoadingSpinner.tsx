@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Styles
-import { Spinner } from './LoadingSpinner-styles';
+import { Spinner, SpinnerWrapper } from './LoadingSpinner-styles';
 
 export interface LoadingSpinnerProps {
   msg?: string;
@@ -12,10 +12,10 @@ export enum loadingSpinnerTestIds {
 }
 
 export const LoadingSpinner = ({ msg }: LoadingSpinnerProps) => (
-  <>
+  <SpinnerWrapper>
     <Spinner data-testid={loadingSpinnerTestIds.SpinnerId} />
     {
       !!msg && <span>{msg}</span>
     }
-  </>
+  </SpinnerWrapper>
 );

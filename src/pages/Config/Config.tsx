@@ -1,8 +1,10 @@
-import React, { memo } from 'react';
+import React, { memo, useContext } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
-// API Contexts
+// Contexts
+import { StoreContext } from '../../container/rootReducer';
 import {
   ConfigApisContext,
   // configLiveApis,
@@ -10,16 +12,34 @@ import {
 } from '../../apis/api-contexts';
 
 // Components
+import { Configuration } from '../../components/Configuration/Configuration';
 
 // Styles
 import { ConfigWrapper } from './Config-styles';
 
-export const Config = memo(() => (
-  <ErrorBoundary>
-    <ConfigApisContext.Provider value={configMockApis()}>
-      <ConfigWrapper>
-        <span>Configuration</span>
-      </ConfigWrapper>
-    </ConfigApisContext.Provider>
-  </ErrorBoundary>
+interface ConfigProps {
+  history: RouteComponentProps['history'];
+  match: RouteComponentProps['match'];
+  location: RouteComponentProps['location'];
+}
+
+export const Config = memo(({ history, match }: ConfigProps) => {
+  const store = useContext(StoreContext);
+
+  if (!store.accountWidgetStore.loggedIn && match.path === '/config') {
+    // Redirect unauthenticated users to home page
+    history.push('/');
+  }
+
+  return (
+    <ErrorBoundary>
+      <ConfigApisContext.Provider value={configMockApis()}>
+        <ConfigWrapper>
+          <Configuration />
+        </ConfigWrapper>
+      </ConfigApisContext.Provider>
+    </ErrorBoundary>
+  );
+}, (prevProps: ConfigProps, nextProps: ConfigProps) => (
+  prevProps.location.pathname === nextProps.location.pathname
 ));
