@@ -15,7 +15,7 @@ import { ProductCard } from '../ProductCard/ProductCard';
 import { ProductListWrapper } from './ProductList-styles';
 
 // Logic
-import { useUpdateAvailableProducts } from './ProductList-logic';
+import { useGetAvailableProducts } from './ProductList-logic';
 
 
 export const ProductList = () => {
@@ -28,7 +28,7 @@ export const ProductList = () => {
 
   const dispatch = useContext(StoreDispatch);
   const browseApis = useContext(BrowseApisContext);
-  const isLoading = useUpdateAvailableProducts(dispatch, browseApis, productListStore);
+  const isLoading = useGetAvailableProducts(dispatch, browseApis, productListStore);
 
   return (
     <ErrorBoundary>

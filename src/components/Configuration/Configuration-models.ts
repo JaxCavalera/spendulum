@@ -5,6 +5,7 @@ export enum ConfigurationActionTypes {
   ASSIGN_MICROSTORE = 'configuration/ASSIGN_MICROSTORE',
   REMOVE_MICROSTORE = 'configuration/REMOVE_MICROSTORE',
   UPDATE_MICROSTORE_VALUE = 'configuration/UPDATE_MICROSTORE_VALUE',
+  UPDATE_ACTIVE_PRODUCT_STORE_ID = 'configuration/UPDATE_ACTIVE_PRODUCT_STORE_ID',
 }
 
 export interface ConfigurationReducerAction {
@@ -14,11 +15,14 @@ export interface ConfigurationReducerAction {
   productData?: ProductInfo;
   microStoreProperty?: string;
   microStorePropertyValue?: any;
+  activeProductStoreId?: string;
 }
 
 export interface ConfigurationReducerState {
   [key: string]: any;
   productMicroStoreIds: string[];
+  activeProductStoreId: string;
+  temp: ProductInfo;
 }
 
 export interface ConfigurationHookSettings {

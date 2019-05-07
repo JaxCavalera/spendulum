@@ -106,7 +106,7 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
         <CartItemLabel data-testid={cartItemTestIds.CartItemLabelId}>{label}</CartItemLabel>
         <CartItemContent>
           <CartPricePanel>
-            <SectionParagraph nomargin>
+            <SectionParagraph marginOverride="0">
               {`$${cartItem.price.toFixed(2)}`}
             </SectionParagraph>
             <CountTimer

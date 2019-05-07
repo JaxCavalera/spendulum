@@ -11,12 +11,16 @@ import { ConfigApisContext } from '../../apis/api-contexts';
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
 
 // Styles
+import { SectionParagraph, SpacedStrong, BasicButton } from '../../utils/shared-styles';
 import {
-  ConfigurationWrapper,
+  ConfigurationWrapper, CurrentProductsList,
 } from './Configuration-styles';
 
 // Logic
-import { useUpdateCurrentProducts } from './Configuration-logic';
+import { useGetCurrentProducts } from './Configuration-logic';
+import { ProductInfo } from '../../utils/product-info-helpers';
+import { ProductSettings } from '../ProductSettings/ProductSettings';
+import { ProductEditorPopup } from '../ProductEditorPopup/ProductEditorPopup';
 
 /**
  * TODO
@@ -35,21 +39,49 @@ export const Configuration = () => {
     configurationStore,
     configurationStore: {
       productMicroStoreIds,
+      activeProductStoreId,
     },
   } = useContext(StoreContext);
 
   const dispatch = useContext(StoreDispatch);
   const configApis = useContext(ConfigApisContext);
-  const isLoading = useUpdateCurrentProducts(dispatch, configApis, configurationStore);
+  const isLoading = useGetCurrentProducts(dispatch, configApis, configurationStore);
 
   return (
     <ErrorBoundary>
       <ConfigurationWrapper>
         {
-          isLoading ? (
-            <LoadingSpinner msg="Loading current products..." />
-          ) : (
-            <p>config</p>
+          isLoading
+          && <LoadingSpinner msg="Loading current products..." />
+        }
+        {
+          !isLoading
+          && (
+          <CurrentProductsList>
+            {
+              productMicroStoreIds.length ? (
+                productMicroStoreIds.map((microStoreId) => {
+                  const microStore: ProductInfo = configurationStore[microStoreId];
+                  return <ProductSettings key={microStoreId} data={microStore} />;
+                })
+              ) : (
+                <SectionParagraph marginOverride="0 0 1rem">
+                  <span>No available products found, click the</span>
+                  <SpacedStrong>Add Product</SpacedStrong>
+                  <span>button to begin.</span>
+                </SectionParagraph>
+              )
+            }
+            <BasicButton>Add Product</BasicButton>
+          </CurrentProductsList>
+          )
+        }
+        {
+          !!activeProductStoreId
+          && (
+            <ProductEditorPopup
+              initialProductData={configurationStore[activeProductStoreId]}
+            />
           )
         }
       </ConfigurationWrapper>

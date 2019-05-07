@@ -65,7 +65,7 @@ export const AccountWidget = () => {
           loggedIn ? (
             <Link to="/">
               <AccountBtn onClick={handleLogoutOnClick}>
-              Logout
+                Logout
               </AccountBtn>
             </Link>
           ) : (

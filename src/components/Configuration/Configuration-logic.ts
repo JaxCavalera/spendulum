@@ -54,7 +54,7 @@ export const refreshCurrentProductsList = async (
 };
 
 // Custom Hooks
-export const useUpdateCurrentProducts = (
+export const useGetCurrentProducts = (
   dispatch: React.Dispatch<any>,
   configApis: ConfigApis,
   configurationStore: ConfigurationReducerState,

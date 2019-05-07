@@ -116,7 +116,7 @@ export const ProductCard = ({ data }: ProductCardProps) => {
         </ImagePanel>
         <CardActions>
           <PricePanel>
-            <SectionParagraph nomargin>
+            <SectionParagraph marginOverride="0">
               {`$${data.price.toFixed(2)}`}
             </SectionParagraph>
             <CountTimer
