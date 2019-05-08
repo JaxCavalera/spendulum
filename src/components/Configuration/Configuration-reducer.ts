@@ -90,7 +90,7 @@ export const configurationReducer = (
 
       return {
         ...state,
-        ...activeProductStoreId && { activeProductStoreId },
+        ...typeof activeProductStoreId !== 'undefined' && { activeProductStoreId },
       };
     }
 

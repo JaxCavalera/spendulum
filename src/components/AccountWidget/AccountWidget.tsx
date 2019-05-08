@@ -1,40 +1,44 @@
 import React, { useState, MouseEvent, useContext } from 'react';
-
-// Error Handlers
 import { Link } from 'react-router-dom';
+
+// Error handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Contexts
 import { StoreContext, StoreDispatch } from '../../container/rootReducer';
 import { AccountWidgetActionTypes } from './AccountWidget-models';
 
-// Child Components
+// Components
 import { AccountLogin } from '../AccountLogin/AccountLogin';
+import { Modal } from '../Modal/Modal';
 
 // Styles
 import {
   AccountWidgetWrapper,
   AccountBtn,
   AccountPanel,
-  AccountPanelBackdrop,
   AccountPanelHeader,
   AccountHeaderBtn,
   TabContent,
 } from './AccountWidget-styles';
 
 export const AccountWidget = () => {
-  const store = useContext(StoreContext);
+  const {
+    accountWidgetStore: {
+      loggedIn,
+    },
+  } = useContext(StoreContext);
+
   const dispatch = useContext(StoreDispatch);
 
   const [showAccountPanel, setShowAccountPanel] = useState(false);
   const [loginHasFocus, setLoginHasFocus] = useState(true);
 
-  const {
-    loggedIn,
-  } = store.accountWidgetStore;
-
   const handleOnOpen = () => setShowAccountPanel(true);
-  const handleOnClose = () => setShowAccountPanel(false);
+
+  const handleOnClose = () => {
+    setShowAccountPanel(false);
+  };
 
   const handleLoginTabOnclick = () => {
     if (!loginHasFocus) {
@@ -74,11 +78,7 @@ export const AccountWidget = () => {
             </AccountBtn>
           )
         }
-        <AccountPanelBackdrop
-          tabIndex={-1}
-          isShown={showAccountPanel}
-          onClick={handleOnClose}
-        >
+        <Modal isOpen={showAccountPanel} onClose={handleOnClose}>
           <AccountPanel onClick={ignoreOnClickEvent}>
             <AccountPanelHeader>
               <AccountHeaderBtn
@@ -102,9 +102,9 @@ export const AccountWidget = () => {
               ) : (
                 <TabContent>Personal accounts coming soon!</TabContent>
               )
-            }
+              }
           </AccountPanel>
-        </AccountPanelBackdrop>
+        </Modal>
       </AccountWidgetWrapper>
     </ErrorBoundary>
   );

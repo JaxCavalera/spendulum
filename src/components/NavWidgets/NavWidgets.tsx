@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
-// Error Handlers
+// Error handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Contexts

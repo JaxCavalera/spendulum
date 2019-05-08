@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro';
 
-// Styled Components
+// Styled components
 export const ProductFilterWrapper = styled.div`
   display: flex;
   justify-content: center;

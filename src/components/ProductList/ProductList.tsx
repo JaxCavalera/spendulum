@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-// Error Handlers
+// Error handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Contexts

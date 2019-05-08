@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro';
 
-// Shared Styles
+// Shared styles
 import { colours } from '../../utils/shared-styles';
 
 export const CartItemSizeInfoWrapper = styled.div`

@@ -1,9 +1,9 @@
 import React from 'react';
 
-// Error Handlers
+// Error handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
-// Shared Styles
+// Shared styles
 import { SectionParagraph } from '../../utils/shared-styles';
 
 // Styles

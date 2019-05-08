@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-// Error Handlers
+// Error handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Contexts
@@ -17,7 +17,7 @@ import {
 } from './Configuration-styles';
 
 // Logic
-import { useGetCurrentProducts } from './Configuration-logic';
+import { useGetCurrentProducts, handleAddProductOnClick } from './Configuration-logic';
 import { ProductInfo } from '../../utils/product-info-helpers';
 import { ProductSettings } from '../ProductSettings/ProductSettings';
 import { ProductEditorPopup } from '../ProductEditorPopup/ProductEditorPopup';
@@ -31,7 +31,8 @@ import { ProductEditorPopup } from '../ProductEditorPopup/ProductEditorPopup';
  * - list needs max height so add btn sits below this point
  * - Create the EditProduct component - inputs for key ProductInfo data
  * - autogen the rest, replaces the products list when creating / editing
- * - has save and cancel btns in edit mode - dynamic title use prop for Create / Edit ProductNameHere
+ * - has save and cancel btns in edit mode -
+ * dynamic title use prop for Create / Edit ProductNameHere
  */
 
 export const Configuration = () => {
@@ -46,6 +47,11 @@ export const Configuration = () => {
   const dispatch = useContext(StoreDispatch);
   const configApis = useContext(ConfigApisContext);
   const isLoading = useGetCurrentProducts(dispatch, configApis, configurationStore);
+
+  // Event handlers
+  const callHandleAddProductOnClick = () => {
+    handleAddProductOnClick(dispatch);
+  };
 
   return (
     <ErrorBoundary>
@@ -72,7 +78,9 @@ export const Configuration = () => {
                 </SectionParagraph>
               )
             }
-            <BasicButton>Add Product</BasicButton>
+            <BasicButton onClick={callHandleAddProductOnClick}>
+              Add Product
+            </BasicButton>
           </CurrentProductsList>
           )
         }

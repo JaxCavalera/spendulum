@@ -5,7 +5,7 @@ import React, {
   useContext,
 } from 'react';
 
-// Error Handlers
+// Error handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Contexts
@@ -14,7 +14,7 @@ import { StoreContext, StoreDispatch } from '../../container/rootReducer';
 // Components
 import { CountTimer } from '../CountTimer/CountTimer';
 
-// Shared Styles
+// Shared styles
 import { SectionParagraph, WrappedImage } from '../../utils/shared-styles';
 
 // Styles

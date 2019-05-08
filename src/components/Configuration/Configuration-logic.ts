@@ -8,6 +8,7 @@ import {
   ConfigurationHookSettings,
   ConfigurationReducerState,
 } from './Configuration-models';
+import { initialTempProductStore } from './Configuration-reducer';
 
 export const createCurrentProductMicroStores = (
   productList: ProductInfo[],
@@ -53,7 +54,22 @@ export const refreshCurrentProductsList = async (
   }
 };
 
-// Custom Hooks
+export const handleAddProductOnClick = (dispatch: React.Dispatch<any>) => {
+  // Reset the tempProductStore data
+  dispatch({
+    type: ConfigurationActionTypes.ASSIGN_MICROSTORE,
+    productMicroStoreId: 'temp',
+    productData: initialTempProductStore,
+  });
+
+  // Set the activeProductStoreId to temp
+  dispatch({
+    type: ConfigurationActionTypes.UPDATE_ACTIVE_PRODUCT_STORE_ID,
+    activeProductStoreId: 'temp',
+  });
+};
+
+// Custom hooks
 export const useGetCurrentProducts = (
   dispatch: React.Dispatch<any>,
   configApis: ConfigApis,

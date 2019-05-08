@@ -1,6 +1,6 @@
 import React from 'react';
 
-// Shared Styles
+// Shared styles
 import { SectionParagraph } from '../../utils/shared-styles';
 
 export const PageNotFound = () => (

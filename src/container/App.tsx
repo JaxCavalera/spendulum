@@ -14,7 +14,7 @@ import {
   StoreContext,
 } from './rootReducer';
 
-// Shared Styles
+// Shared styles
 import ErrorBoundary from '../utils/ErrorBoundary';
 
 // Pages

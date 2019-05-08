@@ -1,9 +1,9 @@
 import styled from 'styled-components/macro';
 
-// Shared Styles
+// Shared styles
 import { BasicButton, colours } from '../../utils/shared-styles';
 
-// Styled Components
+// Styled components
 export const AccountWidgetWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -16,22 +16,6 @@ export const AccountWidgetWrapper = styled.div`
 
 export const AccountBtn = styled(BasicButton)`
   margin-left: 0.5rem;
-`;
-
-interface AccountPanelBackdropProps {
-  isShown?: boolean;
-}
-export const AccountPanelBackdrop = styled.div`
-  position: absolute;
-  display: ${(props: AccountPanelBackdropProps) => (props.isShown ? 'flex' : 'none')};
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  background-color: ${colours.blackOpacity(0.4)};
-  z-index: 10;
 `;
 
 export const AccountPanel = styled.div`
