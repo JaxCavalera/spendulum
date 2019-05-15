@@ -1,27 +1,12 @@
-import { ProductInfo } from '../../utils/product-info-helpers';
-
 import {
   ConfigurationReducerState,
   ConfigurationReducerAction,
   ConfigurationActionTypes,
 } from './Configuration-models';
 
-export const initialTempProductStore: ProductInfo = {
-  label: '',
-  value: 'temp',
-  claimedSizes: {},
-  availableSizes: {},
-  price: 0,
-  minPrice: 0,
-  maxPrice: 0,
-  priceTimer: '',
-  imgUrl: '',
-};
-
 export const configurationInitialState: ConfigurationReducerState = {
   productMicroStoreIds: [],
   activeProductStoreId: '',
-  temp: initialTempProductStore,
 };
 
 export const configurationReducer = (

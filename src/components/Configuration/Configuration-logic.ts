@@ -7,8 +7,8 @@ import {
   ConfigurationActionTypes,
   ConfigurationHookSettings,
   ConfigurationReducerState,
+  newProductStoreId,
 } from './Configuration-models';
-import { initialTempProductStore } from './Configuration-reducer';
 
 export const createCurrentProductMicroStores = (
   productList: ProductInfo[],
@@ -18,7 +18,7 @@ export const createCurrentProductMicroStores = (
 ) => {
   // Spin up microStores keeping a list of associated microStoreIds for future mapping operations
   if (hookSettings.asyncEnabled) {
-    const currentProductMicroStoreIds = productList.map((product) => {
+    const currentProductMicroStoreIds = productList.map(product => {
       dispatch({
         type: ConfigurationActionTypes.ASSIGN_MICROSTORE,
         productMicroStoreId: product.value,
@@ -55,17 +55,10 @@ export const refreshCurrentProductsList = async (
 };
 
 export const handleAddProductOnClick = (dispatch: React.Dispatch<any>) => {
-  // Reset the tempProductStore data
-  dispatch({
-    type: ConfigurationActionTypes.ASSIGN_MICROSTORE,
-    productMicroStoreId: 'temp',
-    productData: initialTempProductStore,
-  });
-
-  // Set the activeProductStoreId to temp
+  // Set the activeProductStoreId to addNewProduct
   dispatch({
     type: ConfigurationActionTypes.UPDATE_ACTIVE_PRODUCT_STORE_ID,
-    activeProductStoreId: 'temp',
+    activeProductStoreId: newProductStoreId,
   });
 };
 

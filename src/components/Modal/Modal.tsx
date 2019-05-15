@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 // Styles
-import { ModalBackdrop } from './Modal-styles';
+import { ModalBackdrop, ModalContentWrapper } from './Modal-styles';
 
 interface ModalProps {
   children: React.ReactNode;
@@ -29,9 +29,15 @@ export const Modal = ({
     setShowModal(isOpen);
   }, [isOpen]);
 
+  const ignoreOnClickEvent = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (showModal) ? createPortal(
     <ModalBackdrop onClick={handleModalOnClose}>
-      {children}
+      <ModalContentWrapper onClick={ignoreOnClickEvent}>
+        {children}
+      </ModalContentWrapper>
     </ModalBackdrop>,
     window.document.body,
   ) : null;

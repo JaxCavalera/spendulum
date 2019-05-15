@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 // Error handlers
@@ -52,11 +52,6 @@ export const AccountWidget = () => {
     }
   };
 
-  const ignoreOnClickEvent = (e: MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
   const handleLogoutOnClick = () => dispatch({
     type: AccountWidgetActionTypes.UPDATE_LOGGED_IN,
     loggedIn: false,
@@ -79,7 +74,7 @@ export const AccountWidget = () => {
           )
         }
         <Modal isOpen={showAccountPanel} onClose={handleOnClose}>
-          <AccountPanel onClick={ignoreOnClickEvent}>
+          <AccountPanel>
             <AccountPanelHeader>
               <AccountHeaderBtn
                 isActive={!loginHasFocus}

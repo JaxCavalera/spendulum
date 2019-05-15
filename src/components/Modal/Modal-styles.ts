@@ -13,3 +13,7 @@ export const ModalBackdrop = styled.div`
   background-color: ${colours.blackOpacity(0.3)};
   z-index: 10;
 `;
+
+export const ModalContentWrapper = styled.div`
+  margin: 0;
+`;

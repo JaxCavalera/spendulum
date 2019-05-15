@@ -1,19 +1,44 @@
 // Models
 import { ConfigurationActionTypes } from '../Configuration/Configuration-models';
-import { ProductInfo } from '../../utils/product-info-helpers';
+import { ProductInfo, SizeOptions } from '../../utils/product-info-helpers';
 
-// Utils
-import { deepClone } from '../../utils/deep-clone';
-
-export const updateTempProductStoreData = (
-  initialProductData: ProductInfo,
-  dispatch: React.Dispatch<any>,
+// Testable event handlers
+export const handleProdLabelOnChange = (
+  setProdLabel: React.Dispatch<React.SetStateAction<string>>,
+  newProdLabel: string,
 ) => {
-  const newTempProductData = deepClone(initialProductData);
+  setProdLabel(newProdLabel);
+};
 
-  dispatch({
-    type: ConfigurationActionTypes.ASSIGN_MICROSTORE,
-    productMicroStoreId: 'temp',
-    productData: newTempProductData,
+export const handleSizeOptionOnChange = (
+  setProdSizes: React.Dispatch<React.SetStateAction<SizeOptions>>,
+  currentProdSizes: SizeOptions,
+  changedSize: string,
+  changedSizeStatus: boolean,
+) => {
+  if (!changedSizeStatus) {
+    const { [changedSize]: removedSizeOption, ...remainingSizes } = currentProdSizes;
+    setProdSizes(remainingSizes);
+    return;
+  }
+
+  // Size is being added to the list of available options
+  const newProdSizes = {
+    ...currentProdSizes,
+    [changedSize]: 1,
+  };
+
+  setProdSizes(newProdSizes);
+};
+
+export const handleSizeOptionQtyOnChange = (
+  setProdSizes: React.Dispatch<React.SetStateAction<SizeOptions>>,
+  currentProdSizes: SizeOptions,
+  changedSize: string,
+  newSizeQty: string,
+) => {
+  setProdSizes({
+    ...currentProdSizes,
+    [changedSize]: Number(newSizeQty),
   });
 };

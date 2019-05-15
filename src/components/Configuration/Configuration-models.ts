@@ -1,5 +1,7 @@
 import { ProductInfo } from '../../utils/product-info-helpers';
 
+export const newProductStoreId = 'addNewProduct';
+
 export enum ConfigurationActionTypes {
   UPDATE_PRODUCT_MICROSTORE_ID_LIST = 'configuration/UPDATE_PRODUCT_MICROSTORE_ID_LIST',
   ASSIGN_MICROSTORE = 'configuration/ASSIGN_MICROSTORE',
@@ -22,7 +24,6 @@ export interface ConfigurationReducerState {
   [key: string]: any;
   productMicroStoreIds: string[];
   activeProductStoreId: string;
-  temp: ProductInfo;
 }
 
 export interface ConfigurationHookSettings {

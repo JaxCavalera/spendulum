@@ -1,11 +1,9 @@
 import { RootReducerStore } from '../rootReducer';
-import { initialTempProductStore } from '../../components/Configuration/Configuration-reducer';
 
 export const singleAddedProductOneSize: RootReducerStore = {
   configurationStore: {
     productMicroStoreIds: [],
     activeProductStoreId: '',
-    temp: initialTempProductStore,
   },
   accountWidgetStore: {
     loggedIn: false,
@@ -109,7 +107,6 @@ export const singleAddedProductTwoSizes: RootReducerStore = {
   configurationStore: {
     productMicroStoreIds: [],
     activeProductStoreId: '',
-    temp: initialTempProductStore,
   },
   accountWidgetStore: {
     loggedIn: false,
