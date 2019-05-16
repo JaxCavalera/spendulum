@@ -11,9 +11,11 @@ export const ModalBackdrop = styled.div`
   height: 100%;
   width: 100%;
   background-color: ${colours.blackOpacity(0.3)};
+  overflow-y: auto;
   z-index: 10;
 `;
 
 export const ModalContentWrapper = styled.div`
+  max-height: 100vh;
   margin: 0;
 `;
