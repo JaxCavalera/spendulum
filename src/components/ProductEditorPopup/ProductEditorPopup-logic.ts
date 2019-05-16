@@ -10,6 +10,35 @@ export const handleProdLabelOnChange = (
   setProdLabel(newProdLabel);
 };
 
+export const handleImgUrlOnChange = (
+  setImgUrl: React.Dispatch<React.SetStateAction<string>>,
+  newImgUrl: string,
+) => {
+  setImgUrl(newImgUrl);
+};
+
+export const handleMinPriceOnChange = (
+  setMinPrice: React.Dispatch<React.SetStateAction<number>>,
+  newMinPrice: string,
+) => {
+  const convertedMinPrice = Number(newMinPrice);
+
+  if (!Number.isNaN(convertedMinPrice)) {
+    setMinPrice(convertedMinPrice);
+  }
+};
+
+export const handleMaxPriceOnChange = (
+  setMaxPrice: React.Dispatch<React.SetStateAction<number>>,
+  newMaxPrice: string,
+) => {
+  const convertedMaxPrice = Number(newMaxPrice);
+
+  if (!Number.isNaN(convertedMaxPrice)) {
+    setMaxPrice(convertedMaxPrice);
+  }
+};
+
 export const handleSizeOptionOnChange = (
   setProdSizes: React.Dispatch<React.SetStateAction<SizeOptions>>,
   currentProdSizes: SizeOptions,
