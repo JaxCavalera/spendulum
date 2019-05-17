@@ -1,6 +1,10 @@
+import { v4 } from 'uuid';
+
 // Models
 import { ConfigurationActionTypes } from '../Configuration/Configuration-models';
 import { ProductInfo, SizeOptions } from '../../utils/product-info-helpers';
+import { ConfigApis } from '../../apis/api-contexts';
+import { CartSidebarActionTypes } from '../CartSidebar/CartSidebar-models';
 
 // Testable event handlers
 export const handleProdLabelOnChange = (
@@ -70,4 +74,56 @@ export const handleSizeOptionQtyOnChange = (
     ...currentProdSizes,
     [changedSize]: Number(newSizeQty),
   });
+};
+
+export const handleSaveOnClick = async (
+  dispatch: React.Dispatch<any>,
+  configApis: ConfigApis,
+  setIsSaving: React.Dispatch<React.SetStateAction<boolean>>,
+  handleProductEditorOnClose: () => void,
+  prodLabel: string,
+  minPrice: number,
+  maxPrice: number,
+  prodSizes: SizeOptions,
+  cartItemMicroStoreIds: string[],
+  imgUrl?: string,
+  initialProductData?: ProductInfo,
+) => {
+  setIsSaving(true);
+
+  const newProductData: ProductInfo = {
+    value: v4(),
+    claimedSizes: {},
+    priceTimer: new Date().toISOString(),
+    price: 9001,
+    ...typeof initialProductData !== 'undefined' && initialProductData,
+    minPrice,
+    maxPrice,
+    label: prodLabel,
+    availableSizes: prodSizes,
+    imgUrl,
+  };
+
+  try {
+    await configApis.postAvailableProducts(newProductData);
+
+    // Remove the updated product from the cart sidebar if found
+    const newCartItemMicroStoreIds = cartItemMicroStoreIds.filter(storeId => storeId !== newProductData.value);
+
+    if (newCartItemMicroStoreIds.length !== cartItemMicroStoreIds.length) {
+      dispatch({
+        type: CartSidebarActionTypes.UPDATE_CART_ITEM_MICROSTORE_ID_LIST,
+        cartItemMicroStoreIds: newCartItemMicroStoreIds,
+      });
+
+      dispatch({
+        type: CartSidebarActionTypes.REMOVE_MICROSTORE,
+        cartItemMicroStoreId: newProductData.value,
+      });
+    }
+
+    // Update both the configuration product list and shop product list microstores to include the new product data
+  } catch (error) {
+    console.error('Failed to save new product data', error);
+  }
 };

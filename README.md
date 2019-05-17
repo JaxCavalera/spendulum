@@ -23,7 +23,7 @@ The moment an item is added to the cart it's purchase price will be locked in fo
 ---
 
 # Summary
-Below are key learnings from working with the combination of, **Functional Components** and **React Hooks** without any additional state management tools. Uses [JSON Bin](https://jsonbin.io/) as a restful JSON storage / retrieval system.
+Below are key learnings from working with the combination of, **Functional Components** and **React Hooks** without any additional state management tools. Uses [MossByte](https://mossbyte.com/) as a restful JSON storage / retrieval system.
 
 ## Hooks vs MobX vs Redux
 The main benefits to working with MobX over Redux have been the reduction in boilerplate, easier integration with async functionality and the ability to wrap a stateless functional component with `inject` and `observer` turning them into stateful functional components.
@@ -35,7 +35,7 @@ For large projects, whilst hooks can scale similar to that of Redux, in terms of
 ## Redux Pattern Adjustments
 The standard redux pattern does share some similarities with things like `useReducer` and `useContext` but to ensure that state updates only trigger re-renders in affected components where `useContext` gets called, it requires some additional work.
 
-The main differences are that there is no requirement for actionCreator boilerplate (though I believe having them would make it easier to dispatch the same actionType in several places). If `useContext` isn't called by a component, it can benefit from being wrapped by `React.memo`. There is also a stronger emphasis on taking advantage of `useState` and `useEffect` when dealing with internal state changes.
+The main differences are that there is no requirement for actionCreator boilerplate. If `useContext` isn't called by a component, it can benefit from being wrapped by `React.memo`. There is also a stronger emphasis on taking advantage of `useState` and `useEffect` when dealing with internal state changes.
 
 #### Validating Reducer Shapes
 Typescript is not able to validate the shape of callback functions from where they are being called so this needs to happen before they get passed in as nested callbacks.

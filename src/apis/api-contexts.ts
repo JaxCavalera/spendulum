@@ -4,17 +4,19 @@ import { createContext } from 'react';
 import { ProductInfo } from '../utils/product-info-helpers';
 
 // Apis
-import { getAvailableProductsList } from './product-list-apis';
+import {
+  getAvailableProductsList,
+  postAvailableProducts,
+} from './app-apis';
 
 // Context Interfaces
-export type ApiFn = (useMockData?: boolean) => Promise<ProductInfo[]>;
-
 export interface BrowseApis {
-  getAvailableProductsList: ApiFn;
+  getAvailableProductsList: (useMockData?: boolean) => Promise<ProductInfo[]>;
 }
 
 export interface ConfigApis {
-  getAvailableProductsList: ApiFn;
+  getAvailableProductsList: (useMockData?: boolean) => Promise<ProductInfo[]>;
+  postAvailableProducts: (productData: ProductInfo, useMockData?: boolean) => Promise<boolean>;
 }
 
 // Live Contexts
@@ -23,6 +25,7 @@ export const browseLiveApis = (): BrowseApis => ({
 });
 export const configLiveApis = (): ConfigApis => ({
   getAvailableProductsList,
+  postAvailableProducts,
 });
 
 // Mock Contexts
@@ -31,6 +34,7 @@ export const browseMockApis = (): BrowseApis => ({
 });
 export const configMockApis = (): ConfigApis => ({
   getAvailableProductsList: () => getAvailableProductsList(true),
+  postAvailableProducts: (productData: ProductInfo) => postAvailableProducts(productData, true),
 });
 
 // Context Wrappers

@@ -9,7 +9,7 @@ import { ConfigurationActionTypes } from '../Configuration/Configuration-models'
 
 // Contexts
 import { StoreContext, StoreDispatch } from '../../container/rootReducer';
-// import { ConfigApisContext } from '../../apis/api-contexts';
+import { ConfigApisContext } from '../../apis/api-contexts';
 
 // Logic
 import {
@@ -19,6 +19,7 @@ import {
   handleMinPriceOnChange,
   handleMaxPriceOnChange,
   handleImgUrlOnChange,
+  handleSaveOnClick,
 } from './ProductEditorPopup-logic';
 
 // Styles
@@ -32,17 +33,32 @@ import {
   ProductSizeTxt,
   ProductSizeCheckbox,
   TextInputWrapper,
+  ProductEditorActionsPanel,
 } from './ProductEditorPopup-styles';
+
+import {
+  PrimaryButton,
+  BasicButton,
+} from '../../utils/shared-styles';
+import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
 
 export interface ProductEditorPopupProps {
   initialProductData?: ProductInfo;
 }
 
 export const ProductEditorPopup = ({ initialProductData }: ProductEditorPopupProps) => {
+  const {
+    cartSidebarStore: {
+      cartItemMicroStoreIds,
+    },
+  } = useContext(StoreContext);
+
   const dispatch = useContext(StoreDispatch);
-  // const configApis = useContext(ConfigApisContext);
+  const configApis = useContext(ConfigApisContext);
 
   const [showModal, setShowModal] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+
   const [prodLabel, setProdLabel] = useState(
     initialProductData ? initialProductData.label : '',
   );
@@ -105,6 +121,28 @@ export const ProductEditorPopup = ({ initialProductData }: ProductEditorPopupPro
     });
 
     setShowModal(false);
+  };
+
+  const handleCancelOnClick = () => {
+    if (!isSaving) {
+      handleProductEditorOnClose();
+    }
+  };
+
+  const callHandleSaveOnClick = () => {
+    handleSaveOnClick(
+      dispatch,
+      configApis,
+      setIsSaving,
+      handleProductEditorOnClose,
+      prodLabel,
+      minPrice,
+      maxPrice,
+      prodSizes,
+      cartItemMicroStoreIds,
+      imgUrl,
+      initialProductData,
+    );
   };
 
   return (
@@ -188,6 +226,18 @@ export const ProductEditorPopup = ({ initialProductData }: ProductEditorPopupPro
             ))
           }
         </ProductSectionPanel>
+        <ProductEditorActionsPanel>
+          {
+            isSaving
+            && <LoadingSpinner />
+          }
+          <PrimaryButton disabled={isSaving} onClick={callHandleSaveOnClick}>
+            Save
+          </PrimaryButton>
+          <BasicButton disabled={isSaving} onClick={handleCancelOnClick}>
+            Cancel
+          </BasicButton>
+        </ProductEditorActionsPanel>
       </ProductEditorPopupWrapper>
     </Modal>
   );

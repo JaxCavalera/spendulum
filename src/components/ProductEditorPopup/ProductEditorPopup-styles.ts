@@ -117,3 +117,18 @@ export const TextInputWrapper = styled.div`
     margin-right: 0.25rem;
   }
 `;
+
+export const ProductEditorActionsPanel = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 0.5rem;
+
+  > button {
+    width: 6rem;
+  }
+
+  > button:last-child {
+    margin-left: 0.5rem;
+  }
+`;
