@@ -5,6 +5,7 @@ import { ConfigurationActionTypes } from '../Configuration/Configuration-models'
 import { ProductInfo, SizeOptions } from '../../utils/product-info-helpers';
 import { ConfigApis } from '../../apis/api-contexts';
 import { CartSidebarActionTypes } from '../CartSidebar/CartSidebar-models';
+import { ProductListActionTypes } from '../ProductList/ProductList-models';
 
 // Testable event handlers
 export const handleProdLabelOnChange = (
@@ -86,6 +87,8 @@ export const handleSaveOnClick = async (
   maxPrice: number,
   prodSizes: SizeOptions,
   cartItemMicroStoreIds: string[],
+  productMicroStoreIds: string[],
+  configProductMicroStoreIds: string[],
   imgUrl?: string,
   initialProductData?: ProductInfo,
 ) => {
@@ -122,7 +125,41 @@ export const handleSaveOnClick = async (
       });
     }
 
-    // Update both the configuration product list and shop product list microstores to include the new product data
+    // Update the store product list
+    dispatch({
+      type: ProductListActionTypes.ASSIGN_MICROSTORE,
+      productMicroStoreId: newProductData.value,
+      productData: newProductData,
+    });
+
+    if (productMicroStoreIds.indexOf(newProductData.value) === -1) {
+      dispatch({
+        type: ProductListActionTypes.UPDATE_PRODUCT_MICROSTORE_ID_LIST,
+        productMicroStoreIds: [
+          ...productMicroStoreIds,
+          newProductData.value,
+        ],
+      });
+    }
+
+    // Update the configuration product list
+    dispatch({
+      type: ConfigurationActionTypes.ASSIGN_MICROSTORE,
+      configProductMicroStoreId: newProductData.value,
+      productData: newProductData,
+    });
+
+    if (configProductMicroStoreIds.indexOf(newProductData.value) === -1) {
+      dispatch({
+        type: ConfigurationActionTypes.UPDATE_PRODUCT_MICROSTORE_ID_LIST,
+        configProductMicroStoreIds: [
+          ...configProductMicroStoreIds,
+          newProductData.value,
+        ],
+      });
+    }
+
+    handleProductEditorOnClose();
   } catch (error) {
     console.error('Failed to save new product data', error);
   }

@@ -7,8 +7,8 @@ import ErrorBoundary from '../../utils/ErrorBoundary';
 import { StoreContext } from '../../container/rootReducer';
 import {
   ConfigApisContext,
-  // configLiveApis,
-  configMockApis,
+  configLiveApis,
+  // configMockApis,
 } from '../../apis/api-contexts';
 
 // Components
@@ -33,7 +33,7 @@ export const Config = memo(({ history, match }: ConfigProps) => {
 
   return (
     <ErrorBoundary>
-      <ConfigApisContext.Provider value={configMockApis()}>
+      <ConfigApisContext.Provider value={configLiveApis()}>
         <ConfigWrapper>
           <Configuration />
         </ConfigWrapper>

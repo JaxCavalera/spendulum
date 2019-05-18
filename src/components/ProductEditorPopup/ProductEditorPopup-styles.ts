@@ -122,10 +122,12 @@ export const ProductEditorActionsPanel = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   margin-top: 0.5rem;
 
   > button {
     width: 6rem;
+    min-width: 6rem;
   }
 
   > button:last-child {

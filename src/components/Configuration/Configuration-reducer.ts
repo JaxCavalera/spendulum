@@ -5,7 +5,7 @@ import {
 } from './Configuration-models';
 
 export const configurationInitialState: ConfigurationReducerState = {
-  productMicroStoreIds: [],
+  configProductMicroStoreIds: [],
   activeProductStoreId: '',
 };
 
@@ -17,50 +17,50 @@ export const configurationReducer = (
     case ConfigurationActionTypes.UPDATE_PRODUCT_MICROSTORE_ID_LIST: {
       return {
         ...state,
-        ...action.productMicroStoreIds && {
-          productMicroStoreIds: action.productMicroStoreIds,
+        ...action.configProductMicroStoreIds && {
+          configProductMicroStoreIds: action.configProductMicroStoreIds,
         },
       };
     }
 
     case ConfigurationActionTypes.ASSIGN_MICROSTORE: {
-      const { productMicroStoreId, productData } = action;
+      const { configProductMicroStoreId, productData } = action;
       return {
         ...state,
-        ...productMicroStoreId && productData && {
-          [productMicroStoreId]: productData,
+        ...configProductMicroStoreId && productData && {
+          [configProductMicroStoreId]: productData,
         },
       };
     }
 
     case ConfigurationActionTypes.REMOVE_MICROSTORE: {
-      const { productMicroStoreId } = action;
+      const { configProductMicroStoreId } = action;
 
-      if (!productMicroStoreId) {
+      if (!configProductMicroStoreId) {
         // Nothing to remove
         return state;
       }
 
-      const { [productMicroStoreId]: removedMicroStore, ...newState } = state;
+      const { [configProductMicroStoreId]: removedMicroStore, ...newState } = state;
       return newState as ConfigurationReducerState;
     }
 
     case ConfigurationActionTypes.UPDATE_MICROSTORE_VALUE: {
       const {
-        productMicroStoreId,
+        configProductMicroStoreId,
         microStoreProperty,
         microStorePropertyValue,
       } = action;
 
-      if (!productMicroStoreId || !state[productMicroStoreId]) {
+      if (!configProductMicroStoreId || !state[configProductMicroStoreId]) {
         // No matching microstore to update
         return state;
       }
 
       return {
         ...state,
-        [productMicroStoreId]: {
-          ...state[productMicroStoreId],
+        [configProductMicroStoreId]: {
+          ...state[configProductMicroStoreId],
           ...microStoreProperty && {
             [microStoreProperty]: microStorePropertyValue,
           },

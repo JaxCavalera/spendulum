@@ -51,12 +51,17 @@ export const ProductEditorPopup = ({ initialProductData }: ProductEditorPopupPro
     cartSidebarStore: {
       cartItemMicroStoreIds,
     },
+    productListStore: {
+      productMicroStoreIds,
+    },
+    configurationStore: {
+      configProductMicroStoreIds,
+    },
   } = useContext(StoreContext);
 
   const dispatch = useContext(StoreDispatch);
   const configApis = useContext(ConfigApisContext);
 
-  const [showModal, setShowModal] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
   const [prodLabel, setProdLabel] = useState(
@@ -115,12 +120,11 @@ export const ProductEditorPopup = ({ initialProductData }: ProductEditorPopupPro
   };
 
   const handleProductEditorOnClose = () => {
+    // Controls the Modal isOpen state by mounting the correct editor popup component
     dispatch({
       type: ConfigurationActionTypes.UPDATE_ACTIVE_PRODUCT_STORE_ID,
       activeProductStoreId: '',
     });
-
-    setShowModal(false);
   };
 
   const handleCancelOnClick = () => {
@@ -140,6 +144,8 @@ export const ProductEditorPopup = ({ initialProductData }: ProductEditorPopupPro
       maxPrice,
       prodSizes,
       cartItemMicroStoreIds,
+      productMicroStoreIds,
+      configProductMicroStoreIds,
       imgUrl,
       initialProductData,
     );
@@ -147,8 +153,8 @@ export const ProductEditorPopup = ({ initialProductData }: ProductEditorPopupPro
 
   return (
     <Modal
+      isOpen
       onClose={handleProductEditorOnClose}
-      isOpen={showModal}
     >
       <ProductEditorPopupWrapper>
         <ModalHeading3>Enter Product Details</ModalHeading3>

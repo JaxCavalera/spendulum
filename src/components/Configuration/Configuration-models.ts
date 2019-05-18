@@ -12,8 +12,8 @@ export enum ConfigurationActionTypes {
 
 export interface ConfigurationReducerAction {
   type: string;
-  productMicroStoreIds?: string[];
-  productMicroStoreId?: string;
+  configProductMicroStoreIds?: string[];
+  configProductMicroStoreId?: string;
   productData?: ProductInfo;
   microStoreProperty?: string;
   microStorePropertyValue?: any;
@@ -22,7 +22,7 @@ export interface ConfigurationReducerAction {
 
 export interface ConfigurationReducerState {
   [key: string]: any;
-  productMicroStoreIds: string[];
+  configProductMicroStoreIds: string[];
   activeProductStoreId: string;
 }
 

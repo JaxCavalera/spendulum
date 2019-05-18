@@ -39,7 +39,7 @@ export const Configuration = () => {
   const {
     configurationStore,
     configurationStore: {
-      productMicroStoreIds,
+      configProductMicroStoreIds,
       activeProductStoreId,
     },
   } = useContext(StoreContext);
@@ -65,10 +65,10 @@ export const Configuration = () => {
           && (
           <CurrentProductsList>
             {
-              productMicroStoreIds.length ? (
-                productMicroStoreIds.map((microStoreId) => {
+              configProductMicroStoreIds.length ? (
+                configProductMicroStoreIds.map(microStoreId => {
                   const microStore: ProductInfo = configurationStore[microStoreId];
-                  return <ProductSettings key={microStoreId} data={microStore} />;
+                  return !!microStore && <ProductSettings key={microStoreId} data={microStore} />;
                 })
               ) : (
                 <SectionParagraph marginOverride="0 0 1rem">

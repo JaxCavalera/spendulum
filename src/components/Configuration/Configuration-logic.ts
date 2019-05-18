@@ -21,7 +21,7 @@ export const createCurrentProductMicroStores = (
     const currentProductMicroStoreIds = productList.map(product => {
       dispatch({
         type: ConfigurationActionTypes.ASSIGN_MICROSTORE,
-        productMicroStoreId: product.value,
+        configProductMicroStoreId: product.value,
         productData: product,
       });
 
@@ -30,7 +30,7 @@ export const createCurrentProductMicroStores = (
 
     dispatch({
       type: ConfigurationActionTypes.UPDATE_PRODUCT_MICROSTORE_ID_LIST,
-      productMicroStoreIds: currentProductMicroStoreIds,
+      configProductMicroStoreIds: currentProductMicroStoreIds,
     });
 
     setIsFetching(false);
@@ -68,7 +68,7 @@ export const useGetCurrentProducts = (
   configApis: ConfigApis,
   configurationStore: ConfigurationReducerState,
 ) => {
-  const [isFetching, setIsFetching] = useState(!configurationStore.productMicroStoreIds.length);
+  const [isFetching, setIsFetching] = useState(!configurationStore.configProductMicroStoreIds.length);
 
   useEffect(() => {
     const hookSettings: ConfigurationHookSettings = {

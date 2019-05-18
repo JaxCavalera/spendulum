@@ -7,6 +7,7 @@ import { ProductInfo } from '../utils/product-info-helpers';
 import {
   getAvailableProductsList,
   postAvailableProducts,
+  deleteProduct,
 } from './app-apis';
 
 // Context Interfaces
@@ -17,6 +18,7 @@ export interface BrowseApis {
 export interface ConfigApis {
   getAvailableProductsList: (useMockData?: boolean) => Promise<ProductInfo[]>;
   postAvailableProducts: (productData: ProductInfo, useMockData?: boolean) => Promise<boolean>;
+  deleteProduct: (productId: string, useMockData?: boolean) => Promise<boolean>;
 }
 
 // Live Contexts
@@ -26,6 +28,7 @@ export const browseLiveApis = (): BrowseApis => ({
 export const configLiveApis = (): ConfigApis => ({
   getAvailableProductsList,
   postAvailableProducts,
+  deleteProduct,
 });
 
 // Mock Contexts
@@ -35,6 +38,7 @@ export const browseMockApis = (): BrowseApis => ({
 export const configMockApis = (): ConfigApis => ({
   getAvailableProductsList: () => getAvailableProductsList(true),
   postAvailableProducts: (productData: ProductInfo) => postAvailableProducts(productData, true),
+  deleteProduct: (productId: string) => deleteProduct(productId, true),
 });
 
 // Context Wrappers
