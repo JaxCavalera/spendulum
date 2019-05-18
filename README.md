@@ -16,7 +16,9 @@ Spendulum is a fictional product I made up that when finished would allow users 
 
 A bundle discount is applied based on the number of items in a user's cart at the time of purchase which encourages bulk purchases where some items a user may want to buy won't be discounted as low as others.
 
-The moment an item is added to the cart it's purchase price will be locked in for the next 15 minutes. Removing an item from the cart resets the purchase price to the currently listed value.
+The moment an item is added to the cart it's purchase price will be locked in for the next 20 minutes. Removing an item from the cart resets the purchase price to the currently listed value.
+
+[Live Demo](https://spendulum.herokuapp.com/)
 
 [Back To Top](#contents)
 
