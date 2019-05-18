@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 
-// Error Handlers
+// Error handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Models
@@ -54,7 +54,7 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
   } = cartItem;
 
   const initialDuration = calculateRemainingPriceDuration(cartItem.priceTimer);
-  const [priceDuration, updatePriceDuration] = useState(initialDuration);
+  const [priceDuration, setPriceDuration] = useState(initialDuration);
 
   // Only display sizes with 1 or more qty
   const filteredClaimedSizes = removeEmptyClaimedSizes(claimedSizes);
@@ -97,7 +97,7 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
 
   useEffect(() => {
     const newPriceDuration = calculateRemainingPriceDuration(cartItem.priceTimer);
-    updatePriceDuration(newPriceDuration);
+    setPriceDuration(newPriceDuration);
   }, [cartItem.priceTimer]);
 
   return (
@@ -106,7 +106,7 @@ export const CartItem = ({ cartItem }: CartItemProps) => {
         <CartItemLabel data-testid={cartItemTestIds.CartItemLabelId}>{label}</CartItemLabel>
         <CartItemContent>
           <CartPricePanel>
-            <SectionParagraph nomargin>
+            <SectionParagraph marginOverride="0">
               {`$${cartItem.price.toFixed(2)}`}
             </SectionParagraph>
             <CountTimer

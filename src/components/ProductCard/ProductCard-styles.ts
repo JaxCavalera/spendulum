@@ -1,9 +1,9 @@
 import styled from 'styled-components/macro';
 
-// Shared Styles
+// Shared styles
 import { colours, BasicButton } from '../../utils/shared-styles';
 
-// Styled Components
+// Styled components
 export const ProductCardWrapper = styled.div`
   display: flex;
   flex-direction: column;

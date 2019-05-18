@@ -46,27 +46,27 @@ export const CartItemSizeInfo = ({
 
   // Local State
   const initialQty = claimedSizes[sizeOption] || 1;
-  const [localQty, updateLocalQty] = useState(initialQty.toFixed(0));
+  const [localQty, setLocalQty] = useState(initialQty.toFixed(0));
 
   // Detect prop changes that need to trigger local state updates
   useEffect(() => {
     const newLocalQty = claimedSizes[sizeOption];
     if (typeof newLocalQty !== 'undefined') {
-      updateLocalQty(newLocalQty.toFixed(0));
+      setLocalQty(newLocalQty.toFixed(0));
     }
   }, [claimedSizes, sizeOption]);
 
   // Event Handler Wrappers
   const handleItemQtyOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!/(\.|e|\+|-)/.test(e.currentTarget.value)) {
-      updateLocalQty(e.currentTarget.value);
+      setLocalQty(e.currentTarget.value);
     }
   };
 
   const handleItemQtyOnBlur = () => {
     if (typeof availableQty === 'undefined' || !validateNewQty(localQty, initialQty, availableQty)) {
       // Revert the localQty to the last known allowed value (initialQty)
-      updateLocalQty(initialQty.toFixed(0));
+      setLocalQty(initialQty.toFixed(0));
       return;
     }
 

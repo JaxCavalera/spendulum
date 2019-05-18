@@ -1,6 +1,13 @@
 import { RootReducerStore } from '../rootReducer';
 
 export const singleAddedProductOneSize: RootReducerStore = {
+  configurationStore: {
+    configProductMicroStoreIds: [],
+    activeProductStoreId: '',
+  },
+  accountWidgetStore: {
+    loggedIn: false,
+  },
   productListStore: {
     productMicroStoreIds: [
       'ksny-1',
@@ -19,8 +26,8 @@ export const singleAddedProductOneSize: RootReducerStore = {
       price: 77.4,
       minPrice: 63,
       maxPrice: 85,
-      priceTimer: '2019-03-03T12: 27: 08.030Z',
-      imgUrl: 'https: //i.imgur.com/lrCkut9.png',
+      priceTimer: '2019-03-03T12:27:08.030Z',
+      imgUrl: 'https://i.imgur.com/lrCkut9.png',
     },
     'jcsvm-1': {
       label: 'Just Cavalli',
@@ -32,8 +39,8 @@ export const singleAddedProductOneSize: RootReducerStore = {
       price: 107,
       minPrice: 95,
       maxPrice: 112,
-      priceTimer: '2019-03-03T12: 27: 08.030Z',
-      imgUrl: 'https: //i.imgur.com/Igq4dBW.jpg',
+      priceTimer: '2019-03-03T12:27:08.030Z',
+      imgUrl: 'https://i.imgur.com/Igq4dBW.jpg',
     },
     'snwflk-1': {
       label: 'Snowflake Shirt',
@@ -46,8 +53,8 @@ export const singleAddedProductOneSize: RootReducerStore = {
       price: 12,
       minPrice: 12,
       maxPrice: 18,
-      priceTimer: '2019-03-03T12: 27: 08.030Z',
-      imgUrl: 'https: //i.imgur.com/9frBHl9.jpg',
+      priceTimer: '2019-03-03T12:27:08.030Z',
+      imgUrl: 'https://i.imgur.com/9frBHl9.jpg',
     },
     'nvyjns-1': {
       label: 'Navy Denim Jeans',
@@ -60,8 +67,8 @@ export const singleAddedProductOneSize: RootReducerStore = {
       price: 40,
       minPrice: 32,
       maxPrice: 40,
-      priceTimer: '2019-03-03T12: 27: 08.030Z',
-      imgUrl: 'https: //i.imgur.com/Hs1JnpR.jpg',
+      priceTimer: '2019-03-03T12:27:08.030Z',
+      imgUrl: 'https://i.imgur.com/Hs1JnpR.jpg',
     },
     'nsocr-1': {
       label: 'Nike Soccerball Ninja',
@@ -73,8 +80,8 @@ export const singleAddedProductOneSize: RootReducerStore = {
       price: 16,
       minPrice: 15,
       maxPrice: 26,
-      priceTimer: '2019-03-03T12: 27: 08.030Z',
-      imgUrl: 'https: //i.imgur.com/EHQoYlJ.jpg',
+      priceTimer: '2019-03-03T12:27:08.030Z',
+      imgUrl: 'https://i.imgur.com/EHQoYlJ.jpg',
     },
   },
   cartSidebarStore: {
@@ -97,6 +104,13 @@ export const singleAddedProductOneSize: RootReducerStore = {
 };
 
 export const singleAddedProductTwoSizes: RootReducerStore = {
+  configurationStore: {
+    configProductMicroStoreIds: [],
+    activeProductStoreId: '',
+  },
+  accountWidgetStore: {
+    loggedIn: false,
+  },
   productListStore: {
     productMicroStoreIds: [
       'ksny-1',
@@ -115,8 +129,8 @@ export const singleAddedProductTwoSizes: RootReducerStore = {
       price: 77.4,
       minPrice: 63,
       maxPrice: 85,
-      priceTimer: '2019-03-03T12: 27: 08.030Z',
-      imgUrl: 'https: //i.imgur.com/lrCkut9.png',
+      priceTimer: '2019-03-03T12:27:08.030Z',
+      imgUrl: 'https://i.imgur.com/lrCkut9.png',
     },
     'jcsvm-1': {
       label: 'Just Cavalli',
@@ -128,8 +142,8 @@ export const singleAddedProductTwoSizes: RootReducerStore = {
       price: 107,
       minPrice: 95,
       maxPrice: 112,
-      priceTimer: '2019-03-03T12: 27: 08.030Z',
-      imgUrl: 'https: //i.imgur.com/Igq4dBW.jpg',
+      priceTimer: '2019-03-03T12:27:08.030Z',
+      imgUrl: 'https://i.imgur.com/Igq4dBW.jpg',
     },
     'snwflk-1': {
       label: 'Snowflake Shirt',
@@ -145,8 +159,8 @@ export const singleAddedProductTwoSizes: RootReducerStore = {
       price: 12,
       minPrice: 12,
       maxPrice: 18,
-      priceTimer: '2019-03-03T12: 27: 08.030Z',
-      imgUrl: 'https: //i.imgur.com/9frBHl9.jpg',
+      priceTimer: '2019-03-03T12:27:08.030Z',
+      imgUrl: 'https://i.imgur.com/9frBHl9.jpg',
     },
     'nvyjns-1': {
       label: 'Navy Denim Jeans',
@@ -159,8 +173,8 @@ export const singleAddedProductTwoSizes: RootReducerStore = {
       price: 40,
       minPrice: 32,
       maxPrice: 40,
-      priceTimer: '2019-03-03T12: 27: 08.030Z',
-      imgUrl: 'https: //i.imgur.com/Hs1JnpR.jpg',
+      priceTimer: '2019-03-03T12:27:08.030Z',
+      imgUrl: 'https://i.imgur.com/Hs1JnpR.jpg',
     },
     'nsocr-1': {
       label: 'Nike Soccerball Ninja',
@@ -172,8 +186,8 @@ export const singleAddedProductTwoSizes: RootReducerStore = {
       price: 16,
       minPrice: 15,
       maxPrice: 26,
-      priceTimer: '2019-03-03T12: 27: 08.030Z',
-      imgUrl: 'https: //i.imgur.com/EHQoYlJ.jpg',
+      priceTimer: '2019-03-03T12:27:08.030Z',
+      imgUrl: 'https://i.imgur.com/EHQoYlJ.jpg',
     },
   },
   cartSidebarStore: {
@@ -193,8 +207,8 @@ export const singleAddedProductTwoSizes: RootReducerStore = {
       price: 12,
       minPrice: 12,
       maxPrice: 18,
-      priceTimer: '2019-03-03T12: 27: 08.030Z',
-      imgUrl: 'https: //i.imgur.com/9frBHl9.jpg',
+      priceTimer: '2019-03-03T12:27:08.030Z',
+      imgUrl: 'https://i.imgur.com/9frBHl9.jpg',
     },
   },
 };

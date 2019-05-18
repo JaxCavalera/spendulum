@@ -1,28 +1,30 @@
 /**
  * @prop url - Location where the fetch reequest is being made
  * @prop method - Type of request being sent (GET, POST, PUT, PATCH or DELETE)
- * @prop binName - Where to perform CRUD operations to manage remote data
+ * @prop contentType - Type of content being sent in the optional body payload
  * @prop bodyPayload (optional) - When provided is sent as the body  inside the initObject
  */
 export interface FetchWrapperProps {
   url: string;
   method: string;
-  binName: string;
+  contentType?: string;
   bodyPayload?: object;
 }
 
 export const fetchWrapper = async (fetchWrapperProps: FetchWrapperProps) => {
   const {
-    url, method, binName, bodyPayload,
+    url,
+    method,
+    contentType,
+    bodyPayload,
   } = fetchWrapperProps;
 
-  const secretKey = '$2a$10$FvactLzAWw.A5bf0sNeZheXmYdlULpRcaxp/4Yrd7dD7If4EMzZb6';
-  const initObj = {
+  const initObj: RequestInit = {
     method,
-    headers: {
-      'Content-Type': 'application/json',
-      'secret-key': secretKey,
-      name: binName,
+    ...!!contentType && {
+      headers: {
+        'Content-Type': contentType,
+      },
     },
     ...bodyPayload && { body: JSON.stringify(bodyPayload) },
   };

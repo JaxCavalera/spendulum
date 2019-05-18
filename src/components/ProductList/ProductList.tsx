@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 
-// Error Handlers
+// Error handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Contexts
@@ -12,34 +12,35 @@ import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
 import { ProductCard } from '../ProductCard/ProductCard';
 
 // Styles
-import { ProductListWrapper, SpinnerWrapper } from './ProductList-styles';
+import { ProductListWrapper } from './ProductList-styles';
 
 // Logic
-import { refreshProductList } from './ProductList-logic';
+import { useGetAvailableProducts } from './ProductList-logic';
+
 
 export const ProductList = () => {
-  const store = useContext(StoreContext);
+  const {
+    productListStore,
+    productListStore: {
+      productMicroStoreIds,
+    },
+  } = useContext(StoreContext);
+
   const dispatch = useContext(StoreDispatch);
   const browseApis = useContext(BrowseApisContext);
-  const { productMicroStoreIds } = store.productListStore;
-
-  useEffect(() => {
-    refreshProductList(productMicroStoreIds, dispatch, browseApis);
-  }, [productMicroStoreIds, dispatch, browseApis]);
+  const isLoading = useGetAvailableProducts(dispatch, browseApis, productListStore);
 
   return (
     <ErrorBoundary>
-      <ProductListWrapper isLoading={!productMicroStoreIds.length}>
+      <ProductListWrapper isLoading={isLoading}>
         {
-          !productMicroStoreIds.length ? (
-            <SpinnerWrapper>
-              <LoadingSpinner msg="Loading products..." />
-            </SpinnerWrapper>
+          isLoading ? (
+            <LoadingSpinner msg="Loading available products..." />
           ) : (
             productMicroStoreIds.map(productId => (
               <ProductCard
                 key={productId}
-                data={store.productListStore[productId]}
+                data={productListStore[productId]}
               />
             ))
           )

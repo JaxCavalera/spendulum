@@ -19,13 +19,23 @@ export const colours = {
 };
 
 interface SectionParagraphProps {
-  nomargin?: boolean;
+  marginOverride?: string;
 }
 
-export const SectionParagraph = styled('p')`
+export const SectionParagraph = styled.p`
   font-size: 1.4rem;
   color: ${colours.black};
-  ${(props: SectionParagraphProps) => (props.nomargin ? 'margin: 0' : '')}
+  margin: ${(props: SectionParagraphProps) => (
+    typeof props.marginOverride !== 'undefined' && props.marginOverride
+  )};
+`;
+
+export const SpacedSpan = styled.span`
+  margin: 0 0.5rem;
+`;
+
+export const SpacedStrong = styled.strong`
+  margin: 0 0.5rem;
 `;
 
 export const BasicTextInput = styled.input`

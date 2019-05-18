@@ -5,7 +5,7 @@ import React, {
   useContext,
 } from 'react';
 
-// Error Handlers
+// Error handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Contexts
@@ -14,7 +14,7 @@ import { StoreContext, StoreDispatch } from '../../container/rootReducer';
 // Components
 import { CountTimer } from '../CountTimer/CountTimer';
 
-// Shared Styles
+// Shared styles
 import { SectionParagraph, WrappedImage } from '../../utils/shared-styles';
 
 // Styles
@@ -52,7 +52,6 @@ export enum productCardTestIds {
   SizePickerOption = 'ProductCard/SizePickerOption',
 }
 
-// ProductCard Props
 export interface ProductCardProps {
   data: ProductInfo;
 }
@@ -72,13 +71,13 @@ export const ProductCard = ({ data }: ProductCardProps) => {
   } = store;
 
   const initialDuration = calculateRemainingPriceDuration(data.priceTimer);
-  const [priceDuration, updatePriceDuration] = useState(initialDuration);
-  const [selectedSize, updateSelectedSize] = useState(
+  const [priceDuration, setPriceDuration] = useState(initialDuration);
+  const [selectedSize, setSelectedSize] = useState(
     Object.keys(data.availableSizes)[0] || soldOutTxt,
   );
 
   const handleSizePickerOnChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    updateSelectedSize(e.currentTarget.value);
+    setSelectedSize(e.currentTarget.value);
   };
 
   const callHandleAddToCartOnClick = () => {
@@ -101,7 +100,7 @@ export const ProductCard = ({ data }: ProductCardProps) => {
 
   useEffect(() => {
     const newDuration = calculateRemainingPriceDuration(data.priceTimer);
-    updatePriceDuration(newDuration);
+    setPriceDuration(newDuration);
   }, [data.priceTimer]);
 
   const sizeOptions = Object.keys(data.availableSizes).sort(maintainSizeOrder);
@@ -117,7 +116,7 @@ export const ProductCard = ({ data }: ProductCardProps) => {
         </ImagePanel>
         <CardActions>
           <PricePanel>
-            <SectionParagraph nomargin>
+            <SectionParagraph marginOverride="0">
               {`$${data.price.toFixed(2)}`}
             </SectionParagraph>
             <CountTimer

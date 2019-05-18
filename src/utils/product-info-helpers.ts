@@ -26,7 +26,7 @@ export interface ProductInfo {
   imgUrl?: string;
 }
 
-const expectedSizeOrder = ['NA', 'XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+export const expectedSizeOrder = ['NA', 'XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
 
 export const maintainSizeOrder = (a: string, b: string) => {
   const aIndex = expectedSizeOrder.indexOf(a);

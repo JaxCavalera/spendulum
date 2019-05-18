@@ -30,3 +30,17 @@ export const TrashIcon = ({ children }: { children?: React.ReactElement }) => (
     <path d="M105 79v131h26V79zm-65 0v131h26V79zM1 50h168v189H1zM1 33h168V15h-56V1H57v14H1z" />
   </svg>
 );
+
+export const ConfigIcon = ({ children }: { children?: React.ReactElement }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 58 58">
+    {children}
+    <path d="m27.8 1.3-2.7 5.2-3 0.8-5-3.1-3.2 1.9 0.2 5.9-2.2 2.2-5.9-0.2-1.9 3.2 3.1 5-0.8 3-5.2 2.7v3.7l5.2 2.7 0.8 3-3.1 5 1.9 3.2 5.9-0.2 2.2 2.2-0.2 5.9 3.2 1.9 5-3.1 3 0.8 2.7 5.2h3.7l2.7-5.2 3-0.8 5 3.1 3.2-1.9-0.2-5.9 2.2-2.2 5.9 0.2 1.9-3.2-3.1-5 0.8-3 5.2-2.7V27.8L52.7 25 51.9 22.1 55 17.1 53.2 13.9 47.3 14.1 45.1 11.9 45.4 6.1 42.2 4.2 37.2 7.3 34.2 6.5 31.5 1.3Zm1.9 15c7.4 0 13.3 6 13.3 13.3 0 7.4-6 13.3-13.3 13.3-7.4 0-13.3-6-13.3-13.3 0-7.4 6-13.3 13.3-13.3z" />
+  </svg>
+);
+
+export const EditIcon = ({ children }: { children?: React.ReactElement }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="3 0 55 55">
+    {children}
+    <path fillRule="evenodd" d="M42 12l4 4 2-2-4-4zm8 0l-4-4 2-2 4 4zM9 41L48 2l8 8-39 39-13 5z" />
+  </svg>
+);

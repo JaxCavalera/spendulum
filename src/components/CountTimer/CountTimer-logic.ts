@@ -5,7 +5,7 @@ import { CountTimerDirection } from './CountTimer-models';
 
 export const createTimerManager = (
   duration: number,
-  updateTimer: Dispatch<SetStateAction<any>>,
+  setTimer: Dispatch<SetStateAction<any>>,
   countDirection?: CountTimerDirection,
 ) => {
   let isEnabled = true;
@@ -24,7 +24,7 @@ export const createTimerManager = (
     }
 
     if (durationRemaining <= 0) {
-      updateTimer(0);
+      setTimer(0);
       cancelAnimationFrame(currentRafId);
       isEnabled = false;
       return;
@@ -33,7 +33,7 @@ export const createTimerManager = (
     durationRemaining = (initialTime + duration) - timer;
 
     if (isEnabled) {
-      updateTimer(durationRemaining);
+      setTimer(durationRemaining);
     }
 
     currentRafId = requestAnimationFrame(rafLoop);

@@ -1,12 +1,13 @@
 import React, { memo } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // API Contexts
 import {
   BrowseApisContext,
-  // browseLiveApis,
-  browseMockApis,
+  browseLiveApis,
+  // browseMockApis,
 } from '../../apis/api-contexts';
 
 // Components
@@ -17,11 +18,13 @@ import { BrowseWrapper } from './Browse-styles';
 
 export const Browse = memo(() => (
   <ErrorBoundary>
-    <BrowseApisContext.Provider value={browseMockApis()}>
+    <BrowseApisContext.Provider value={browseLiveApis()}>
       <BrowseWrapper>
         <span>Browse Items</span>
         <ProductList />
       </BrowseWrapper>
     </BrowseApisContext.Provider>
   </ErrorBoundary>
+), (prevProps: RouteComponentProps, nextProps: RouteComponentProps) => (
+  prevProps.location.pathname === nextProps.location.pathname
 ));

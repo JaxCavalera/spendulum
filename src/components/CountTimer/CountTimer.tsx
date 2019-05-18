@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 
-// Error Handlers
+// Error handlers
 import ErrorBoundary from '../../utils/ErrorBoundary';
 
 // Models
@@ -32,8 +32,8 @@ export const CountTimer = ({
   countDirection,
   onEnd,
 }: CountTimerProps) => {
-  const [isAlert, updateIsAlert] = useState(false);
-  const [timer, updateTimer] = useState(duration);
+  const [isAlert, setIsAlert] = useState(false);
+  const [timer, setTimer] = useState(duration);
 
   if (duration === 0 && onEnd) {
     onEnd();
@@ -47,22 +47,22 @@ export const CountTimer = ({
 
   useEffect(() => {
     if (alertDuration && timer <= alertDuration && !isAlert) {
-      updateIsAlert(true);
+      setIsAlert(true);
     }
 
     if (alertDuration && timer > alertDuration && isAlert) {
-      updateIsAlert(false);
+      setIsAlert(false);
     }
   }, [timer, alertDuration, isAlert]);
 
   // Mount / Unmount
   useEffect(() => {
-    const clearTimer = createTimerManager(duration, updateTimer, countDirection);
+    const clearTimer = createTimerManager(duration, setTimer, countDirection);
 
     return () => {
       clearTimer();
     };
-  }, [duration, updateTimer, countDirection]);
+  }, [duration, setTimer, countDirection]);
 
   return (
     <ErrorBoundary>

@@ -4,7 +4,6 @@ import {
   Route,
   Switch,
   Link,
-  RouteComponentProps,
 } from 'react-router-dom';
 
 // Root Reducer
@@ -15,12 +14,13 @@ import {
   StoreContext,
 } from './rootReducer';
 
-// Shared Styles
+// Shared styles
 import ErrorBoundary from '../utils/ErrorBoundary';
 
 // Pages
 import { Browse } from '../pages/Browse/Browse';
 import { Checkout } from '../pages/Checkout/Checkout';
+import { Config } from '../pages/Config/Config';
 import { PageNotFound } from '../pages/PageNotFound/PageNotFound';
 
 // Components
@@ -35,34 +35,6 @@ import {
   PageContent,
 } from './App-styles';
 
-/**
- * Wrap page components with this if they have children being wrapped by React.memo
- * otherwise props.match will cause unwanted re-renders due to a potential bug in
- * React.memo where the 2nd arg on React.memo ignores the evaluation
- * even if prevProps === nextProps
- */
-export const patchWithStableMatchProp = (
-  TargetComponent: React.ComponentType<{ match: RouteComponentProps['match'] }>,
-  otherProps?: object,
-) => {
-  let prevMatch = {} as RouteComponentProps['match'];
-
-  const patchedComponent = ({ match }: RouteComponentProps) => {
-    if (JSON.stringify(prevMatch) !== JSON.stringify(match)) {
-      prevMatch = match;
-      return <TargetComponent match={match} {...otherProps} />;
-    }
-
-    return <TargetComponent match={prevMatch} {...otherProps} />;
-  };
-
-  return patchedComponent;
-};
-
-// Memo ready patched render functions
-const patchedBrowse = patchWithStableMatchProp(Browse);
-const patchedCheckout = patchWithStableMatchProp(Checkout);
-
 export const App = () => {
   const [store, dispatch] = useReducer(rootReducer, rootReducerInitialState());
 
@@ -76,12 +48,13 @@ export const App = () => {
                 <AppName>
                   <Link to="/">Spendulum</Link>
                 </AppName>
-                <NavWidgets />
+                <Route render={props => <NavWidgets {...props} />} />
               </HeaderBar>
               <PageContent>
                 <Switch>
-                  <Route exact path="/" render={patchedBrowse} />
-                  <Route exact path="/checkout" render={patchedCheckout} />
+                  <Route exact path="/" component={Browse} />
+                  <Route exact path="/checkout" component={Checkout} />
+                  <Route exact path="/config" component={Config} />
                   <Route component={PageNotFound} />
                 </Switch>
                 <CartSidebar />

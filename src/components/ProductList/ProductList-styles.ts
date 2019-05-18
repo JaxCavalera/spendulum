@@ -12,11 +12,3 @@ export const ProductListWrapper = styled.div`
   width: 100%;
   height: ${(props: ProductListWrapperProps) => props.isLoading && '100%'};
 `;
-
-export const SpinnerWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-`;

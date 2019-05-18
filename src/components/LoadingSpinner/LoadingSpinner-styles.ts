@@ -35,3 +35,11 @@ export const Spinner = styled.div`
     top: -0.22rem;
   }
 `;
+
+export const SpinnerWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+`;
