@@ -39,6 +39,8 @@ export const ProductSizeTxt = styled.label`
   position: relative;
   display: flex;
   align-items: center;
+  min-width: 7rem;
+  width: 7rem;
   cursor: pointer;
 
   &::before {

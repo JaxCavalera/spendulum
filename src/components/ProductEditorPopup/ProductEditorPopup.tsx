@@ -180,7 +180,7 @@ export const ProductEditorPopup = ({ initialProductData }: ProductEditorPopupPro
             <span>$</span>
             <ProductTextInput
               type="number"
-              value={minPrice}
+              value={minPrice || ''}
               onChange={callHandleMinPriceOnChange}
               title="Min sale price"
             />
@@ -192,7 +192,7 @@ export const ProductEditorPopup = ({ initialProductData }: ProductEditorPopupPro
             <span>$</span>
             <ProductTextInput
               type="number"
-              value={maxPrice}
+              value={maxPrice || ''}
               onChange={callHandleMaxPriceOnChange}
               title="Max sale price"
             />
@@ -223,7 +223,7 @@ export const ProductEditorPopup = ({ initialProductData }: ProductEditorPopupPro
                       type="number"
                       name={size}
                       placeholder="QTY"
-                      value={prodSizes[size]}
+                      value={prodSizes[size] || ''}
                       onChange={callHandleSizeOptionQtyOnChange}
                     />
                   )
